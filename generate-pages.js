@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { pages } = require("./content/pages");
-const { siteName, siteUrl } = require("./site.config");
+const { siteName, siteUrl, gaMeasurementId } = require("./site.config");
 
 const root = __dirname;
 const dist = path.join(root, "dist");
@@ -21,6 +21,20 @@ function escapeHtml(value) {
 
 function pageUrl(slug) {
   return `${baseUrl}/${slug}/`;
+}
+
+function renderAnalytics() {
+  if (!gaMeasurementId) return "";
+
+  const id = escapeHtml(gaMeasurementId);
+  return `    <script async src="https://www.googletagmanager.com/gtag/js?id=${id}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", "${id}");
+    </script>
+`;
 }
 
 function renderHeader() {
@@ -109,6 +123,7 @@ function renderHomePage() {
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="stylesheet" href="styles.css">
+${renderAnalytics()}
     <script type="application/ld+json">
       ${renderHomeSchema()}
     </script>
@@ -502,6 +517,7 @@ function renderPage(page) {
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
     <link rel="stylesheet" href="../styles.css">
+${renderAnalytics()}
     <script type="application/ld+json">
     ${renderSchema(page)}
     </script>
@@ -618,6 +634,7 @@ function renderNotFoundPage() {
     <meta name="robots" content="noindex,follow">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="stylesheet" href="styles.css">
+${renderAnalytics()}
   </head>
   <body>
 ${renderRootHeader()}

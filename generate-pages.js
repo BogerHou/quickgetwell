@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { pages } = require("./content/pages");
 const { siteName, siteUrl, gaMeasurementId } = require("./site.config");
 
@@ -31,6 +32,15 @@ function escapeText(value) {
 
 function pageUrl(slug) {
   return `${baseUrl}/${slug}/`;
+}
+
+function assetVersion(file) {
+  const source = fs.readFileSync(path.join(root, file), "utf8");
+  return crypto.createHash("sha256").update(source).digest("hex").slice(0, 10);
+}
+
+function assetHref(file) {
+  return `${file}?v=${assetVersion(file)}`;
 }
 
 function renderAnalytics() {
@@ -133,7 +143,7 @@ function renderHomePage() {
     <meta property="og:url" content="${baseUrl}/">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="${assetHref("styles.css")}">
 ${renderAnalytics()}
     <script type="application/ld+json">
       ${renderHomeSchema()}
@@ -336,7 +346,7 @@ ${renderTopicGrid()}
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>
-    <script src="script.js"></script>
+    <script src="${assetHref("script.js")}"></script>
   </body>
 </html>
 `;
@@ -599,7 +609,7 @@ function renderPage(page) {
     <meta property="og:url" content="${pageUrl(page.slug)}">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../${assetHref("styles.css")}">
 ${renderAnalytics()}
     <script type="application/ld+json">
     ${renderSchema(page)}
@@ -638,7 +648,7 @@ ${renderTrustInfo()}
       <p><a href="../">Back to message finder</a></p>
     </footer>
     <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>
-    <script src="../script.js"></script>
+    <script src="../${assetHref("script.js")}"></script>
   </body>
 </html>
 `;
@@ -718,7 +728,7 @@ function renderNotFoundPage() {
     <title>Page Not Found | ${escapeHtml(siteName)}</title>
     <meta name="robots" content="noindex,follow">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="${assetHref("styles.css")}">
 ${renderAnalytics()}
   </head>
   <body>

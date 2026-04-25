@@ -25,13 +25,14 @@ function walk(dir, output = []) {
 
 function resolveLocal(baseFile, target) {
   const [clean, fragment] = target.split("#");
-  if (!clean && fragment) return { resolved: baseFile, fragment };
-  if (!clean) return null;
+  const pathOnly = clean.split("?")[0];
+  if (!pathOnly && fragment) return { resolved: baseFile, fragment };
+  if (!pathOnly) return null;
   if (/^(https?:|mailto:|tel:)/.test(target)) return null;
 
-  const resolved = clean.startsWith("/")
-    ? path.join(dist, clean.replace(/^\/+/, ""))
-    : path.resolve(path.dirname(baseFile), clean);
+  const resolved = pathOnly.startsWith("/")
+    ? path.join(dist, pathOnly.replace(/^\/+/, ""))
+    : path.resolve(path.dirname(baseFile), pathOnly);
 
   return { resolved, fragment };
 }

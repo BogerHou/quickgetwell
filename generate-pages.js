@@ -50,18 +50,21 @@ function renderHeader() {
     </header>`;
 }
 
-function renderRootHeader() {
+function renderRootHeader(options = {}) {
+  const homeHref = options.homeHref || "./";
+  const sectionBase = options.sectionBase || "";
+
   return `
     <header class="site-header">
-      <a class="brand" href="./" aria-label="${escapeHtml(siteName)} home">
+      <a class="brand" href="${homeHref}" aria-label="${escapeHtml(siteName)} home">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>${escapeHtml(siteName)}</span>
       </a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a href="#message-finder">Finder</a>
-        <a href="#situations">Situations</a>
-        <a href="#guidance">Guidance</a>
-        <a href="#faq">FAQ</a>
+        <a href="${sectionBase}#message-finder">Finder</a>
+        <a href="${sectionBase}#situations">Situations</a>
+        <a href="${sectionBase}#guidance">Guidance</a>
+        <a href="${sectionBase}#faq">FAQ</a>
       </nav>
     </header>`;
 }
@@ -322,10 +325,9 @@ ${renderTopicGrid()}
 
     <footer class="site-footer">
       <p>${escapeHtml(siteName)} helps you write thoughtful notes. It is writing guidance, not medical advice.</p>
-      <p>Photo from Pexels. Free to use under the Pexels license.</p>
     </footer>
 
-    <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>
     <script src="script.js"></script>
   </body>
 </html>
@@ -552,7 +554,7 @@ ${renderRelated(page)}
       <p>Writing guidance for thoughtful notes. Not medical advice.</p>
       <p><a href="../">Back to message finder</a></p>
     </footer>
-    <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>
     <script src="../script.js"></script>
   </body>
 </html>
@@ -637,24 +639,24 @@ function renderNotFoundPage() {
 ${renderAnalytics()}
   </head>
   <body>
-${renderRootHeader()}
+${renderRootHeader({ homeHref: `${baseUrl}/`, sectionBase: `${baseUrl}/` })}
     <main>
       <section class="not-found">
         <p class="eyebrow">404</p>
         <h1>That message page is not here.</h1>
         <p>The fastest path is the message finder, or one of the common situations below.</p>
         <div class="hero-actions">
-          <a class="button primary" href="./#message-finder">Open the finder</a>
-          <a class="button ghost dark" href="./#situations">Browse all pages</a>
+          <a class="button primary" href="${baseUrl}/#message-finder">Open the finder</a>
+          <a class="button ghost dark" href="${baseUrl}/#situations">Browse all pages</a>
         </div>
         <div class="related-pages">
-          ${featured.map((page) => `<a href="./${page.slug}/">${escapeHtml(page.nav || page.title)}</a>`).join("\n          ")}
+          ${featured.map((page) => `<a href="${pageUrl(page.slug)}">${escapeHtml(page.nav || page.title)}</a>`).join("\n          ")}
         </div>
       </section>
     </main>
     <footer class="site-footer">
       <p>Writing guidance for thoughtful notes. Not medical advice.</p>
-      <p><a href="./">Back home</a></p>
+      <p><a href="${baseUrl}/">Back home</a></p>
     </footer>
   </body>
 </html>

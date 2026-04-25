@@ -24,10 +24,24 @@ function walk(dir, output = []) {
 }
 
 function resolveLocal(baseFile, target) {
-  const clean = target.split("#")[0];
-  if (!clean || target.startsWith("#")) return null;
+  const [clean, fragment] = target.split("#");
+  if (!clean && fragment) return { resolved: baseFile, fragment };
+  if (!clean) return null;
   if (/^(https?:|mailto:|tel:)/.test(target)) return null;
-  return path.resolve(path.dirname(baseFile), clean);
+
+  const resolved = clean.startsWith("/")
+    ? path.join(dist, clean.replace(/^\/+/, ""))
+    : path.resolve(path.dirname(baseFile), clean);
+
+  return { resolved, fragment };
+}
+
+function targetHtmlFile(resolved) {
+  if (fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()) {
+    return path.join(resolved, "index.html");
+  }
+
+  return resolved;
 }
 
 function validateLinks() {
@@ -38,11 +52,24 @@ function validateLinks() {
   for (const file of htmlFiles) {
     const html = fs.readFileSync(file, "utf8");
     for (const match of html.matchAll(attrPattern)) {
-      const resolved = resolveLocal(file, match[1]);
-      if (!resolved) continue;
+      const local = resolveLocal(file, match[1]);
+      if (!local) continue;
+
+      const resolved = local.resolved;
 
       if (!fs.existsSync(resolved)) {
         errors.push(`Missing local target: ${path.relative(dist, file)} -> ${match[1]}`);
+        continue;
+      }
+
+      if (local.fragment) {
+        const htmlTarget = targetHtmlFile(resolved);
+        if (!fs.existsSync(htmlTarget)) continue;
+
+        const targetHtml = fs.readFileSync(htmlTarget, "utf8");
+        if (!targetHtml.includes(`id="${local.fragment}"`)) {
+          errors.push(`Missing fragment target: ${path.relative(dist, file)} -> ${match[1]}`);
+        }
       }
     }
   }

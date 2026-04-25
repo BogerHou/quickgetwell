@@ -338,8 +338,14 @@ function fallbackCopy(text) {
 }
 
 function showToast() {
+  if (!toast) return;
+
+  toast.setAttribute("aria-hidden", "false");
   toast.classList.add("show");
-  window.setTimeout(() => toast.classList.remove("show"), 1400);
+  window.setTimeout(() => {
+    toast.classList.remove("show");
+    toast.setAttribute("aria-hidden", "true");
+  }, 1400);
 }
 
 function capitalize(value) {

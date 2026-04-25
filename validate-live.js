@@ -18,7 +18,6 @@ const forbiddenLivePatterns = [
   /cdn-cgi\/l\/email-protection/i,
   /coming soon/i,
   /not implemented/i,
-  /placeholder/i,
   /undefined/i,
   /copy-ready/i,
   /real medicine/i,

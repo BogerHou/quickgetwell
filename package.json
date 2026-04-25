@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node generate-pages.js",
     "generate": "node generate-pages.js",
-    "check": "node --check script.js && node --check content/pages.js && node --check generate-pages.js && node --check validate-site.js && npm run build && node validate-site.js",
+    "check": "node --check script.js && node --check content/pages.js && node --check generate-pages.js && node --check validate-site.js && node --check validate-finder.js && node validate-finder.js && npm run build && node validate-site.js",
     "validate": "node validate-site.js"
   }
 }

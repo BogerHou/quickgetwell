@@ -260,6 +260,90 @@ const formatLabels = {
   group: "group card"
 };
 
+const recipientProfiles = {
+  friend: {
+    care: "I miss your usual energy and want you to feel cared for.",
+    help: "I can bring food, run an errand, send distractions, or sit quietly with you.",
+    professional: "I am thinking of you and hoping you get the rest you need."
+  },
+  family: {
+    care: "You are deeply loved, and you do not have to manage anyone else's worry.",
+    help: "We can handle meals, rides, calls, or home tasks while you rest.",
+    professional: "Our family is thinking of you and sending steady support."
+  },
+  partner: {
+    care: "I love you, and you do not have to be strong every minute.",
+    help: "I can handle food, errands, reminders, or quiet company.",
+    professional: "I am thinking of you and hoping today feels gentler."
+  },
+  coworker: {
+    care: "You are missed, but work can wait.",
+    help: "The team can cover things while you take the time you need.",
+    professional: "The team is thinking of you and wishing you rest and comfort."
+  },
+  boss: {
+    care: "The team is thinking of you with respect and warm wishes.",
+    help: "The team has things covered while you focus on rest.",
+    professional: "Please take the time you need to take care of yourself."
+  },
+  client: {
+    care: "I am sorry to hear you have been unwell.",
+    help: "There is no rush on our side; we can revisit anything outstanding when the timing is better.",
+    professional: "Please accept my warm thoughts and best wishes for comfort."
+  }
+};
+
+const situationProfiles = {
+  minor: {
+    short: "Thinking of you and hoping today feels easier.",
+    lowPressure: "today feels easier",
+    care: "I hope this rough patch gives you room for real rest.",
+    professional: "Please take the time you need to rest and feel better.",
+    faith: "May today feel calmer, lighter, and full of good care.",
+    help: "simple things like soup, medicine pickup, or a no-pressure check-in"
+  },
+  surgery: {
+    short: "Thinking of you after surgery and wishing you quiet rest.",
+    lowPressure: "you get quiet rest after surgery",
+    care: "I am glad the surgery is behind you, and I hope each day feels a little more supported.",
+    professional: "Please focus on rest and care after your procedure.",
+    faith: "May the days after surgery bring peace, patience, and steady support.",
+    help: "meals, rides, errands, childcare, or help at home"
+  },
+  injury: {
+    short: "Thinking of you and hoping the injury feels a little less frustrating today.",
+    lowPressure: "the injury feels a little less frustrating today",
+    care: "I know injury recovery can be slow and annoying, and I hope today feels more manageable.",
+    professional: "Please take the time you need to rest and recover from the injury.",
+    faith: "May you have patience, comfort, and practical support while you heal.",
+    help: "rides, groceries, carrying things, or anything awkward while moving around is harder"
+  },
+  hospital: {
+    short: "Thinking of you in the hospital and sending quiet support.",
+    lowPressure: "the hospital days feel less lonely",
+    care: "I hope the hospital days feel less lonely and you feel cared for by the people around you.",
+    professional: "Please focus on rest, care, and privacy while you are in the hospital.",
+    faith: "May peace, good care, and steady support surround you in the hospital.",
+    help: "updates to others, errands, rides, or anything that makes the hospital stay easier"
+  },
+  serious: {
+    short: "Thinking of you today. No need to reply.",
+    lowPressure: "today brings a little comfort and support",
+    care: "I am sorry this is so hard, and I am here without needing an update.",
+    professional: "Please accept steady support and warm thoughts during this difficult time.",
+    faith: "Praying for comfort, peace, and the right support around you today.",
+    help: "meals, rides, appointment support, errands, or handling updates for others"
+  },
+  chronic: {
+    short: "Thinking of you and hoping today is gentle.",
+    lowPressure: "today is as gentle as possible",
+    care: "I know this is not simple, and I am here for the long days too.",
+    professional: "Please take the time and space you need, without pressure to explain.",
+    faith: "May today bring comfort, patience, and support that does not fade.",
+    help: "low-pressure check-ins, meals, errands, or help on the days that feel heavy"
+  }
+};
+
 const tuneFeedback = {
   shorter: "Updated to shorter wording.",
   warmer: "Updated to a warmer tone.",
@@ -298,6 +382,162 @@ function scoreMessage(message, filters) {
   return score;
 }
 
+function buildFinderMessages(filters) {
+  const generated = [
+    buildPrimaryMessage(filters),
+    buildLowPressureMessage(filters),
+    buildHelpMessage(filters),
+    buildFormatSpecificMessage(filters),
+    buildCheckInMessage(filters),
+    buildGentleAlternativeMessage(filters)
+  ];
+
+  return generated.map((text) => ({
+    recipient: filters.recipient,
+    situation: filters.situation,
+    tone: filters.tone,
+    format: filters.format,
+    text
+  }));
+}
+
+function buildPrimaryMessage(filters) {
+  const recipient = recipientProfiles[filters.recipient];
+  const situation = situationProfiles[filters.situation];
+  const tone = effectiveTone(filters);
+
+  if (tone === "short") return `{name}${situation.short}`;
+  if (tone === "professional") return `{name}${buildProfessionalMessage(filters)}`;
+  if (tone === "religious") return `{name}Praying for comfort, peace, and support. ${situation.faith}`;
+  if (tone === "funny") return `{name}${buildFunnyMessage(filters)}`;
+  if (tone === "heartfelt") return `{name}${recipient.care} ${situation.care}`;
+
+  return `{name}${situation.care} ${recipient.care}`;
+}
+
+function buildLowPressureMessage(filters) {
+  const situation = situationProfiles[filters.situation];
+  const voice = senderVoice(filters);
+
+  return `{name}${voice.subject} just wanted to check in. No need to reply; ${voice.subjectLower} ${voice.hope} ${situation.lowPressure}.`;
+}
+
+function buildHelpMessage(filters) {
+  const recipient = recipientProfiles[filters.recipient];
+  const situation = situationProfiles[filters.situation];
+  const voice = senderVoice(filters);
+  const sharedVoice = voice.subjectLower === "we" || /^(?:We|The team)\b/.test(recipient.help);
+  const gladPhrase = sharedVoice ? "we are" : "I am";
+
+  if (filters.recipient === "client") {
+    return `{name}${recipient.help}`;
+  }
+
+  if (filters.recipient === "boss" || filters.recipient === "coworker") {
+    return `{name}${recipient.help} Please focus on rest and care; ${voice.subjectLower} ${voice.hope} you feel supported.`;
+  }
+
+  return `{name}${recipient.help} If ${situation.help} would help, ${gladPhrase} glad to do something specific.`;
+}
+
+function buildFormatSpecificMessage(filters) {
+  const recipient = recipientProfiles[filters.recipient];
+  const situation = situationProfiles[filters.situation];
+
+  if (filters.format === "email") {
+    return `{name}${buildProfessionalMessage(filters)} There is no need to respond until it is a good time for you.`;
+  }
+
+  if (filters.format === "card") {
+    return `{name}Writing this with warm thoughts and steady support. ${situation.care} ${recipient.care}`;
+  }
+
+  if (filters.format === "flowers") {
+    return `{name}Sending a little brightness and a lot of care. ${situation.short}`;
+  }
+
+  if (filters.format === "group") {
+    return `{name}All of us are thinking of you. ${situation.professional} You have our support and no pressure to reply.`;
+  }
+
+  return `{name}${situation.short} No need to reply; I just wanted you to know I am thinking of you.`;
+}
+
+function buildProfessionalMessage(filters) {
+  const recipient = recipientProfiles[filters.recipient];
+  const situation = situationProfiles[filters.situation];
+
+  if (filters.recipient === "client") {
+    return `${recipient.care} ${situation.professional}`;
+  }
+
+  if (filters.recipient === "boss") {
+    return `${recipient.care} ${recipient.help}`;
+  }
+
+  return `${recipient.professional} ${situation.professional}`;
+}
+
+function buildCheckInMessage(filters) {
+  const situation = situationProfiles[filters.situation];
+  const recipient = recipientProfiles[filters.recipient];
+
+  if (filters.tone === "short") {
+    return `{name}Just checking in gently. ${situation.short}`;
+  }
+
+  return `{name}Just checking in gently. ${situation.care} ${recipient.help}`;
+}
+
+function buildGentleAlternativeMessage(filters) {
+  const situation = situationProfiles[filters.situation];
+  const tone = effectiveTone(filters);
+
+  if (tone === "religious") {
+    return `{name}May you feel held, loved, and supported today. ${situation.faith}`;
+  }
+
+  if (tone === "professional") {
+    return `{name}Sending warm thoughts and respect for your privacy. ${situation.professional}`;
+  }
+
+  return `{name}There is no perfect thing to say, but I care about you. ${situation.care}`;
+}
+
+function effectiveTone(filters) {
+  if (filters.tone === "funny" && isSensitiveFilter(filters)) return "supportive";
+  if ((filters.recipient === "boss" || filters.recipient === "client") && filters.tone === "funny") return "professional";
+  return filters.tone;
+}
+
+function isSensitiveFilter(filters) {
+  return filters.situation === "serious" || filters.situation === "chronic" || filters.situation === "hospital";
+}
+
+function senderVoice(filters) {
+  if (filters.format === "group") {
+    return { subject: "We", subjectLower: "we", hope: "hope" };
+  }
+
+  return { subject: "I", subjectLower: "I", hope: "hope" };
+}
+
+function buildFunnyMessage(filters) {
+  if (filters.situation === "injury") {
+    return "Get well soon. I will save the dramatic comeback music for when moving around is less annoying.";
+  }
+
+  if (filters.recipient === "coworker") {
+    return "Get well soon. The office is dangerously close to becoming too quiet without you.";
+  }
+
+  if (filters.recipient === "family") {
+    return "Get well soon, because everyone here is pretending to be calm and we both know that cannot last.";
+  }
+
+  return "Feel better soon. I miss your face and your questionable advice.";
+}
+
 function personalize(text) {
   const name = personName.value.trim();
   const help = helpOffer.value.trim();
@@ -330,15 +570,12 @@ function addTerminalPunctuation(value) {
 function renderMessages() {
   if (!form || !resultRoot || !title || !note) return;
   const filters = currentFilters();
-  const ranked = [...messages]
-    .map((message) => ({ ...message, score: scoreMessage(message, filters) }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 6);
+  const finderMessages = buildFinderMessages(filters);
 
   title.textContent = `${capitalize(labels[filters.tone])} messages for ${labels[filters.recipient]}`;
   note.textContent = getResultNote(filters);
 
-  resultRoot.innerHTML = ranked
+  resultRoot.innerHTML = finderMessages
     .map((message, index) => {
       const finalText = personalize(message.text);
       const copyLabel = `Copy message ${index + 1}: ${getCopySnippet(finalText)}`;
@@ -359,6 +596,14 @@ function renderMessages() {
 
 function getResultNote(filters) {
   const feedback = activeTuneAction ? `${tuneFeedback[activeTuneAction]} ` : "";
+
+  if (filters.tone === "funny" && isSensitiveFilter(filters)) {
+    return `${feedback}Humor is softened for this situation so the wording stays careful and low-pressure.`;
+  }
+
+  if ((filters.recipient === "boss" || filters.recipient === "client") && filters.tone === "funny") {
+    return `${feedback}Humor is softened for this relationship so the wording stays professional.`;
+  }
 
   if (filters.situation === "serious" || filters.situation === "chronic") {
     return `${feedback}Uses safer wording that does not rush recovery or ask for updates.`;
@@ -417,12 +662,19 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
+function handleFinderChange() {
+  activeTuneAction = null;
+  updateTuneButtons(null);
+  renderMessages();
+}
+
 if (form) {
   form.addEventListener("input", () => {
     activeTuneAction = null;
     updateTuneButtons(null);
     renderMessages();
   });
+  form.addEventListener("change", handleFinderChange);
 }
 
 if (topicSearch) {

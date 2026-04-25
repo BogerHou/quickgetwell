@@ -107,6 +107,7 @@ function renderHomePage() {
     <meta property="og:type" content="website">
     <meta property="og:url" content="${baseUrl}/">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <script type="application/ld+json">
       ${renderHomeSchema()}
@@ -499,6 +500,7 @@ function renderPage(page) {
     <meta property="og:type" content="article">
     <meta property="og:url" content="${pageUrl(page.slug)}">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
     <link rel="stylesheet" href="../styles.css">
     <script type="application/ld+json">
     ${renderSchema(page)}
@@ -599,7 +601,8 @@ function renderHeaders() {
 
 function renderRedirects() {
   const host = new URL(baseUrl).hostname;
-  return `https://www.${host}/* ${baseUrl}/:splat 301!
+  return `/favicon.ico /assets/favicon.svg 302
+https://www.${host}/* ${baseUrl}/:splat 301!
 `;
 }
 
@@ -613,6 +616,7 @@ function renderNotFoundPage() {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Page Not Found | ${escapeHtml(siteName)}</title>
     <meta name="robots" content="noindex,follow">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>

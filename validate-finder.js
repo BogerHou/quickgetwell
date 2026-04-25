@@ -74,9 +74,30 @@ function assert(condition, message) {
 vm.createContext(context);
 vm.runInContext(`${source}
 this.__buildFinderMessages = buildFinderMessages;
-this.__renderMessages = renderMessages;`, context);
+this.__renderMessages = renderMessages;
+this.__formatHelpOffer = formatHelpOffer;`, context);
 
-const combos = [
+assert(context.__formatHelpOffer("dinner") === "I can help with dinner if that would help.", "Noun help offer should use help with");
+assert(context.__formatHelpOffer("bring dinner") === "I can bring dinner if that would help.", "Verb help offer should keep I can");
+assert(context.__formatHelpOffer("I can bring dinner") === "I can bring dinner.", "Complete help offer should not be rewritten");
+
+const recipients = ["friend", "family", "partner", "coworker", "boss", "client"];
+const situations = ["minor", "surgery", "injury", "hospital", "serious", "chronic"];
+const tones = ["heartfelt", "short", "supportive", "professional", "funny", "religious"];
+const formats = ["text", "card", "email", "flowers", "group"];
+
+const combos = [];
+for (const recipient of recipients) {
+  for (const situation of situations) {
+    for (const tone of tones) {
+      for (const format of formats) {
+        combos.push({ recipient, situation, tone, format });
+      }
+    }
+  }
+}
+
+const signatureCombos = [
   { recipient: "friend", situation: "minor", tone: "heartfelt", format: "text" },
   { recipient: "friend", situation: "minor", tone: "funny", format: "text" },
   { recipient: "client", situation: "serious", tone: "professional", format: "email" },
@@ -98,9 +119,7 @@ for (const filters of combos) {
     assert(message.format === filters.format, `Format mismatch for ${JSON.stringify(filters)}`);
   }
 
-  const textSignature = finderMessages.map((message) => message.text).join("\n");
   assert(new Set(finderMessages.map((message) => message.text)).size >= 5, `Finder messages are too repetitive for ${JSON.stringify(filters)}`);
-  signatures.add(textSignature);
 
   element("recipient").value = filters.recipient;
   element("situation").value = filters.situation;
@@ -110,6 +129,11 @@ for (const filters of combos) {
   assert(element("messageResults").innerHTML.includes("message-card"), `Rendered results missing for ${JSON.stringify(filters)}`);
 }
 
-assert(signatures.size === combos.length, "Different finder selections produced duplicate message sets");
+for (const filters of signatureCombos) {
+  const textSignature = context.__buildFinderMessages(filters).map((message) => message.text).join("\n");
+  signatures.add(textSignature);
+}
 
-console.log(`Validated finder variation across ${combos.length} selection sets.`);
+assert(signatures.size === signatureCombos.length, "Representative finder selections produced duplicate message sets");
+
+console.log(`Validated finder generation across ${combos.length} selection sets.`);

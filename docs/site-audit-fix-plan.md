@@ -83,6 +83,31 @@
 - 移除新增内容里的强恢复速度暗示，例如 `recover quickly`、`bounce back`、`beat it` 等表达。
 - 浏览器抽查 390px、768px、1280px 视口，无横向溢出；控制台无错误。
 
+## 2026-04-25 Multi-Agent Site Review Pass
+
+已根据内容信任、SEO、UX/移动端、技术 QA 四个角度继续修复：
+
+- Contact 页移除 GitHub/repository 入口，改成普通用户可理解的 `hello@quickgetwell.com` 邮件入口。
+- About、Editorial Policy、Privacy 增加编辑责任、敏感页面检查、纠错流程、analytics 和 finder 输入说明。
+- Privacy 明确 finder 的 name/help-offer 输入只在浏览器内生成消息，不通过表单提交，也不由 Quick Get Well 存储。
+- Article title 增加 `| Quick Get Well`，提升搜索结果品牌辨识。
+- FAQPage JSON-LD 从全站文章页收敛到 6 个核心页面，减少结构化数据滥用观感。
+- Finder `Offer of help` 修复 `I can dinner` 病句；`dinner` 生成 `I can help with dinner`，`bring dinner` 仍生成自然动词短语。
+- Finder 结果区不再整体 `aria-live`，只让短状态文本 live，降低屏幕阅读器噪音。
+- `Use low-pressure wording` 不再偷偷把 situation 改成 serious，只调整 tone 并显示 active 样式。
+- Topic search 增加同义词：operation/procedure、mother/mum、faith/religion、fracture/cast 等。
+- 文章锚点增加 scroll padding / margin，移动端文章目录改横向 chips，减少首条 copy message 出现过晚的问题。
+- 增加 reduced-motion 兜底，footer 链接触控高度，CSS/JS immutable cache headers，HSTS 和 Permissions-Policy。
+- `validate-site.js` 增加用户可见禁用词扫描和 FAQPage schema 约束，防止 GitHub/repository 等开发者痕迹回归。
+- `validate-finder.js` 扩展到 1080 组 finder 选择组合，并覆盖 help offer 语法。
+
+仍建议后续处理：
+
+- 对 15 个偏薄长尾页做内容加深或合并/noindex 决策，优先 short、flowers、client、teacher、dad/grandpa 等。
+- 为每页维护独立 `datePublished/dateModified/lastmod`，避免未来批量刷新日期信号。
+- 进一步做主题集群内链：serious illness hub、relationship hub、card/text/flowers hub。
+- 若 `hello@quickgetwell.com` 暂未配置，需在 Cloudflare Email Routing 中创建并转发到真实邮箱。
+
 ## 发布验收
 
 每次集成后必须跑：

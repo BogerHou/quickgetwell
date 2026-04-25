@@ -14,6 +14,28 @@ const staticDirectories = ["assets"];
 const contentMonthLabel = "April 2026";
 const contentDate = "2026-04-25";
 const trustStatement = "Reviewed for tone and sensitivity. Writing guidance only, not medical advice.";
+const faqSchemaSlugs = new Set([
+  "get-well-soon-messages",
+  "get-well-soon-messages-after-surgery",
+  "get-well-soon-messages-for-serious-illness",
+  "get-well-soon-messages-for-cancer",
+  "get-well-soon-messages-for-hospital-stay",
+  "what-to-say-instead-of-get-well-soon"
+]);
+const topicAliases = {
+  "get-well-soon-messages-after-surgery": ["operation", "procedure", "post op", "post-op"],
+  "get-well-soon-messages-for-mom": ["mother", "mum", "mama"],
+  "get-well-soon-messages-for-dad": ["father", "papa"],
+  "get-well-soon-messages-for-grandma": ["grandmother", "nana"],
+  "get-well-soon-messages-for-grandpa": ["grandfather"],
+  "religious-get-well-soon-messages": ["faith", "religion", "christian", "god"],
+  "get-well-soon-prayers": ["prayer", "pray", "faith", "religion", "god"],
+  "get-well-soon-messages-for-cancer": ["chemo", "treatment", "oncology"],
+  "get-well-soon-messages-for-hospital-stay": ["hospitalized", "hospitalised", "clinic"],
+  "get-well-soon-messages-for-injury": ["accident", "hurt", "sports injury"],
+  "get-well-soon-messages-for-broken-bone": ["cast", "crutches", "fracture"],
+  "get-well-soon-messages-for-flowers": ["bouquet", "plant", "gift note"]
+};
 const infoPages = [
   {
     slug: "about",
@@ -29,6 +51,14 @@ const infoPages = [
       {
         title: "What this site does not do",
         body: "This site does not provide medical advice, diagnosis, treatment guidance, or health claims. For medical questions, rely on a qualified clinician."
+      },
+      {
+        title: "Editorial responsibility",
+        body: "Quick Get Well is maintained as an independent writing resource. Each page is reviewed for plain language, emotional tone, and whether the wording avoids medical promises before it is published."
+      },
+      {
+        title: "Contact",
+        body: "For corrections or wording concerns, email hello@quickgetwell.com with the page URL and the sentence you want reviewed."
       }
     ]
   },
@@ -44,8 +74,16 @@ const infoPages = [
         body: "Messages are reviewed for tone and sensitivity before publication. We avoid language that pressures someone to stay positive, asks for private medical details, or suggests words can change medical outcomes."
       },
       {
+        title: "Sensitive-page checks",
+        body: "Pages about cancer, serious illness, surgery, hospital stays, chronic illness, prayers, and workplace notes receive extra checks for privacy, pressure, faith language, humor, and recovery timelines."
+      },
+      {
         title: "Sensitive topics",
         body: "Pages about cancer, serious illness, hospital stays, surgery, and long recovery include extra caution. They are meant to help with supportive language, not medical decisions."
+      },
+      {
+        title: "Corrections",
+        body: "When a correction affects sensitivity, accuracy of wording guidance, accessibility, or broken links, it is prioritized for review. Readers can send concerns to hello@quickgetwell.com."
       },
       {
         title: "Updates",
@@ -58,15 +96,20 @@ const infoPages = [
     title: "Contact",
     description: "Contact Quick Get Well about corrections, feedback, or wording concerns.",
     eyebrow: "Contact",
-    intro: "If you notice wording that feels off, insensitive, unclear, or too medical, send feedback so it can be reviewed.",
+    intro: "If you notice wording that feels off, insensitive, unclear, or too medical, send a short note so it can be reviewed.",
     sections: [
       {
-        title: "Feedback",
-        body: "Report corrections in the public project repository at https://github.com/BogerHou/quickgetwell. Include the page URL and the sentence you want reviewed."
+        title: "Email",
+        body: "Send corrections, feedback, or wording concerns by email. Include the page URL and the sentence you want reviewed.",
+        email: "hello@quickgetwell.com"
       },
       {
         title: "Corrections",
         body: "Corrections are prioritized when they affect sensitive illness language, accessibility, broken links, or misleading wording."
+      },
+      {
+        title: "Privacy",
+        body: "Please do not send private medical details. A page link and a short description of the concern are enough."
       }
     ]
   },
@@ -79,11 +122,19 @@ const infoPages = [
     sections: [
       {
         title: "Analytics",
-        body: "The site uses Google Analytics 4 and Cloudflare analytics to understand aggregate traffic and page usage. Do not type private medical information into optional fields."
+        body: "The site uses Google Analytics 4 and Cloudflare analytics to understand aggregate traffic and page usage. These tools may process page URLs, device and browser information, approximate location, IP-derived data, cookies, and event data such as page views."
       },
       {
-        title: "Local interactions",
-        body: "The message finder runs in your browser. Copy buttons and topic filters are used to help you interact with the page."
+        title: "Message finder inputs",
+        body: "The message finder runs in your browser. The optional name and help-offer fields are used only to generate the message on the page; they are not submitted through a form and are not stored by Quick Get Well."
+      },
+      {
+        title: "Private information",
+        body: "Please do not type private medical details into optional fields or send them by email. A page link and a short description of the wording concern are enough."
+      },
+      {
+        title: "Analytics choices",
+        body: "You can use browser privacy settings, content blockers, or Google's analytics opt-out tools to limit analytics collection."
       }
     ]
   }
@@ -229,7 +280,7 @@ const topicGroups = [
 ];
 
 function renderTopicCard(page) {
-  const searchText = [page.title, page.summary, page.description, page.eyebrow, page.nav]
+  const searchText = [page.title, page.summary, page.description, page.eyebrow, page.nav, ...(topicAliases[page.slug] || [])]
     .filter(Boolean)
     .join(" ")
     .toLowerCase()
@@ -313,6 +364,7 @@ function renderHomePage() {
     <meta name="description" content="Find thoughtful get well soon messages for friends, family, coworkers, surgery recovery, serious illness, funny notes, cards, and texts.">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="${baseUrl}/">
+    <link rel="preload" as="image" href="assets/hero-flowers-card.jpg">
     <meta property="og:title" content="Get Well Soon Messages">
     <meta property="og:description" content="Choose a message that fits the person, the situation, and the tone.">
     <meta property="og:type" content="website">
@@ -412,14 +464,14 @@ ${renderRootHeader()}
             <div class="quick-tune" aria-label="Quick tone controls">
               <button type="button" data-action="shorter">Make shorter</button>
               <button type="button" data-action="warmer">Make warmer</button>
-              <button type="button" data-action="safer">Safer wording</button>
+              <button type="button" data-action="safer">Use low-pressure wording</button>
             </div>
           </form>
 
-          <div class="results-panel" aria-live="polite">
+          <div class="results-panel">
             <div class="results-heading">
               <h3 id="resultsTitle">Thoughtful messages for a friend</h3>
-              <p id="resultsNote">Best for a personal text or card.</p>
+              <p id="resultsNote" role="status" aria-live="polite">Best for a personal text or card.</p>
             </div>
             <div id="messageResults" class="message-results"></div>
           </div>
@@ -725,7 +777,7 @@ function renderTrustInfo() {
           <section class="trust-info" aria-label="Content review information">
             <p>${escapeHtml(trustStatement)}</p>
             <p>Last updated: ${escapeHtml(contentMonthLabel)}</p>
-            <p>Written and published by ${escapeHtml(siteName)}.</p>
+            <p>Published by ${escapeHtml(siteName)}. Corrections and wording concerns can be sent to hello@quickgetwell.com.</p>
           </section>`;
 }
 
@@ -739,56 +791,62 @@ function renderNav(page) {
 }
 
 function renderSchema(page) {
-  const schema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Article",
-        headline: page.title,
-        description: page.description,
-        url: pageUrl(page.slug),
-        datePublished: contentDate,
-        dateModified: contentDate,
-        author: {
-          "@type": "Organization",
-          name: siteName,
-          url: `${baseUrl}/`
-        },
-        publisher: {
-          "@type": "Organization",
-          name: siteName,
-          url: `${baseUrl}/`
+  const graph = [
+    {
+      "@type": "Article",
+      headline: page.title,
+      description: page.description,
+      url: pageUrl(page.slug),
+      datePublished: contentDate,
+      dateModified: contentDate,
+      author: {
+        "@type": "Organization",
+        name: siteName,
+        url: `${baseUrl}/`
+      },
+      publisher: {
+        "@type": "Organization",
+        name: siteName,
+        url: `${baseUrl}/`
+      }
+    }
+  ];
+
+  if (faqSchemaSlugs.has(page.slug)) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: buildFaqs(page).map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer
         }
+      }))
+    });
+  }
+
+  graph.push({
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${baseUrl}/`
       },
       {
-        "@type": "FAQPage",
-        mainEntity: buildFaqs(page).map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.answer
-          }
-        }))
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: `${baseUrl}/`
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: page.title,
-            item: pageUrl(page.slug)
-          }
-        ]
+        "@type": "ListItem",
+        position: 2,
+        name: page.title,
+        item: pageUrl(page.slug)
       }
     ]
+  });
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": graph
   };
 
   return JSON.stringify(schema, null, 8)
@@ -802,7 +860,7 @@ function renderPage(page) {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${escapeHtml(page.title)}</title>
+    <title>${escapeHtml(`${page.title} | ${siteName}`)}</title>
     <meta name="description" content="${escapeHtml(page.description)}">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="${pageUrl(page.slug)}">
@@ -901,12 +959,20 @@ function renderHeaders() {
   return `/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+/styles.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/script.js
+  Cache-Control: public, max-age=31536000, immutable
+
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 `;
 }
 
@@ -945,6 +1011,7 @@ ${renderHeader()}
           .map((section) => `<article>
           <h2>${escapeHtml(section.title)}</h2>
           <p>${escapeHtml(section.body)}</p>
+          ${section.email ? `<p><a class="info-email" href="mailto:${escapeHtml(section.email)}">${escapeHtml(section.email)}</a></p>` : ""}
         </article>`)
           .join("\n        ")}
       </section>

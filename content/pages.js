@@ -173,7 +173,7 @@ const pages = [
       },
       {
         question: "What should I avoid saying after surgery?",
-        answer: "Avoid asking for medical details, promising a fast recovery, or telling them they should be back to normal soon. Let them recover without performing optimism for you."
+        answer: "Avoid asking for medical details, promising a timeline, or telling them they should be back to normal on your schedule. Let them recover without performing optimism for you."
       }
     ],
     dos: ["Use calm recovery language, such as take the time you need.", "Offer specific help, like meals or rides.", "Add no need to reply if they may be tired."],
@@ -416,7 +416,7 @@ const pages = [
         messages: [
           "I would say laughter is the best medicine, but please also take the actual medicine. Feel better.",
           "Get well soon. I need someone to make bad choices with, and you are clearly my most qualified candidate.",
-          "Recover soon. I refuse to let you use being sick as an excuse to avoid my stories."
+          "Feel better soon. I refuse to let you use being sick as an excuse to avoid my stories."
         ]
       },
       {
@@ -678,7 +678,7 @@ const pages = [
       }
     ],
     dos: ["Say we or I clearly.", "Offer help with meals, rides, or home tasks.", "Let them rest without updating everyone."],
-    donts: ["Do not make them comfort the family.", "Do not push a fast recovery.", "Do not use guilt about missed events."],
+    donts: ["Do not make them comfort the family.", "Do not push a recovery timeline.", "Do not use guilt about missed events."],
     related: ["get-well-soon-messages-for-mom", "get-well-soon-messages-for-dad", "get-well-soon-messages-for-serious-illness"]
   },
   {
@@ -1014,7 +1014,7 @@ const pages = [
       }
     ],
     dos: ["Use her name if it feels natural.", "Offer specific care.", "Make room for hard feelings."],
-    donts: ["Do not minimize the illness.", "Do not overpromise a fast recovery.", "Do not make the note generic."],
+    donts: ["Do not minimize the illness.", "Do not overpromise a recovery timeline.", "Do not make the note generic."],
     related: ["get-well-soon-messages-after-surgery", "what-to-say-instead-of-get-well-soon", "short-get-well-soon-messages"]
   },
   {

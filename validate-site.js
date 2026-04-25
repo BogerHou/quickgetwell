@@ -6,6 +6,34 @@ const root = __dirname;
 const dist = path.join(root, "dist");
 const errors = [];
 const infoPages = ["about", "editorial-policy", "contact", "privacy"];
+const expectedFaqSchemaSlugs = new Set([
+  "get-well-soon-messages",
+  "get-well-soon-messages-after-surgery",
+  "get-well-soon-messages-for-serious-illness",
+  "get-well-soon-messages-for-cancer",
+  "get-well-soon-messages-for-hospital-stay",
+  "what-to-say-instead-of-get-well-soon"
+]);
+const forbiddenHtmlPatterns = [
+  /github/i,
+  /repository/i,
+  /BogerHou/i,
+  /public project/i,
+  /Long-tail/i,
+  /SearchAction/i,
+  /I can I can/i,
+  /\ba email\b/i,
+  /coming soon/i,
+  /not implemented/i,
+  /undefined/i,
+  /fast recovery/i,
+  /quick recovery/i,
+  /smooth recovery/i,
+  /recover quickly/i,
+  /recover soon/i,
+  /bounce back/i,
+  /beat it/i
+];
 
 if (!fs.existsSync(dist)) {
   errors.push("Missing dist directory. Run npm run build first.");
@@ -124,11 +152,32 @@ function validateStructuredData() {
 
   for (const file of htmlFiles) {
     const html = fs.readFileSync(file, "utf8");
+    const relative = path.relative(dist, file).replace(/\\/g, "/");
+    const slug = relative === "index.html" ? "" : relative.replace(/\/index\.html$/, "");
+    const hasFaqSchema = html.includes('"@type": "FAQPage"');
+    if (hasFaqSchema !== expectedFaqSchemaSlugs.has(slug)) {
+      errors.push(`Unexpected FAQPage schema state in ${relative}`);
+    }
+
     for (const match of html.matchAll(scriptPattern)) {
       try {
         JSON.parse(match[1].trim());
       } catch (error) {
         errors.push(`Invalid JSON-LD in ${path.relative(dist, file)}: ${error.message}`);
+      }
+    }
+  }
+}
+
+function validateForbiddenText() {
+  if (!fs.existsSync(dist)) return;
+  const htmlFiles = walk(dist).filter((file) => file.endsWith(".html"));
+
+  for (const file of htmlFiles) {
+    const html = fs.readFileSync(file, "utf8");
+    for (const pattern of forbiddenHtmlPatterns) {
+      if (pattern.test(html)) {
+        errors.push(`Forbidden text pattern ${pattern} found in ${path.relative(dist, file)}`);
       }
     }
   }
@@ -151,6 +200,7 @@ validateLinks();
 validateGeneratedPages();
 validateSearchIndex();
 validateStructuredData();
+validateForbiddenText();
 validateSitemap();
 
 if (errors.length) {

@@ -555,12 +555,21 @@ function formatHelpOffer(help) {
     return addTerminalPunctuation(help);
   }
 
-  return `I can ${help} if that would help.`;
+  if (startsWithHelpVerb(help)) {
+    return `I can ${help} if that would help.`;
+  }
+
+  return `I can help with ${help} if that would help.`;
 }
 
 function isCompleteHelpOffer(help) {
   const normalized = help.trim().toLowerCase().replaceAll("\u2019", "'");
   return /^(?:i\s+(?:can|will|would|am)|i(?:'ll|'d|'m)|we\s+(?:can|will|would|are)|we(?:'ll|'d|'re)|let\s+(?:me|us)|please\s+let\s+(?:me|us)|happy\s+to)\b/.test(normalized);
+}
+
+function startsWithHelpVerb(help) {
+  const normalized = help.trim().toLowerCase();
+  return /^(?:bring|drop|pick|drive|send|make|cook|deliver|watch|handle|cover|run|sit|call|visit|check|take|walk|feed|buy|help|write|text)\b/.test(normalized);
 }
 
 function addTerminalPunctuation(value) {
@@ -617,16 +626,16 @@ function getCopySnippet(text) {
   return snippet.length > 70 ? `${snippet.slice(0, 70).trim()}...` : snippet;
 }
 
-function copyText(text) {
+function copyText(text, trigger) {
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(showToast).catch(() => fallbackCopy(text));
+    navigator.clipboard.writeText(text).then(() => showCopySuccess(trigger)).catch(() => fallbackCopy(text, trigger));
     return;
   }
 
-  fallbackCopy(text);
+  fallbackCopy(text, trigger);
 }
 
-function fallbackCopy(text) {
+function fallbackCopy(text, trigger) {
   const textarea = document.createElement("textarea");
   textarea.value = text;
   textarea.setAttribute("readonly", "");
@@ -634,14 +643,31 @@ function fallbackCopy(text) {
   textarea.style.opacity = "0";
   document.body.appendChild(textarea);
   textarea.select();
-  document.execCommand("copy");
+  const copied = document.execCommand("copy");
   textarea.remove();
-  showToast();
+
+  if (copied) {
+    showCopySuccess(trigger);
+  } else {
+    showToast("Could not copy");
+  }
 }
 
-function showToast() {
+function showCopySuccess(trigger) {
+  showToast("Copied");
+  if (!trigger?.classList?.contains?.("copy-button")) return;
+
+  const original = trigger.textContent;
+  trigger.textContent = "Copied";
+  window.setTimeout(() => {
+    trigger.textContent = original;
+  }, 1400);
+}
+
+function showToast(message = "Copied") {
   if (!toast) return;
 
+  toast.textContent = message;
   toast.setAttribute("aria-hidden", "false");
   toast.classList.add("show");
   window.setTimeout(() => {
@@ -736,7 +762,7 @@ function updateTuneButtons(activeAction) {
 document.addEventListener("click", (event) => {
   const copyTarget = event.target.closest("[data-copy]");
   if (copyTarget) {
-    copyText(copyTarget.dataset.copy);
+    copyText(copyTarget.dataset.copy, copyTarget);
   }
 
   const tune = event.target.closest("[data-action]");
@@ -749,7 +775,6 @@ document.addEventListener("click", (event) => {
     document.getElementById("tone").value = "heartfelt";
   }
   if (tune.dataset.action === "safer") {
-    document.getElementById("situation").value = "serious";
     document.getElementById("tone").value = "supportive";
   }
   activeTuneAction = tune.dataset.action;

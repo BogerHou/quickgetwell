@@ -21,6 +21,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -317,6 +318,12 @@ section:not(.hero) {
   background: #e7eee8;
   color: var(--forest);
   font-weight: 800;
+}
+
+.quick-tune button[aria-pressed="true"] {
+  border-color: rgba(36, 70, 63, 0.55);
+  background: var(--forest);
+  color: #fffdf8;
 }
 
 .results-panel {
@@ -663,6 +670,7 @@ section.article-hero {
 }
 
 .article-content h2 {
+  scroll-margin-top: 104px;
   margin: 0 0 18px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2rem, 4vw, 3.5rem);
@@ -870,6 +878,9 @@ section.article-hero {
 }
 
 .footer-links a {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
   color: var(--forest);
   font-weight: 800;
 }
@@ -913,6 +924,14 @@ section.article-hero {
   margin: 0;
   color: var(--muted);
   font-size: 1.05rem;
+}
+
+.info-email {
+  display: inline-flex;
+  margin-top: 14px;
+  color: var(--forest);
+  font-size: 1.05rem;
+  font-weight: 850;
 }
 
 .toast {
@@ -1013,6 +1032,10 @@ section.article-hero {
     grid-template-columns: 1fr;
   }
 
+  .results-panel {
+    order: -1;
+  }
+
   .finder-controls {
     position: static;
   }
@@ -1037,6 +1060,10 @@ section.article-hero {
 }
 
 @media (max-width: 700px) {
+  html {
+    scroll-padding-top: 120px;
+  }
+
   .site-header {
     gap: 8px 12px;
     padding: 8px 14px;
@@ -1094,6 +1121,11 @@ section.article-hero {
     line-height: 1.06;
   }
 
+  section.article-hero {
+    padding-top: 104px;
+    padding-bottom: 42px;
+  }
+
   .not-found h1 {
     font-size: clamp(2.2rem, 10.5vw, 3.35rem);
     line-height: 1.06;
@@ -1121,9 +1153,44 @@ section.article-hero {
     display: grid;
   }
 
-  .dos-donts,
-  .article-nav {
+  .dos-donts {
     grid-template-columns: 1fr;
+  }
+
+  .article-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: none;
+  }
+
+  .article-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .article-nav a {
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fffdf8;
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
   }
 }
 

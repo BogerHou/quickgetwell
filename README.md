@@ -74,6 +74,8 @@ Cloudflare Pages settings:
 - Build command: `npm run build`
 - Build output directory: `dist`
 
+Full Cloudflare Pages deployment notes, including the first-launch issues we hit, are in `docs/cloudflare-pages-deployment-guide.md`.
+
 ## Editorial rules
 
 - Do not make medical claims.

@@ -441,6 +441,10 @@ const pages = [
       {
         question: "Can I send a funny message to a coworker?",
         answer: "Only if you know them well. For most workplace notes, keep the message friendly, brief, and free of sarcasm."
+      },
+      {
+        question: "When should I switch from funny to serious?",
+        answer: "Switch to a warmer message for surgery, hospital stays, serious illness, chronic illness, or any moment where the person seems scared, exhausted, or private."
       }
     ],
     dos: ["Use humor when you know their style.", "Keep the joke affectionate.", "Switch to warmth if the illness is serious."],
@@ -486,6 +490,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right short message",
+      intro: "Short does not have to mean cold. Pick the line that fits the channel and how much energy the person may have.",
+      items: [
+        {
+          label: "Quick text",
+          useWhen: "You want a simple check-in that does not require a reply.",
+          try: "No need to reply. I am thinking of you today."
+        },
+        {
+          label: "Small card",
+          useWhen: "The card has limited space, such as flowers or a gift tag.",
+          try: "Wishing you comfort, rest, and care."
+        },
+        {
+          label: "Close relationship",
+          useWhen: "You can be warmer without writing a long paragraph.",
+          try: "Sending love and hoping today feels a little gentler."
+        },
+        {
+          label: "Serious illness",
+          useWhen: "Simple recovery language feels too rushed.",
+          try: "I am here with you through this. No need to reply."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What is the shortest get well soon message?",
@@ -831,6 +861,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right boss message",
+      intro: "A note to a manager should remove work pressure. Keep the tone respectful, especially if the team is signing together.",
+      items: [
+        {
+          label: "One-on-one note",
+          useWhen: "You are sending a brief personal message.",
+          try: "Wishing you rest and comfort. Please take the time you need to take care of yourself."
+        },
+        {
+          label: "From the team",
+          useWhen: "Several people are signing one card.",
+          try: "The team is thinking of you and wishing you a restful recovery. Please take the time you need."
+        },
+        {
+          label: "After surgery",
+          useWhen: "They shared that they had a procedure, but you should not ask details.",
+          try: "Wishing you a steady recovery after surgery. Please focus on rest and care."
+        },
+        {
+          label: "Very formal workplace",
+          useWhen: "You want the note polished and concise.",
+          try: "Please accept my best wishes for comfort and a steady recovery."
+        }
+      ]
+    },
     faqs: [
       {
         question: "How formal should a get well message to a boss be?",
@@ -887,6 +943,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right client message",
+      intro: "Client get well notes should sound human without becoming personal. The safest version depends on whether you need to mention business timing.",
+      items: [
+        {
+          label: "No open work",
+          useWhen: "You simply want to acknowledge the news and send a polished note.",
+          try: "I am sorry to hear you have been unwell. Please accept my warm thoughts and best wishes for comfort."
+        },
+        {
+          label: "Open project or deadline",
+          useWhen: "There is business context, but the message should remove pressure.",
+          try: "Please take care of yourself. There is no rush on our side, and we can revisit anything outstanding when the timing is better."
+        },
+        {
+          label: "More serious situation",
+          useWhen: "The illness sounds serious and casual recovery wishes may feel too light.",
+          try: "Sending sincere support during this difficult time. No response needed."
+        },
+        {
+          label: "Very formal relationship",
+          useWhen: "You do not know the client well and should keep the note concise.",
+          try: "Please accept my best wishes for comfort and care."
+        }
+      ]
+    },
     faqs: [
       {
         question: "How formal should a get well message to a client be?",
@@ -1055,6 +1137,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right religious message",
+      intro: "Faith language is personal. Use it when you know it will comfort the person, and keep the focus on peace, care, and support.",
+      items: [
+        {
+          label: "Shared faith",
+          useWhen: "You know religious wording is welcome.",
+          try: "Praying for comfort, strength, and peace today."
+        },
+        {
+          label: "After surgery",
+          useWhen: "They had a procedure and may need patience more than a big statement.",
+          try: "Praying for peace, patience, and support after surgery."
+        },
+        {
+          label: "Serious illness",
+          useWhen: "Avoid explanations or promises, and keep the prayer humble.",
+          try: "May God's peace be close to you in every hard moment and every quiet hour."
+        },
+        {
+          label: "Unsure about faith",
+          useWhen: "You are not certain they welcome religious language.",
+          try: "Sending warm thoughts, comfort, and steady support today."
+        }
+      ]
+    },
     faqs: [
       {
         question: "When is a religious get well message appropriate?",
@@ -1111,6 +1219,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right prayer",
+      intro: "A prayer can be short, specific, and gentle. Avoid turning illness into a lesson or making promises about what will happen.",
+      items: [
+        {
+          label: "Short card prayer",
+          useWhen: "You need one or two lines for a card.",
+          try: "Lord, bring comfort, rest, and steady support today. Amen."
+        },
+        {
+          label: "After surgery",
+          useWhen: "You want to pray for recovery days without rushing them.",
+          try: "God, please bring peace, patience, and strength for the days ahead. Amen."
+        },
+        {
+          label: "Serious illness",
+          useWhen: "The situation is heavy and certainty would feel wrong.",
+          try: "God, be near in this difficult season. Bring comfort, courage, and the right support for every need. Amen."
+        },
+        {
+          label: "For caregivers",
+          useWhen: "You want to include the people helping them.",
+          try: "Lord, give wisdom and steadiness to everyone caring for them today. Amen."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What should a get well prayer focus on?",
@@ -1179,6 +1313,10 @@ const pages = [
       {
         question: "What should a group get well card say?",
         answer: "Use shared support without pressure: We are thinking of you, we hope you can rest, and we are sending warm wishes from all of us."
+      },
+      {
+        question: "What if I do not know the person very well?",
+        answer: "Keep the card respectful and short. Use comfort, care, and privacy-focused wording instead of jokes, personal questions, or emotional language that assumes closeness."
       }
     ],
     dos: ["Add one personal detail.", "Write clearly enough to read by hand.", "Match the card tone to the illness."],
@@ -1223,6 +1361,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right text message",
+      intro: "A text should be easy to receive on a low-energy day. Keep it short, make any help specific, and do not require an update.",
+      items: [
+        {
+          label: "No reply needed",
+          useWhen: "They may be tired or overwhelmed.",
+          try: "No need to reply. Just sending love and support."
+        },
+        {
+          label: "Specific help",
+          useWhen: "You can follow through on one concrete task.",
+          try: "I can drop off groceries later if that helps. No pressure to respond quickly."
+        },
+        {
+          label: "Serious illness",
+          useWhen: "You want support without asking for details.",
+          try: "I am thinking of you. No updates needed, no pressure to answer."
+        },
+        {
+          label: "Casual check-in",
+          useWhen: "The illness is minor and the relationship is relaxed.",
+          try: "Thinking of you and hoping today is a little easier."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What is a good get well soon text?",
@@ -1351,6 +1515,10 @@ const pages = [
       {
         question: "What should I avoid saying after an accident?",
         answer: "Do not make them retell what happened, compare injuries, or say it could have been worse."
+      },
+      {
+        question: "How can I offer practical help after an injury?",
+        answer: "Name one task that limited movement makes harder, such as rides, groceries, carrying things, meals, or an errand that can be handled without asking them to coordinate much."
       }
     ],
     dos: ["Acknowledge frustration.", "Offer help with mobility or errands.", "Use humor only if the injury is not severe."],
@@ -1463,6 +1631,10 @@ const pages = [
       {
         question: "Can I keep a message for grandpa very short?",
         answer: "Yes. A short, sincere note often works best, especially if he does not like overly emotional wording."
+      },
+      {
+        question: "How do I avoid making grandpa feel pressured?",
+        answer: "Avoid telling him to be tough or hurry back. Say he is loved, encourage rest, and offer practical help without asking for a long update."
       }
     ],
     dos: ["Keep the wording steady.", "Make support practical.", "Say love clearly if that fits your relationship."],
@@ -1519,6 +1691,10 @@ const pages = [
       {
         question: "How can I make a sister message more supportive?",
         answer: "Offer something specific, like dropping off food, handling an errand, calling later, or sitting with her during a hard day."
+      },
+      {
+        question: "What if my sister does not want to talk?",
+        answer: "Send a one-way note that does not require a reply. Let her know you love her, you are available, and silence is completely okay."
       }
     ],
     dos: ["Sound like your actual relationship.", "Offer a specific errand or check-in.", "Use humor only when the situation is mild."],
@@ -1575,6 +1751,10 @@ const pages = [
       {
         question: "How do I write a serious get well message for my brother?",
         answer: "Skip the jokes and use direct support: I know this is hard. You do not have to tough it out alone."
+      },
+      {
+        question: "What if my brother does not like emotional messages?",
+        answer: "Keep it practical and steady. A short line plus a concrete offer, such as food, a ride, or help with errands, can feel supportive without sounding dramatic."
       }
     ],
     dos: ["Keep it natural.", "Offer concrete help.", "Switch to serious support when needed."],
@@ -1619,6 +1799,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right teacher message",
+      intro: "The wording changes depending on who is signing. A class card can be warm and collective, while a parent note should be brief and respectful.",
+      items: [
+        {
+          label: "From one student",
+          useWhen: "A child or teen is writing a short card.",
+          try: "I hope you feel better soon. Thank you for being such a caring teacher."
+        },
+        {
+          label: "From the class",
+          useWhen: "Many students are signing one card or poster.",
+          try: "Our class is thinking of you and wishing you rest, comfort, and a gentle recovery."
+        },
+        {
+          label: "From a parent",
+          useWhen: "A parent is emailing or writing a note to the teacher.",
+          try: "Wishing you rest and comfort. We appreciate your care for the students and hope you can take the time you need."
+        },
+        {
+          label: "Long absence",
+          useWhen: "The teacher may be away for a while and you should avoid return pressure.",
+          try: "We miss you and hope you feel cared for while you rest. Please take all the time you need."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What should students write in a get well card for a teacher?",
@@ -1675,6 +1881,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right child message",
+      intro: "A child message should be simple enough to understand and gentle enough not to add fear. Match the note to the child's age and energy.",
+      items: [
+        {
+          label: "Very young child",
+          useWhen: "They need comfort more than explanation.",
+          try: "Sending you gentle hugs, cozy blanket wishes, and lots of love today."
+        },
+        {
+          label: "Older child",
+          useWhen: "They can read a slightly more direct note.",
+          try: "I hope today feels easier. You are loved, cared for, and allowed to rest."
+        },
+        {
+          label: "Hospital or surgery",
+          useWhen: "The situation may feel scary, so keep the language calm.",
+          try: "Thinking of you and hoping the grown-ups around you are helping today feel a little safer and calmer."
+        },
+        {
+          label: "Light humor",
+          useWhen: "The child likes playful notes and the illness is not serious.",
+          try: "Rest up. Your toys are saving your spot for when you feel ready to play again."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What should I write to a sick child?",
@@ -1904,6 +2136,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right broken bone message",
+      intro: "A broken bone message can be lighter than a serious illness note, but it should still respect pain, frustration, and limited mobility.",
+      items: [
+        {
+          label: "Simple check-in",
+          useWhen: "You want a quick text that does not ask for the accident story.",
+          try: "Thinking of you and hoping today feels a little more comfortable."
+        },
+        {
+          label: "Practical help",
+          useWhen: "Crutches, a cast, or limited movement may make errands harder.",
+          try: "I can help with groceries, a ride, or carrying things this week if that would make the day easier."
+        },
+        {
+          label: "Light humor",
+          useWhen: "They are already joking about the cast or crutches.",
+          try: "Hope your cast gets excellent signatures and your days feel a little easier."
+        },
+        {
+          label: "Longer recovery",
+          useWhen: "Healing is slower than expected and they may be frustrated.",
+          try: "I know this is taking patience. Sending comfort and support for the slow parts too."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What do you write to someone with a broken bone?",
@@ -1960,6 +2218,32 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right flower note",
+      intro: "Flower cards are small, so choose one sentence that fits the situation. The note should support the gift, not explain everything.",
+      items: [
+        {
+          label: "Bright and simple",
+          useWhen: "The illness is routine or you want a warm everyday note.",
+          try: "A little brightness for your room and a lot of care for your day."
+        },
+        {
+          label: "Hospital delivery",
+          useWhen: "The flowers are going to a hospital or recovery room.",
+          try: "Sending a little color to your room and steady support to your day."
+        },
+        {
+          label: "Serious illness",
+          useWhen: "Cheerful recovery language may feel too strong.",
+          try: "Thinking of you and sending quiet support through this difficult time."
+        },
+        {
+          label: "From a group",
+          useWhen: "Several people are sending one bouquet or plant.",
+          try: "All of us are thinking of you and sending warm wishes for comfort and care."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What should I write on get well flowers?",
@@ -2084,6 +2368,10 @@ const pages = [
       {
         question: "How do I write a more heartfelt message for my husband?",
         answer: "Tell him he does not need to be strong every minute, then say exactly how you will show up while he recovers."
+      },
+      {
+        question: "How can I make the message useful, not just sweet?",
+        answer: "Name what you will handle, such as meals, errands, visitors, reminders, or quiet company. Practical care makes the message easier to believe."
       }
     ],
     dos: ["Offer practical care.", "Give permission to rest.", "Use humor only if he enjoys it."],

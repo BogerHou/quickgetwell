@@ -204,12 +204,44 @@ function validateSitemap() {
   }
 }
 
+function visibleText(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<style[\s\S]*?<\/style>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[^;]+;/g, " ");
+}
+
+function wordCount(text) {
+  return text.split(/\s+/).filter(Boolean).length;
+}
+
+function validateArticleQuality() {
+  if (!fs.existsSync(dist)) return;
+
+  for (const page of pages) {
+    const file = path.join(dist, page.slug, "index.html");
+    if (!fs.existsSync(file)) continue;
+
+    const html = fs.readFileSync(file, "utf8");
+    const words = wordCount(visibleText(html));
+    if (words < 500) {
+      errors.push(`Generated page is too thin: ${page.slug} has ${words} visible words`);
+    }
+
+    if (!html.includes("cluster-pages")) {
+      errors.push(`Generated page missing topic cluster links: ${page.slug}`);
+    }
+  }
+}
+
 validateLinks();
 validateGeneratedPages();
 validateSearchIndex();
 validateStructuredData();
 validateForbiddenText();
 validateSitemap();
+validateArticleQuality();
 
 if (errors.length) {
   console.error(errors.join("\n"));

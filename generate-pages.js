@@ -13,6 +13,7 @@ const staticFiles = ["styles.css", "script.js"];
 const staticDirectories = ["assets"];
 const contentMonthLabel = "April 2026";
 const contentDate = "2026-04-25";
+const defaultPublishedDate = "2026-04-25";
 const trustStatement = "Editorially reviewed for tone and sensitivity. Writing guidance only, not medical or clinician-reviewed advice.";
 const contactEmail = {
   user: "hello",
@@ -335,6 +336,10 @@ ${cards}
             <h3>More options</h3>
 ${ungrouped}
           </div>`;
+}
+
+function topicGroupForPage(page) {
+  return topicGroups.find((group) => group.slugs.includes(page.slug));
 }
 
 function renderHomeSchema() {
@@ -786,6 +791,32 @@ function renderRelated(page) {
           </div>`;
 }
 
+function renderClusterLinks(page) {
+  const group = topicGroupForPage(page);
+  if (!group) return "";
+
+  const siblings = group.slugs
+    .filter((slug) => slug !== page.slug)
+    .map((slug) => pageBySlug.get(slug))
+    .filter(Boolean);
+
+  if (!siblings.length) return "";
+
+  return `
+          <h2>More in ${escapeHtml(group.title.toLowerCase())}</h2>
+          <div class="related-pages cluster-pages">
+            ${siblings.map((item) => `<a href="../${item.slug}/">${escapeHtml(item.nav || item.title)}</a>`).join("\n            ")}
+          </div>`;
+}
+
+function pagePublishedDate(page) {
+  return page.datePublished || defaultPublishedDate;
+}
+
+function pageModifiedDate(page) {
+  return page.dateModified || page.updated || contentDate;
+}
+
 function renderTrustInfo() {
   return `
           <section class="trust-info" aria-label="Content review information">
@@ -811,8 +842,10 @@ function renderSchema(page) {
       headline: page.title,
       description: page.description,
       url: pageUrl(page.slug),
-      datePublished: contentDate,
-      dateModified: contentDate,
+      datePublished: pagePublishedDate(page),
+      dateModified: pageModifiedDate(page),
+      mainEntityOfPage: pageUrl(page.slug),
+      image: `${baseUrl}/assets/hero-flowers-card.jpg`,
       author: {
         "@type": "Organization",
         name: siteName,
@@ -914,6 +947,7 @@ ${renderPersonalization(page)}
 ${renderDosDonts(page)}
 ${renderFaq(page)}
 ${renderRelated(page)}
+${renderClusterLinks(page)}
 ${renderTrustInfo()}
         </article>
       </section>
@@ -944,17 +978,17 @@ function renderSearchIndex() {
 
 function renderSitemap() {
   const urls = [
-    `${baseUrl}/`,
-    ...pages.map((page) => pageUrl(page.slug)),
-    ...infoPages.map((page) => infoPageUrl(page.slug))
+    { loc: `${baseUrl}/`, lastmod: contentDate },
+    ...pages.map((page) => ({ loc: pageUrl(page.slug), lastmod: pageModifiedDate(page) })),
+    ...infoPages.map((page) => ({ loc: infoPageUrl(page.slug), lastmod: contentDate }))
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
   .map((url) => `  <url>
-    <loc>${url}</loc>
-    <lastmod>${contentDate}</lastmod>
+    <loc>${url.loc}</loc>
+    <lastmod>${url.lastmod}</lastmod>
   </url>`)
   .join("\n")}
 </urlset>

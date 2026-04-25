@@ -132,6 +132,19 @@
 - 主题集群内链仍可增强。
 - 若未来要进一步增强 E-E-A-T，需要真实作者/编辑责任页，而不是伪造资质。
 
+## 2026-04-25 Content Quality / Internal Link Pass
+
+继续处理 SEO agent 提到的薄页和弱内链问题：
+
+- 所有文章页新增同主题内链模块 `More in ...`，把 relationship、health situations、format、work/faith 等页面连成主题集群。
+- 生成后的文章页不再有 0 入链页面，最低站内入链已提升到 4。
+- 为 client、teacher、child、broken bone、flowers、short、text、religious、prayers、boss 等页面新增场景选择模块，强化“如何选对话术”的实用性。
+- 为 injury、funny、card、grandpa、sister、brother、husband 等接近 500 词的页面补充更具体 FAQ。
+- 生成后所有 33 个文章页可见词数都在 500+，当前最低页约 502 词。
+- Article JSON-LD 增加 `mainEntityOfPage` 和 `image` 字段，减少结构化数据警告。
+- `generate-pages.js` 已支持页面级 `datePublished/dateModified/updated`，sitemap 和 Article schema 会读取单页日期字段。当前内容仍按真实上线日默认，不伪造历史日期。
+- `validate-site.js` 增加文章质量门槛：生成页低于 500 可见词或缺少 topic cluster links 会直接失败。
+
 ## 发布验收
 
 每次集成后必须跑：

@@ -240,6 +240,33 @@ const toast = document.getElementById("toast");
 const personName = document.getElementById("personName");
 const helpOffer = document.getElementById("helpOffer");
 const topicSearch = document.getElementById("topicSearch");
+const topicGrid = document.getElementById("topicGrid");
+const tuneButtons = Array.from(document.querySelectorAll("[data-action]"));
+
+const noteSituationLabels = {
+  minor: "a minor illness",
+  surgery: "a surgery recovery",
+  injury: "an injury",
+  hospital: "a hospital stay",
+  serious: "a serious illness",
+  chronic: "a chronic illness"
+};
+
+const formatLabels = {
+  text: "text message",
+  card: "card",
+  email: "email",
+  flowers: "flower or gift note",
+  group: "group card"
+};
+
+const tuneFeedback = {
+  shorter: "Updated to shorter wording.",
+  warmer: "Updated to a warmer tone.",
+  safer: "Updated to safer wording."
+};
+
+let activeTuneAction = null;
 
 function currentFilters() {
   if (!form) return null;
@@ -277,10 +304,27 @@ function personalize(text) {
   let output = text.replace("{name}", name ? `${name}, ` : "");
 
   if (help) {
-    output += ` I can ${help} if that would help.`;
+    output += ` ${formatHelpOffer(help)}`;
   }
 
   return output;
+}
+
+function formatHelpOffer(help) {
+  if (isCompleteHelpOffer(help)) {
+    return addTerminalPunctuation(help);
+  }
+
+  return `I can ${help} if that would help.`;
+}
+
+function isCompleteHelpOffer(help) {
+  const normalized = help.trim().toLowerCase().replaceAll("\u2019", "'");
+  return /^(?:i\s+(?:can|will|would|am)|i(?:'ll|'d|'m)|we\s+(?:can|will|would|are)|we(?:'ll|'d|'re)|let\s+(?:me|us)|please\s+let\s+(?:me|us)|happy\s+to)\b/.test(normalized);
+}
+
+function addTerminalPunctuation(value) {
+  return /[.!?]$/.test(value) ? value : `${value}.`;
 }
 
 function renderMessages() {
@@ -292,14 +336,12 @@ function renderMessages() {
     .slice(0, 6);
 
   title.textContent = `${capitalize(labels[filters.tone])} messages for ${labels[filters.recipient]}`;
-  note.textContent =
-    filters.situation === "serious" || filters.situation === "chronic"
-      ? "Uses safer wording that does not rush recovery or ask for updates."
-      : `Best for ${labels[filters.situation]} in a ${filters.format} format.`;
+  note.textContent = getResultNote(filters);
 
   resultRoot.innerHTML = ranked
-    .map((message) => {
+    .map((message, index) => {
       const finalText = personalize(message.text);
+      const copyLabel = `Copy message ${index + 1}: ${getCopySnippet(finalText)}`;
       return `
         <article class="message-card">
           <p>${escapeHtml(finalText)}</p>
@@ -308,11 +350,26 @@ function renderMessages() {
             <span>${escapeHtml(labels[message.tone])}</span>
             <span>${escapeHtml(message.format)}</span>
           </div>
-          <button class="copy-button" type="button" data-copy="${escapeHtml(finalText)}">Copy message</button>
+          <button class="copy-button" type="button" data-copy="${escapeHtml(finalText)}" aria-label="${escapeHtml(copyLabel)}">Copy message</button>
         </article>
       `;
     })
     .join("");
+}
+
+function getResultNote(filters) {
+  const feedback = activeTuneAction ? `${tuneFeedback[activeTuneAction]} ` : "";
+
+  if (filters.situation === "serious" || filters.situation === "chronic") {
+    return `${feedback}Uses safer wording that does not rush recovery or ask for updates.`;
+  }
+
+  return `${feedback}Best for ${noteSituationLabels[filters.situation]} ${formatLabels[filters.format]}.`;
+}
+
+function getCopySnippet(text) {
+  const snippet = text.replace(/\s+/g, " ").trim();
+  return snippet.length > 70 ? `${snippet.slice(0, 70).trim()}...` : snippet;
 }
 
 function copyText(text) {
@@ -361,18 +418,61 @@ function escapeHtml(value) {
 }
 
 if (form) {
-  form.addEventListener("input", renderMessages);
+  form.addEventListener("input", () => {
+    activeTuneAction = null;
+    updateTuneButtons(null);
+    renderMessages();
+  });
 }
 
 if (topicSearch) {
   const cards = Array.from(document.querySelectorAll("[data-topic-card]"));
+  const emptyState = createTopicEmptyState();
+
   topicSearch.addEventListener("input", () => {
     const query = topicSearch.value.trim().toLowerCase();
+    let visibleCount = 0;
+
     for (const card of cards) {
       const text = card.dataset.search || card.textContent.toLowerCase();
-      card.hidden = query ? !text.includes(query) : false;
+      const isVisible = query ? text.includes(query) : true;
+      card.hidden = !isVisible;
+      if (isVisible) visibleCount += 1;
     }
+
+    updateTopicEmptyState(emptyState, visibleCount === 0);
   });
+}
+
+function createTopicEmptyState() {
+  if (!topicGrid) return null;
+
+  const emptyState = document.createElement("p");
+  emptyState.id = "topicEmptyState";
+  emptyState.className = "topic-empty-state";
+  emptyState.hidden = true;
+  emptyState.setAttribute("role", "status");
+  emptyState.setAttribute("aria-live", "polite");
+  emptyState.textContent = "No topics found. Try surgery, coworker, mom, or funny.";
+  emptyState.style.margin = "18px 0 0";
+  emptyState.style.color = "#5d6a66";
+  emptyState.style.fontWeight = "800";
+  topicGrid.after(emptyState);
+
+  return emptyState;
+}
+
+function updateTopicEmptyState(emptyState, isEmpty) {
+  if (!emptyState || !topicGrid) return;
+
+  emptyState.hidden = !isEmpty;
+  topicGrid.hidden = isEmpty;
+}
+
+function updateTuneButtons(activeAction) {
+  for (const button of tuneButtons) {
+    button.setAttribute("aria-pressed", button.dataset.action === activeAction ? "true" : "false");
+  }
 }
 
 document.addEventListener("click", (event) => {
@@ -394,7 +494,10 @@ document.addEventListener("click", (event) => {
     document.getElementById("situation").value = "serious";
     document.getElementById("tone").value = "supportive";
   }
+  activeTuneAction = tune.dataset.action;
+  updateTuneButtons(activeTuneAction);
   renderMessages();
 });
 
+updateTuneButtons(null);
 renderMessages();

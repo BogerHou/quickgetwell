@@ -10,6 +10,9 @@ const baseUrl = siteUrl.replace(/\/$/, "");
 const pageBySlug = new Map(pages.map((page) => [page.slug, page]));
 const staticFiles = ["styles.css", "script.js"];
 const staticDirectories = ["assets"];
+const contentMonthLabel = "April 2026";
+const contentDate = "2026-04-25";
+const trustStatement = "Reviewed for tone and sensitivity. Writing guidance only, not medical advice.";
 
 function escapeHtml(value) {
   return String(value)
@@ -17,6 +20,13 @@ function escapeHtml(value) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function escapeText(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 
 function pageUrl(slug) {
@@ -71,7 +81,7 @@ function renderRootHeader(options = {}) {
 
 function renderMessageButton(message) {
   const escaped = escapeHtml(message);
-  return `<button class="copy-line" data-copy="${escaped}">${escaped}</button>`;
+  return `<button class="copy-line" data-copy="${escaped}" aria-label="Copy message: ${escaped}">${escaped}</button>`;
 }
 
 function renderTopicGrid() {
@@ -80,7 +90,10 @@ function renderTopicGrid() {
       const searchText = [page.title, page.summary, page.description, page.eyebrow, page.nav]
         .filter(Boolean)
         .join(" ")
-        .toLowerCase();
+        .toLowerCase()
+        .replace(/\bcopy[-\s]?ready\b/g, "ready to send")
+        .replace(/\blong[-\s]?tail\b/g, "specific")
+        .replace(/\bs\.?e\.?o\b/g, "search");
 
       return `          <a href="./${page.slug}/" data-topic-card data-search="${escapeHtml(searchText)}">
             <span>${escapeHtml(page.nav || page.title)}</span>
@@ -96,12 +109,7 @@ function renderHomeSchema() {
     "@type": "WebSite",
     name: siteName,
     url: `${baseUrl}/`,
-    description: "A message finder for thoughtful get well soon notes, cards, texts, and emails.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${baseUrl}/?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
+    description: "A message finder for thoughtful get well soon notes, cards, texts, and emails."
   };
 
   return JSON.stringify(schema, null, 6)
@@ -234,9 +242,9 @@ ${renderRootHeader()}
 
       <section id="situations" class="link-section">
         <div class="section-heading">
-          <p class="eyebrow">Popular pages</p>
-          <h2>Long-tail pages built around real moments.</h2>
-          <p>Start with the closest relationship or situation. Each page is written for copying, editing, and avoiding the awkward phrases that land wrong.</p>
+          <p class="eyebrow">Browse by situation</p>
+          <h2>Find the right words for the moment.</h2>
+          <p>Start with the closest relationship or situation, then adjust the wording so it feels kind, specific, and easy to send.</p>
         </div>
         <label class="topic-search">
           <span>Search topics</span>
@@ -280,19 +288,19 @@ ${renderTopicGrid()}
         <div class="example-columns">
           <div>
             <h3>Short</h3>
-            <button class="copy-line" data-copy="Thinking of you and hoping today feels a little easier.">Thinking of you and hoping today feels a little easier.</button>
-            <button class="copy-line" data-copy="Sending comfort, rest, and steady healing your way.">Sending comfort, rest, and steady healing your way.</button>
-            <button class="copy-line" data-copy="No need to reply. Just wanted you to know you are on my mind.">No need to reply. Just wanted you to know you are on my mind.</button>
+            ${renderMessageButton("Thinking of you and hoping today feels a little easier.")}
+            ${renderMessageButton("Sending comfort, rest, and steady healing your way.")}
+            ${renderMessageButton("No need to reply. Just wanted you to know you are on my mind.")}
           </div>
           <div>
             <h3>Warm</h3>
-            <button class="copy-line" data-copy="I am so sorry you are going through this. I am here for the quiet days, the hard days, and anything in between.">I am so sorry you are going through this. I am here for the quiet days, the hard days, and anything in between.</button>
-            <button class="copy-line" data-copy="Take all the time you need to rest and heal. You are cared for more than you know.">Take all the time you need to rest and heal. You are cared for more than you know.</button>
+            ${renderMessageButton("I am so sorry you are going through this. I am here for the quiet days, the hard days, and anything in between.")}
+            ${renderMessageButton("Take all the time you need to rest and heal. You are cared for more than you know.")}
           </div>
           <div>
             <h3>Work</h3>
-            <button class="copy-line" data-copy="Wishing you a smooth recovery. Please take the time you need, and know the team is thinking of you.">Wishing you a smooth recovery. Please take the time you need, and know the team is thinking of you.</button>
-            <button class="copy-line" data-copy="We miss having you around, but your health comes first. Wishing you rest and steady progress.">We miss having you around, but your health comes first. Wishing you rest and steady progress.</button>
+            ${renderMessageButton("Wishing you a smooth recovery. Please take the time you need, and know the team is thinking of you.")}
+            ${renderMessageButton("We miss having you around, but your health comes first. Wishing you rest and steady progress.")}
           </div>
         </div>
       </section>
@@ -345,6 +353,24 @@ function renderSections(page) {
     .join("\n");
 }
 
+function isSensitivePage(page) {
+  const pageSignals = [page.slug, page.title, page.eyebrow, page.nav, page.summary, page.intro]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  return /\b(cancer|serious illness|after surgery|surgery|hospital stay|flu)\b/.test(pageSignals);
+}
+
+function renderSensitiveNote(page) {
+  if (!isSensitivePage(page)) return "";
+
+  return `          <div class="content-note">
+            <p><strong>Note:</strong> These are wording suggestions only, not medical advice. Keep the message gentle and avoid promises about recovery.</p>
+          </div>
+`;
+}
+
 function renderDosDonts(page) {
   if (!page.dos?.length && !page.donts?.length) return "";
 
@@ -366,6 +392,8 @@ function renderDosDonts(page) {
 }
 
 function buildFaqs(page) {
+  if (page.faqs?.length) return page.faqs;
+
   const firstMessage = page.sections?.[0]?.messages?.[0] || "Thinking of you and wishing you comfort, rest, and steady healing.";
   const avoid = page.donts?.[0] || "Do not rush recovery or force positivity.";
   const topic = page.title
@@ -397,22 +425,59 @@ function buildFaqs(page) {
   ];
 }
 
-function renderPersonalization() {
+function buildPersonalizationSteps(page) {
+  const custom = {
+    "what-to-say-instead-of-get-well-soon": [
+      "Acknowledge the situation without trying to make it sound simple.",
+      "Use a low-pressure line like no need to reply if they may be tired or overwhelmed.",
+      "Offer one concrete kind of support, then let them choose whether to accept it."
+    ],
+    "get-well-soon-messages-for-serious-illness": [
+      "Lead with presence, not predictions about recovery.",
+      "Make room for hard days instead of asking them to stay positive.",
+      "Offer specific help and make it clear they do not owe you updates."
+    ],
+    "get-well-soon-messages-for-cancer": [
+      "Avoid battle language unless you know they use it for themselves.",
+      "Mention practical support around appointments, meals, rides, or quiet company.",
+      "Keep the note steady and low-pressure, especially during treatment or waiting."
+    ],
+    "get-well-soon-messages-after-surgery": [
+      "Match the message to where they are in recovery, not where you hope they will be.",
+      "Avoid pushing them to bounce back quickly.",
+      "Offer one practical task, like food, errands, childcare, or a ride."
+    ],
+    "get-well-soon-messages-for-hospital-stay": [
+      "Keep the message short enough to read when they are tired.",
+      "If you mention visiting, make it easy for them to say no.",
+      "Offer a small practical help option for their room, family, or return home."
+    ],
+    "get-well-soon-messages-for-flu": [
+      "Keep it light and brief because flu messages are usually quick check-ins.",
+      "Offer simple help like soup, medicine pickup, or leaving supplies at the door.",
+      "Skip symptom guesses or timelines unless they brought them up first."
+    ]
+  };
+
+  return custom[page.slug] || [
+    "Add their name or relationship so the note does not feel copied.",
+    "Name the situation lightly, such as surgery, the hospital, or a rough week.",
+    "Offer one specific help option, like dinner, groceries, a ride, or quiet company."
+  ];
+}
+
+function renderPersonalization(page) {
+  const steps = buildPersonalizationSteps(page);
+
   return `
           <h2 id="personalize">How to personalize it</h2>
           <div class="formula-list">
-            <div>
-              <span>1</span>
-              <p>Add their name or relationship so the note does not feel copied.</p>
-            </div>
-            <div>
-              <span>2</span>
-              <p>Name the situation lightly, such as surgery, the hospital, or a rough week.</p>
-            </div>
-            <div>
-              <span>3</span>
-              <p>Offer one specific help option, like dinner, groceries, a ride, or quiet company.</p>
-            </div>
+            ${steps
+              .map((step, index) => `<div>
+              <span>${index + 1}</span>
+              <p>${escapeHtml(step)}</p>
+            </div>`)
+              .join("\n            ")}
           </div>`;
 }
 
@@ -443,6 +508,15 @@ function renderRelated(page) {
           </div>`;
 }
 
+function renderTrustInfo() {
+  return `
+          <section class="trust-info" aria-label="Content review information">
+            <p>${escapeHtml(trustStatement)}</p>
+            <p>Last updated: ${escapeHtml(contentMonthLabel)}</p>
+            <p>Written and published by ${escapeHtml(siteName)}.</p>
+          </section>`;
+}
+
 function renderNav(page) {
   const sectionLinks = page.sections
     .map((section) => `<a href="#${escapeHtml(section.id)}">${escapeHtml(section.title.replace(/^Quick /, "Quick "))}</a>`)
@@ -460,10 +534,17 @@ function renderSchema(page) {
         headline: page.title,
         description: page.description,
         url: pageUrl(page.slug),
-        dateModified: today,
+        datePublished: contentDate,
+        dateModified: contentDate,
         author: {
           "@type": "Organization",
-          name: siteName
+          name: siteName,
+          url: `${baseUrl}/`
+        },
+        publisher: {
+          "@type": "Organization",
+          name: siteName,
+          url: `${baseUrl}/`
         }
       },
       {
@@ -531,7 +612,7 @@ ${renderHeader()}
       <section class="article-hero">
         <a class="breadcrumb" href="../">Home / ${escapeHtml(page.nav || page.eyebrow)}</a>
         <p class="eyebrow">${escapeHtml(page.eyebrow)}</p>
-        <h1>${escapeHtml(page.title)}</h1>
+        <h1>${escapeText(page.title)}</h1>
         <p>${escapeHtml(page.intro)}</p>
       </section>
 
@@ -541,17 +622,19 @@ ${renderHeader()}
         </aside>
 
         <article class="article-content">
+${renderSensitiveNote(page)}
 ${renderSections(page)}
 ${renderPersonalization(page)}
 ${renderDosDonts(page)}
 ${renderFaq(page)}
 ${renderRelated(page)}
+${renderTrustInfo()}
         </article>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>Writing guidance for thoughtful notes. Not medical advice.</p>
+      <p>${escapeHtml(siteName)} provides writing guidance for thoughtful notes. Not medical advice.</p>
       <p><a href="../">Back to message finder</a></p>
     </footer>
     <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>

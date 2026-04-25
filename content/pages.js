@@ -67,18 +67,18 @@ const pages = [
     eyebrow: "After surgery",
     description: "Thoughtful get well soon messages after surgery, including short texts, card notes, professional messages, and wording that does not rush recovery.",
     summary: "Careful recovery wording that does not rush healing.",
-    intro: "After surgery, the safest message is patient, calm, and practical. Wish them steady healing without making recovery sound easy or fast.",
+    intro: "After surgery, the safest message is calm, patient, and practical. A good note acknowledges the procedure, leaves recovery unrushed, and offers help that does not require a reply.",
     nav: "After surgery",
     sections: [
       {
         id: "quick",
         title: "Quick copy messages",
         messages: [
-          "Wishing you a smooth recovery after surgery. Take all the time you need to rest and heal.",
-          "I am glad the surgery is behind you. I hope each day brings more comfort and strength.",
-          "Rest well and heal gently. No need to reply, I just wanted you to know I am thinking of you.",
-          "Sending comfort, patience, and steady healing your way as you recover.",
-          "I hope recovery is peaceful and that you feel supported through every step."
+          "I am glad the surgery is behind you. Wishing you quiet rest, good care, and no pressure to answer.",
+          "I hope today feels a little more comfortable and supported.",
+          "Rest as much as you can. No need to reply, I just wanted you to know I am thinking of you.",
+          "Sending comfort, patience, and steady support while you recover.",
+          "I hope the recovery days feel less lonely and as gentle as possible."
         ]
       },
       {
@@ -94,13 +94,31 @@ const pages = [
         id: "work",
         title: "Professional surgery recovery messages",
         messages: [
-          "Wishing you a smooth recovery after surgery. Please take the time you need, and know the team is thinking of you.",
-          "We hope your recovery is steady and restful. Your health comes first, and we look forward to seeing you when you are ready.",
-          "Sending best wishes for comfort and healing after your procedure. Please focus on rest and recovery."
+          "Thinking of you after surgery. Please take the time you need, and know the team is wishing you well.",
+          "We hope your recovery time is restful and supported. Your health comes first, and we look forward to seeing you when you are ready.",
+          "Sending best wishes for comfort after your procedure. Please focus on rest and care."
         ]
       }
     ],
-    dos: ["Use smooth recovery or steady healing.", "Offer specific help, like meals or rides.", "Add no need to reply if they may be tired."],
+    faqs: [
+      {
+        question: "What should I say after surgery without rushing recovery?",
+        answer: "Try: \"I am glad the surgery is behind you. Wishing you quiet rest, good care, and no pressure to answer.\" It acknowledges the procedure without setting a timeline."
+      },
+      {
+        question: "Is it okay to mention the surgery?",
+        answer: "Yes, if they have already shared it with you. Keep it simple: say you are thinking of them after the procedure, then focus on comfort, rest, and practical support."
+      },
+      {
+        question: "What practical help can I offer after surgery?",
+        answer: "Offer something specific, such as a meal drop-off, a ride, help with groceries, childcare, or handling a small errand. Specific offers are easier to accept than \"let me know.\""
+      },
+      {
+        question: "What should I avoid saying after surgery?",
+        answer: "Avoid asking for medical details, promising a fast recovery, or telling them they should be back to normal soon. Let them recover without performing optimism for you."
+      }
+    ],
+    dos: ["Use calm recovery language, such as take the time you need.", "Offer specific help, like meals or rides.", "Add no need to reply if they may be tired."],
     donts: ["Do not pressure them to recover quickly.", "Do not ask for medical details in a card.", "Do not joke unless you know they want humor."],
     related: ["short-get-well-soon-messages", "get-well-soon-messages-for-coworker", "get-well-soon-messages-for-serious-illness"]
   },
@@ -277,11 +295,11 @@ const pages = [
   },
   {
     slug: "what-to-say-instead-of-get-well-soon",
-    title: "What to Say Instead of Get Well Soon",
+    title: "Alternative to \"Get Well Soon\"",
     eyebrow: "Safer wording",
     description: "Alternatives to get well soon for chronic illness, serious illness, cancer, long recovery, mental health, and situations where quick recovery wording feels wrong.",
     summary: "Better wording for chronic or serious illness.",
-    intro: "When recovery is uncertain, long, chronic, or emotionally heavy, get well soon can feel too rushed. Use language that offers support without pretending everything is simple.",
+    intro: "When recovery is uncertain, long, chronic, or emotionally heavy, get well soon can sound too neat. Use language that offers support without pretending the situation is simple.",
     nav: "Instead of get well soon",
     sections: [
       {
@@ -300,7 +318,7 @@ const pages = [
         title: "For chronic illness or long recovery",
         messages: [
           "I know this is not something that simply goes away. I am here for the good days, the bad days, and the days you do not want to explain.",
-          "I hope your symptoms ease today. You do not have to be upbeat for me.",
+          "I hope today is as gentle as possible. You do not have to be upbeat for me.",
           "You are not a burden. I care about you, and I am here in whatever way helps most."
         ]
       },
@@ -314,7 +332,25 @@ const pages = [
         ]
       }
     ],
-    dos: ["Say I am thinking of you.", "Ask how can I support you right now?", "Remove pressure to reply."],
+    faqs: [
+      {
+        question: "What is a gentler alternative to \"get well soon\"?",
+        answer: "Try: \"I am thinking of you and hoping today is gentle.\" It works when quick-recovery language feels too small for the situation."
+      },
+      {
+        question: "When should I avoid saying get well soon?",
+        answer: "Avoid it when the illness is chronic, serious, uncertain, or emotionally heavy. In those cases, focus on presence, comfort, and low-pressure support."
+      },
+      {
+        question: "What can I say for chronic illness or a long recovery?",
+        answer: "Use wording that does not assume the problem will simply pass: \"I am here for the good days, the hard days, and the days you do not want to explain.\""
+      },
+      {
+        question: "How do I sound supportive without being intense?",
+        answer: "Keep the note short, remove pressure to respond, and offer one concrete form of help. A calm text is often easier to receive than a dramatic paragraph."
+      }
+    ],
+    dos: ["Say I am thinking of you.", "Ask what kind of support would help right now.", "Remove pressure to reply."],
     donts: ["Do not say everything happens for a reason.", "Do not demand positivity.", "Do not promise they will be fine when you do not know that."],
     related: ["get-well-soon-messages-for-serious-illness", "short-get-well-soon-messages", "get-well-soon-messages-for-friend"]
   },
@@ -324,7 +360,7 @@ const pages = [
     eyebrow: "Careful support",
     description: "Supportive get well messages for serious illness, including safer wording, card notes, texts, and what not to say when recovery is uncertain.",
     summary: "Supportive language when optimism needs restraint.",
-    intro: "For serious illness, the goal is not to fix the feeling. The goal is to show up without pressure, false certainty, or cheerful shortcuts.",
+    intro: "For serious illness, the goal is not to fix the feeling or explain the situation. The goal is to show up without pressure, false certainty, or cheerful shortcuts.",
     nav: "Serious illness",
     sections: [
       {
@@ -343,7 +379,7 @@ const pages = [
         messages: [
           "There is no perfect message for something this hard. Please know I care about you deeply and I am here for whatever support looks like right now.",
           "You do not have to be strong for everyone. I hope you feel surrounded by care, patience, and people who will keep showing up.",
-          "I am sending love for the hard days and quiet hope for the days ahead. You are not facing this alone."
+          "I am sending love for the hard days and steady care for whatever comes next. You are not facing this alone."
         ]
       },
       {
@@ -356,7 +392,25 @@ const pages = [
         ]
       }
     ],
-    dos: ["Acknowledge that it is hard.", "Offer support without needing a response.", "Be specific if offering help."],
+    faqs: [
+      {
+        question: "What can I say when the illness is serious and I do not know the outcome?",
+        answer: "Say what is true without trying to predict anything: \"I am so sorry you are going through this. I am thinking of you and sending steady support.\""
+      },
+      {
+        question: "How do I check in without asking for updates?",
+        answer: "Make the check-in one-way: \"No need to reply. I just wanted you to know you are loved and not alone.\" That lets them receive care without managing your concern."
+      },
+      {
+        question: "Should I use hopeful language for serious illness?",
+        answer: "Gentle hope is fine if it does not promise an outcome. Pair it with presence, patience, and practical help rather than telling them everything will be fine."
+      },
+      {
+        question: "What should I avoid in a serious illness message?",
+        answer: "Avoid comparisons, miracle timelines, forced positivity, and repeated requests for updates. The person should not have to comfort you or perform bravery."
+      }
+    ],
+    dos: ["Acknowledge that it is hard without trying to solve it.", "Offer support without needing a response.", "Be specific if offering help."],
     donts: ["Do not promise they will be fine.", "Do not compare their illness to someone else's.", "Do not ask for repeated updates."],
     related: ["what-to-say-instead-of-get-well-soon", "short-get-well-soon-messages", "get-well-soon-messages-after-surgery"]
   },
@@ -687,7 +741,7 @@ const pages = [
         title: "After surgery",
         messages: [
           "Praying for a smooth recovery and renewed strength after surgery.",
-          "May God guide your healing and bring peace to each day of recovery.",
+          "May God stay close to you and bring peace to each day of recovery.",
           "Thankful your surgery is behind you and praying for comfort as you rest."
         ]
       }
@@ -824,11 +878,11 @@ const pages = [
   },
   {
     slug: "get-well-soon-messages-for-hospital-stay",
-    title: "Get Well Soon Messages for Hospital Stay",
+    title: "Get Well Soon Messages for a Hospital Stay",
     eyebrow: "Hospital stay",
     description: "Get well soon messages for someone in the hospital, including texts, card notes, flower messages, and supportive wording.",
     summary: "Comforting notes for hospital rooms, flowers, and texts.",
-    intro: "Hospital messages should feel calm and low-pressure. They should offer comfort without asking for medical details or constant updates.",
+    intro: "Hospital messages should feel calm and low-pressure. They should offer comfort without asking for medical details, constant updates, or visitor access.",
     nav: "Hospital stay",
     sections: [
       {
@@ -836,7 +890,7 @@ const pages = [
         title: "Quick hospital messages",
         messages: [
           "Thinking of you and hoping the hospital days feel a little less lonely.",
-          "Sending comfort, rest, and steady strength while you are in the hospital.",
+          "Sending a quiet reminder that you are cared about while you are in the hospital.",
           "No need to reply. I just wanted you to know I am thinking of you.",
           "I hope you feel cared for by everyone around you today."
         ]
@@ -854,14 +908,32 @@ const pages = [
         id: "support",
         title: "Supportive messages",
         messages: [
-          "Hospitals can feel exhausting. I hope you get moments of rest, kindness, and clear answers today.",
+          "Hospitals can feel exhausting. I hope you get moments of rest, kindness, and calm today.",
           "I am here for rides, errands, updates to others, or anything that would make this easier.",
           "You do not have to entertain visitors or reply quickly. Just know I care."
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I text someone who is in the hospital?",
+        answer: "Try: \"No need to reply. I just wanted you to know I am thinking of you.\" It is short, kind, and does not ask them to explain anything."
+      },
+      {
+        question: "How do I send support without asking private questions?",
+        answer: "Focus on comfort instead of details. Say you are thinking of them, offer one practical help option, and let them decide how much they want to share."
+      },
+      {
+        question: "What can I write on hospital flowers?",
+        answer: "Keep a flower card simple: \"A little brightness for your room and a lot of love from me.\" Short messages work well in a hospital setting."
+      },
+      {
+        question: "Should I visit someone in the hospital?",
+        answer: "Ask first or check with a close family member. Hospital stays can be tiring, and a supportive message should respect privacy, rest, and visiting limits."
+      }
+    ],
     dos: ["Keep it low-pressure.", "Offer help outside the hospital.", "Respect privacy and visiting boundaries."],
-    donts: ["Do not ask intrusive questions.", "Do not demand updates.", "Do not assume visitors are always wanted."],
+    donts: ["Do not ask for private medical details.", "Do not demand updates.", "Do not assume visitors are always wanted."],
     related: ["get-well-soon-card-messages", "get-well-soon-text-messages", "get-well-soon-messages-for-serious-illness"]
   },
   {
@@ -1164,7 +1236,7 @@ const pages = [
     eyebrow: "Cancer support",
     description: "Careful messages for someone with cancer, including supportive texts, card notes, treatment encouragement, and what not to say.",
     summary: "Careful support when quick recovery language may not fit.",
-    intro: "Cancer messages need extra care. Avoid promising outcomes, avoid pressure to stay positive, and focus on presence, practical help, and steady support.",
+    intro: "Cancer messages need extra care. Avoid promising outcomes, avoid pressure to stay positive, and focus on presence, practical help, and support they do not have to manage.",
     nav: "Cancer support",
     sections: [
       {
@@ -1173,7 +1245,7 @@ const pages = [
         messages: [
           "I am thinking of you today. No need to reply.",
           "I am here with you through this, in whatever way helps most.",
-          "Sending comfort, strength, and steady support during treatment.",
+          "Sending comfort and steady support during appointments, waiting, and hard days.",
           "You are not alone. I care about you and I am here."
         ]
       },
@@ -1196,8 +1268,26 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I write to someone with cancer without promising recovery?",
+        answer: "Try: \"I am thinking of you today. No need to reply.\" It is direct, caring, and does not ask them to manage your emotions."
+      },
+      {
+        question: "Is it okay to say get well soon to someone with cancer?",
+        answer: "Sometimes, but it can feel too rushed. Softer wording like \"I am here with you through this\" often fits better during treatment or uncertain periods."
+      },
+      {
+        question: "How can I offer help during cancer treatment?",
+        answer: "Offer concrete help, such as dinner, a ride to an appointment, groceries, childcare, or handling updates for others. Give them permission not to answer right away."
+      },
+      {
+        question: "What should I avoid in a cancer card?",
+        answer: "Avoid stay positive, battle language if you do not know they use it, promises that they will beat it, and comparisons to someone else's cancer story."
+      }
+    ],
     dos: ["Say you are present.", "Offer specific practical help.", "Remove pressure to reply."],
-    donts: ["Do not say stay positive.", "Do not promise they will beat it.", "Do not compare their cancer to someone else's story."],
+    donts: ["Do not tell them to stay positive.", "Do not promise they will beat it.", "Do not compare their cancer to someone else's story."],
     related: ["what-to-say-instead-of-get-well-soon", "get-well-soon-messages-for-serious-illness", "short-get-well-soon-messages"]
   },
   {
@@ -1206,17 +1296,17 @@ const pages = [
     eyebrow: "Flu recovery",
     description: "Get well soon messages for the flu, including short texts, funny notes, coworker messages, and comforting wishes.",
     summary: "Short, light messages for flu, fever, and rough sick days.",
-    intro: "Flu messages can be simple and lighter than serious illness notes. Wish them rest, fluids, and an easier day without asking for too much energy back.",
+    intro: "Flu messages can be simple and lighter than serious illness notes. Wish them rest, low-effort comfort, and an easier day without asking for energy back.",
     nav: "For flu",
     sections: [
       {
         id: "quick",
         title: "Quick flu messages",
         messages: [
-          "Feel better soon. Hope the fever breaks and rest actually works.",
+          "Feel better soon. Hope today gives you a little more rest and a little less misery.",
           "Sending soup thoughts, cozy blanket energy, and zero obligations.",
           "Hope today brings more rest and less flu misery.",
-          "Rest up and let your body win this fight."
+          "Rest up and take the day one small comfort at a time."
         ]
       },
       {
@@ -1224,7 +1314,7 @@ const pages = [
         title: "Funny flu messages",
         messages: [
           "Get well soon. Your germs have had enough attention.",
-          "Please recover quickly. The flu does not deserve this much screen time.",
+          "The flu does not deserve this much screen time. Please give it terrible reviews.",
           "Sending virtual soup because real soup requires logistics."
         ]
       },
@@ -1232,14 +1322,32 @@ const pages = [
         id: "work",
         title: "For a coworker with the flu",
         messages: [
-          "Wishing you rest and a quick recovery. Please take the time you need.",
+          "Wishing you a low-pressure sick day and plenty of rest. Please take the time you need.",
           "Hope you feel better soon. The team is thinking of you.",
           "Get some rest and do not worry about work right now."
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What is a good flu message that is light but not dismissive?",
+        answer: "Try: \"Feel better soon. Hope today gives you a little more rest and a little less misery.\" It is casual without pretending the flu is nothing."
+      },
+      {
+        question: "What can I text a coworker with the flu?",
+        answer: "Keep it professional and remove work pressure: \"Wishing you a low-pressure sick day and plenty of rest. Please take the time you need.\""
+      },
+      {
+        question: "Can I joke in a flu message?",
+        answer: "Yes, if the person usually likes humor and the illness is routine. Keep the joke about the flu, soup, blankets, or boredom rather than their body or symptoms."
+      },
+      {
+        question: "What should I avoid saying to someone with the flu?",
+        answer: "Do not ask them to work sick, minimize how bad it feels, or expect a detailed reply. A short, low-effort message is usually best."
+      }
+    ],
     dos: ["Keep it light.", "Encourage rest.", "Offer food or errands if you are close."],
-    donts: ["Do not ask them to work sick.", "Do not minimize how awful flu can feel.", "Do not expect a long reply."],
+    donts: ["Do not ask them to work while sick.", "Do not minimize how awful flu can feel.", "Do not expect a long reply."],
     related: ["funny-get-well-soon-messages", "short-get-well-soon-messages", "get-well-soon-text-messages"]
   },
   {

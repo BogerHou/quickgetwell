@@ -32,7 +32,7 @@ const messages = [
     situation: "surgery",
     tone: "supportive",
     format: "text",
-    text: "{name}Wishing you a smooth recovery, one quiet day at a time. No pressure to reply. I just wanted you to know I am here."
+    text: "{name}Wishing you rest and comfort, one quiet day at a time. No pressure to reply. I just wanted you to know I am here."
   },
   {
     recipient: "friend",
@@ -74,7 +74,7 @@ const messages = [
     situation: "minor",
     tone: "religious",
     format: "text",
-    text: "{name}Praying that you feel comfort, rest, and renewed strength today. May healing come gently and steadily."
+    text: "{name}Praying that you feel comfort, rest, and renewed strength today. May care surround you steadily."
   },
   {
     recipient: "family",
@@ -109,14 +109,14 @@ const messages = [
     situation: "minor",
     tone: "professional",
     format: "email",
-    text: "{name}Wishing you a quick recovery and a restful time away. Please take the time you need to feel better."
+    text: "{name}Wishing you a restful time away and the space you need to feel better."
   },
   {
     recipient: "coworker",
     situation: "surgery",
     tone: "professional",
     format: "group",
-    text: "{name}The team is thinking of you and wishing you a smooth recovery. Your health comes first, and we hope each day brings more comfort."
+    text: "{name}The team is thinking of you and wishing you rest and comfort. Your health comes first."
   },
   {
     recipient: "coworker",
@@ -137,7 +137,7 @@ const messages = [
     situation: "minor",
     tone: "professional",
     format: "email",
-    text: "{name}Wishing you a smooth and speedy recovery. Please take care of yourself, and know the team has things covered while you rest."
+    text: "{name}Please take care of yourself, and know the team has things covered while you rest."
   },
   {
     recipient: "boss",
@@ -151,7 +151,7 @@ const messages = [
     situation: "minor",
     tone: "professional",
     format: "email",
-    text: "{name}I am sorry to hear you have been unwell. Wishing you a smooth recovery and better days ahead."
+    text: "{name}I am sorry to hear you have been unwell. Wishing you rest, comfort, and better days ahead."
   },
   {
     recipient: "client",
@@ -427,6 +427,7 @@ if (form) {
 
 if (topicSearch) {
   const cards = Array.from(document.querySelectorAll("[data-topic-card]"));
+  const groups = Array.from(document.querySelectorAll("[data-topic-group]"));
   const emptyState = createTopicEmptyState();
 
   topicSearch.addEventListener("input", () => {
@@ -438,6 +439,11 @@ if (topicSearch) {
       const isVisible = query ? text.includes(query) : true;
       card.hidden = !isVisible;
       if (isVisible) visibleCount += 1;
+    }
+
+    for (const group of groups) {
+      const groupCards = Array.from(group.querySelectorAll("[data-topic-card]"));
+      group.hidden = groupCards.length > 0 && groupCards.every((card) => card.hidden);
     }
 
     updateTopicEmptyState(emptyState, visibleCount === 0);

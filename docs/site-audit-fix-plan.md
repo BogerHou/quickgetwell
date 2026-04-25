@@ -53,6 +53,24 @@
 - sitemap：考虑移除统一 `priority`，避免所有文章页同权重的批量信号。
 - meta descriptions：从关键词列表改为自然描述。
 
+## 2026-04-25 Second Pass
+
+已继续补齐上一轮遗漏：
+
+- 新增 `about`、`editorial-policy`、`contact`、`privacy` 四个信任页面，并加入页脚与 sitemap。
+- 首页 33 个主题入口改为分组展示：Start here、Relationships、Health situations、Work, tone, and faith。
+- topic search 会隐藏没有匹配结果的分组，降低目录页和批量 SEO 观感。
+- sitemap 移除统一 `priority` 与 `changefreq`，保留稳定 `lastmod`。
+- 文章页 hero 改为克制的非图片背景，不再所有页面共用同一束花图。
+- 全部 33 个内容页都有页面专属 FAQ，不再依赖通用 FAQ 模板。
+- 重写剩余关系类页面与通用页 meta descriptions，减少关键词枚举感。
+- 继续处理 prayers、religious、injury、broken bone、coworker、boss、teacher 等页面，新增更贴合场景的 FAQ，减少 `smooth recovery`、`quick recovery` 等重复表达。
+
+仍建议后续处理：
+
+- 若后续有真实邮箱或表单，替换 Contact 页中的 GitHub correction channel。
+- 继续人工提升高潜力页面正文，例如 surgery、cancer、coworker、friend，可加入更多真实场景分支和更具体的 message variants。
+
 ## 发布验收
 
 每次集成后必须跑：

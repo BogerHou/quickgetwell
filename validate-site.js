@@ -5,6 +5,7 @@ const { pages } = require("./content/pages");
 const root = __dirname;
 const dist = path.join(root, "dist");
 const errors = [];
+const infoPages = ["about", "editorial-policy", "contact", "privacy"];
 
 if (!fs.existsSync(dist)) {
   errors.push("Missing dist directory. Run npm run build first.");
@@ -91,6 +92,13 @@ function validateGeneratedPages() {
     }
   }
 
+  for (const slug of infoPages) {
+    const file = path.join(dist, slug, "index.html");
+    if (!fs.existsSync(file)) {
+      errors.push(`Missing generated info page: ${slug}/index.html`);
+    }
+  }
+
   for (const required of ["index.html", "404.html", "robots.txt", "sitemap.xml", "search-index.json"]) {
     if (!fs.existsSync(path.join(dist, required))) {
       errors.push(`Missing required dist file: ${required}`);
@@ -133,7 +141,7 @@ function validateSitemap() {
 
   const xml = fs.readFileSync(file, "utf8");
   const urlCount = (xml.match(/<url>/g) || []).length;
-  const expected = pages.length + 1;
+  const expected = pages.length + infoPages.length + 1;
   if (urlCount !== expected) {
     errors.push(`sitemap.xml has ${urlCount} URLs, expected ${expected}`);
   }

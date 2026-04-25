@@ -14,6 +14,80 @@ const staticDirectories = ["assets"];
 const contentMonthLabel = "April 2026";
 const contentDate = "2026-04-25";
 const trustStatement = "Reviewed for tone and sensitivity. Writing guidance only, not medical advice.";
+const infoPages = [
+  {
+    slug: "about",
+    title: `About ${siteName}`,
+    description: `${siteName} helps people write thoughtful get well notes, cards, texts, and support messages.`,
+    eyebrow: "About",
+    intro: "Quick Get Well is a writing resource for people who want to say something kind without sounding rushed, awkward, or overly cheerful.",
+    sections: [
+      {
+        title: "What this site does",
+        body: "We publish message examples and wording guidance for get well notes, surgery recovery, serious illness, work cards, family texts, and other sensitive situations. The goal is simple: help you choose words that are easy to receive."
+      },
+      {
+        title: "What this site does not do",
+        body: "This site does not provide medical advice, diagnosis, treatment guidance, or health claims. For medical questions, rely on a qualified clinician."
+      }
+    ]
+  },
+  {
+    slug: "editorial-policy",
+    title: "Editorial Policy",
+    description: "How Quick Get Well reviews wording, sensitive topics, and non-medical guidance.",
+    eyebrow: "Editorial policy",
+    intro: "Every page is written as wording guidance. We prioritize clarity, emotional care, and avoiding promises about health outcomes.",
+    sections: [
+      {
+        title: "Review principles",
+        body: "Messages are reviewed for tone and sensitivity before publication. We avoid language that pressures someone to stay positive, asks for private medical details, or suggests words can change medical outcomes."
+      },
+      {
+        title: "Sensitive topics",
+        body: "Pages about cancer, serious illness, hospital stays, surgery, and long recovery include extra caution. They are meant to help with supportive language, not medical decisions."
+      },
+      {
+        title: "Updates",
+        body: `Content is updated when we find wording that can be clearer, kinder, or safer. Current site content was last updated in ${contentMonthLabel}.`
+      }
+    ]
+  },
+  {
+    slug: "contact",
+    title: "Contact",
+    description: "Contact Quick Get Well about corrections, feedback, or wording concerns.",
+    eyebrow: "Contact",
+    intro: "If you notice wording that feels off, insensitive, unclear, or too medical, send feedback so it can be reviewed.",
+    sections: [
+      {
+        title: "Feedback",
+        body: "Report corrections in the public project repository at https://github.com/BogerHou/quickgetwell. Include the page URL and the sentence you want reviewed."
+      },
+      {
+        title: "Corrections",
+        body: "Corrections are prioritized when they affect sensitive illness language, accessibility, broken links, or misleading wording."
+      }
+    ]
+  },
+  {
+    slug: "privacy",
+    title: "Privacy Policy",
+    description: "Privacy notes for Quick Get Well, including analytics and non-medical site usage.",
+    eyebrow: "Privacy",
+    intro: "Quick Get Well is a static website. It does not ask you to create an account or submit private health information.",
+    sections: [
+      {
+        title: "Analytics",
+        body: "The site uses Google Analytics 4 and Cloudflare analytics to understand aggregate traffic and page usage. Do not type private medical information into optional fields."
+      },
+      {
+        title: "Local interactions",
+        body: "The message finder runs in your browser. Copy buttons and topic filters are used to help you interact with the page."
+      }
+    ]
+  }
+];
 
 function escapeHtml(value) {
   return String(value)
@@ -31,6 +105,10 @@ function escapeText(value) {
 }
 
 function pageUrl(slug) {
+  return `${baseUrl}/${slug}/`;
+}
+
+function infoPageUrl(slug) {
   return `${baseUrl}/${slug}/`;
 }
 
@@ -94,23 +172,106 @@ function renderMessageButton(message) {
   return `<button class="copy-line" data-copy="${escaped}" aria-label="Copy message: ${escaped}">${escaped}</button>`;
 }
 
-function renderTopicGrid() {
-  return pages
-    .map((page) => {
-      const searchText = [page.title, page.summary, page.description, page.eyebrow, page.nav]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .replace(/\bcopy[-\s]?ready\b/g, "ready to send")
-        .replace(/\blong[-\s]?tail\b/g, "specific")
-        .replace(/\bs\.?e\.?o\b/g, "search");
+const topicGroups = [
+  {
+    title: "Start here",
+    slugs: [
+      "get-well-soon-messages",
+      "short-get-well-soon-messages",
+      "get-well-soon-card-messages",
+      "get-well-soon-text-messages",
+      "what-to-say-instead-of-get-well-soon"
+    ]
+  },
+  {
+    title: "Relationships",
+    slugs: [
+      "get-well-soon-messages-for-friend",
+      "get-well-soon-messages-for-family",
+      "get-well-soon-messages-for-mom",
+      "get-well-soon-messages-for-dad",
+      "get-well-soon-messages-for-grandma",
+      "get-well-soon-messages-for-grandpa",
+      "get-well-soon-messages-for-sister",
+      "get-well-soon-messages-for-brother",
+      "get-well-soon-messages-for-boyfriend",
+      "get-well-soon-messages-for-girlfriend",
+      "get-well-soon-messages-for-wife",
+      "get-well-soon-messages-for-husband",
+      "get-well-soon-messages-for-child"
+    ]
+  },
+  {
+    title: "Health situations",
+    slugs: [
+      "get-well-soon-messages-after-surgery",
+      "get-well-soon-messages-for-hospital-stay",
+      "get-well-soon-messages-for-serious-illness",
+      "get-well-soon-messages-for-cancer",
+      "get-well-soon-messages-for-flu",
+      "get-well-soon-messages-for-injury",
+      "get-well-soon-messages-for-broken-bone",
+      "get-well-soon-messages-for-flowers"
+    ]
+  },
+  {
+    title: "Work, tone, and faith",
+    slugs: [
+      "get-well-soon-messages-for-coworker",
+      "get-well-soon-messages-for-boss",
+      "get-well-soon-messages-for-client",
+      "get-well-soon-messages-for-teacher",
+      "funny-get-well-soon-messages",
+      "religious-get-well-soon-messages",
+      "get-well-soon-prayers"
+    ]
+  }
+];
 
-      return `          <a href="./${page.slug}/" data-topic-card data-search="${escapeHtml(searchText)}">
-            <span>${escapeHtml(page.nav || page.title)}</span>
-            <small>${escapeHtml(page.summary)}</small>
-          </a>`;
+function renderTopicCard(page) {
+  const searchText = [page.title, page.summary, page.description, page.eyebrow, page.nav]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()
+    .replace(/\bcopy[-\s]?ready\b/g, "ready to send")
+    .replace(/\blong[-\s]?tail\b/g, "specific")
+    .replace(/\bs\.?e\.?o\b/g, "search");
+
+  return `            <a href="./${page.slug}/" data-topic-card data-search="${escapeHtml(searchText)}">
+              <span>${escapeHtml(page.nav || page.title)}</span>
+              <small>${escapeHtml(page.summary)}</small>
+            </a>`;
+}
+
+function renderTopicGrid() {
+  const groupedSlugs = new Set(topicGroups.flatMap((group) => group.slugs));
+  const grouped = topicGroups
+    .map((group) => {
+      const cards = group.slugs
+        .map((slug) => pageBySlug.get(slug))
+        .filter(Boolean)
+        .map(renderTopicCard)
+        .join("\n");
+
+      return `          <div class="topic-group" data-topic-group>
+            <h3>${escapeHtml(group.title)}</h3>
+${cards}
+          </div>`;
     })
     .join("\n");
+
+  const ungrouped = pages
+    .filter((page) => !groupedSlugs.has(page.slug))
+    .map(renderTopicCard)
+    .join("\n");
+
+  if (!ungrouped) return grouped;
+
+  return `${grouped}
+          <div class="topic-group" data-topic-group>
+            <h3>More options</h3>
+${ungrouped}
+          </div>`;
 }
 
 function renderHomeSchema() {
@@ -125,6 +286,21 @@ function renderHomeSchema() {
   return JSON.stringify(schema, null, 6)
     .split("\n")
     .join("\n      ");
+}
+
+function renderFooter(options = {}) {
+  const prefix = options.prefix || "./";
+  const homeHref = options.homeHref || prefix;
+  return `    <footer class="site-footer">
+      <p>${escapeHtml(siteName)} provides writing guidance for thoughtful notes. Not medical advice.</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="${homeHref}">Home</a>
+        <a href="${prefix}about/">About</a>
+        <a href="${prefix}editorial-policy/">Editorial Policy</a>
+        <a href="${prefix}contact/">Contact</a>
+        <a href="${prefix}privacy/">Privacy</a>
+      </nav>
+    </footer>`;
 }
 
 function renderHomePage() {
@@ -309,7 +485,7 @@ ${renderTopicGrid()}
           </div>
           <div>
             <h3>Work</h3>
-            ${renderMessageButton("Wishing you a smooth recovery. Please take the time you need, and know the team is thinking of you.")}
+            ${renderMessageButton("Wishing you rest and comfort. Please take the time you need, and know the team is thinking of you.")}
             ${renderMessageButton("We miss having you around, but your health comes first. Wishing you rest and steady progress.")}
           </div>
         </div>
@@ -327,7 +503,7 @@ ${renderTopicGrid()}
           </details>
           <details>
             <summary>Is it okay to say get well soon after surgery?</summary>
-            <p>Yes, but softer wording often works better: "Wishing you a smooth recovery" or "Take the time you need to heal."</p>
+            <p>Yes, but softer wording often works better: "Take the time you need to heal" or "Wishing you rest and comfort."</p>
           </details>
           <details>
             <summary>What should I say instead of get well soon?</summary>
@@ -341,9 +517,7 @@ ${renderTopicGrid()}
       </section>
     </main>
 
-    <footer class="site-footer">
-      <p>${escapeHtml(siteName)} helps you write thoughtful notes. It is writing guidance, not medical advice.</p>
-    </footer>
+${renderFooter()}
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>
     <script src="${assetHref("script.js")}"></script>
@@ -643,10 +817,7 @@ ${renderTrustInfo()}
       </section>
     </main>
 
-    <footer class="site-footer">
-      <p>${escapeHtml(siteName)} provides writing guidance for thoughtful notes. Not medical advice.</p>
-      <p><a href="../">Back to message finder</a></p>
-    </footer>
+${renderFooter({ prefix: "../", homeHref: "../" })}
     <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>
     <script src="../${assetHref("script.js")}"></script>
   </body>
@@ -671,18 +842,17 @@ function renderSearchIndex() {
 
 function renderSitemap() {
   const urls = [
-    { loc: `${baseUrl}/`, priority: "1.0" },
-    ...pages.map((page) => ({ loc: pageUrl(page.slug), priority: "0.8" }))
+    `${baseUrl}/`,
+    ...pages.map((page) => pageUrl(page.slug)),
+    ...infoPages.map((page) => infoPageUrl(page.slug))
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
   .map((url) => `  <url>
-    <loc>${url.loc}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>${url.priority}</priority>
+    <loc>${url}</loc>
+    <lastmod>${contentDate}</lastmod>
   </url>`)
   .join("\n")}
 </urlset>
@@ -717,6 +887,44 @@ https://www.${host}/* ${baseUrl}/:splat 301!
 `;
 }
 
+function renderInfoPage(page) {
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${escapeHtml(page.title)} | ${escapeHtml(siteName)}</title>
+    <meta name="description" content="${escapeHtml(page.description)}">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="${infoPageUrl(page.slug)}">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../${assetHref("styles.css")}">
+${renderAnalytics()}
+  </head>
+  <body>
+${renderHeader()}
+    <main>
+      <section class="info-hero">
+        <p class="eyebrow">${escapeHtml(page.eyebrow)}</p>
+        <h1>${escapeText(page.title)}</h1>
+        <p>${escapeHtml(page.intro)}</p>
+      </section>
+
+      <section class="info-content">
+        ${page.sections
+          .map((section) => `<article>
+          <h2>${escapeHtml(section.title)}</h2>
+          <p>${escapeHtml(section.body)}</p>
+        </article>`)
+          .join("\n        ")}
+      </section>
+    </main>
+${renderFooter({ prefix: "../", homeHref: "../" })}
+  </body>
+</html>
+`;
+}
+
 function renderNotFoundPage() {
   const featured = pages.slice(0, 6);
 
@@ -747,10 +955,7 @@ ${renderRootHeader({ homeHref: `${baseUrl}/`, sectionBase: `${baseUrl}/` })}
         </div>
       </section>
     </main>
-    <footer class="site-footer">
-      <p>Writing guidance for thoughtful notes. Not medical advice.</p>
-      <p><a href="${baseUrl}/">Back home</a></p>
-    </footer>
+${renderFooter({ prefix: `${baseUrl}/`, homeHref: `${baseUrl}/` })}
   </body>
 </html>
 `;
@@ -790,6 +995,12 @@ function writePages() {
     fs.writeFileSync(path.join(dir, "index.html"), renderPage(page));
   }
 
+  for (const page of infoPages) {
+    const dir = path.join(dist, page.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, "index.html"), renderInfoPage(page));
+  }
+
   fs.writeFileSync(path.join(dist, "404.html"), renderNotFoundPage());
   fs.writeFileSync(path.join(dist, "_headers"), renderHeaders());
   fs.writeFileSync(path.join(dist, "_redirects"), renderRedirects());
@@ -799,4 +1010,4 @@ function writePages() {
 }
 
 writePages();
-console.log(`Generated dist with homepage, ${pages.length} article pages, 404.html, _headers, _redirects, robots.txt, search-index.json, and sitemap.xml`);
+console.log(`Generated dist with homepage, ${pages.length} article pages, ${infoPages.length} info pages, 404.html, _headers, _redirects, robots.txt, search-index.json, and sitemap.xml`);

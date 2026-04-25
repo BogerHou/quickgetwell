@@ -3,7 +3,7 @@ const pages = [
     slug: "get-well-soon-messages",
     title: "Get Well Soon Messages",
     eyebrow: "Main collection",
-    description: "Copy-ready get well soon messages for cards, texts, friends, family, coworkers, surgery recovery, serious illness, funny notes, and short wishes.",
+    description: "Find thoughtful get well soon messages for texts, cards, work notes, family support, surgery recovery, and sensitive situations.",
     summary: "The main collection of thoughtful messages by tone and situation.",
     intro: "Start here if you need a message fast. Choose a short, warm, funny, professional, or careful note, then add one personal detail so it sounds like you.",
     nav: "All messages",
@@ -32,7 +32,7 @@ const pages = [
         id: "work",
         title: "Professional get well soon messages",
         messages: [
-          "Wishing you a smooth recovery and a restful time away. Please take the time you need to feel better.",
+          "Wishing you rest, comfort, and a calm time away. Please take the time you need to feel better.",
           "The team is thinking of you and wishing you comfort, rest, and steady progress.",
           "We miss having you around, but your health comes first. Looking forward to seeing you when you are ready."
         ]
@@ -52,9 +52,23 @@ const pages = [
         intro: "Use humor only when the illness is minor and you know the person will enjoy it.",
         messages: [
           "Get well soon. Your germs have made their point.",
-          "Please recover quickly. I am being forced to make my own decisions and it is not going well.",
+          "Please feel better soon. I am being forced to make my own decisions and it is not going well.",
           "Feel better soon. The world needs your nonsense back in circulation."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What is a simple get well soon message?",
+        answer: "Try: Thinking of you and hoping today feels a little easier. It is short, kind, and does not pressure the person to reply."
+      },
+      {
+        question: "How do I choose the right get well message?",
+        answer: "Match the message to the relationship and seriousness of the illness. Use short and warm for casual notes, practical support for close relationships, and careful wording for serious illness."
+      },
+      {
+        question: "What should I avoid in a get well soon message?",
+        answer: "Avoid forced positivity, medical predictions, pressure to recover quickly, and jokes unless you know the person will welcome humor."
       }
     ],
     dos: ["Match the message to the situation.", "Add one personal detail or offer of help.", "Use no need to reply when the person may be tired."],
@@ -65,7 +79,7 @@ const pages = [
     slug: "get-well-soon-messages-after-surgery",
     title: "Get Well Soon Messages After Surgery",
     eyebrow: "After surgery",
-    description: "Thoughtful get well soon messages after surgery, including short texts, card notes, professional messages, and wording that does not rush recovery.",
+    description: "Thoughtful get well soon messages after surgery that offer calm support without rushing recovery.",
     summary: "Careful recovery wording that does not rush healing.",
     intro: "After surgery, the safest message is calm, patient, and practical. A good note acknowledges the procedure, leaves recovery unrushed, and offers help that does not require a reply.",
     nav: "After surgery",
@@ -135,7 +149,7 @@ const pages = [
         id: "quick",
         title: "Quick professional messages",
         messages: [
-          "Wishing you a smooth recovery and a restful time away. Please take the time you need to feel better.",
+          "Wishing you a restful recovery and time away without pressure. Please take the time you need.",
           "We miss having you around, but your health comes first. Wishing you rest and steady progress.",
           "Sending warm thoughts your way. I hope you feel supported and have the space to recover fully.",
           "Hope you are able to rest and recover comfortably. Looking forward to seeing you when you are ready."
@@ -156,9 +170,23 @@ const pages = [
         intro: "Use humor only if you know the coworker well and the illness is not serious.",
         messages: [
           "Get well soon. The office tried replacing your jokes and the results were deeply concerning.",
-          "Please recover quickly. Your coffee mug is starting to look abandoned.",
+          "Your coffee mug is starting to look abandoned. Hope you get the rest you need.",
           "The team needs your professional eye-roll back in meetings. Feel better soon."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "How do I write a get well message for a coworker without adding work pressure?",
+        answer: "Keep it short, warm, and separate from deadlines. Say the team is thinking of them, and avoid anything that sounds like you need them back soon."
+      },
+      {
+        question: "Can I send a get well message in Slack or Teams?",
+        answer: "Yes. Use one or two sentences, avoid private medical questions, and add no need to reply if they may be tired."
+      },
+      {
+        question: "What should a team card say?",
+        answer: "Use shared support rather than workplace urgency: The team is thinking of you, please take the time you need, and we hope you feel cared for."
       }
     ],
     dos: ["Keep the note short and kind.", "Say the team is thinking of them.", "Respect privacy around the diagnosis."],
@@ -169,7 +197,7 @@ const pages = [
     slug: "get-well-soon-messages-for-friend",
     title: "Get Well Soon Messages for a Friend",
     eyebrow: "Friendship notes",
-    description: "Warm, short, funny, and supportive get well soon messages for a friend, including texts, cards, surgery recovery, and long recovery wording.",
+    description: "Warm get well soon messages for a friend, with casual texts, supportive notes, and gentle humor when it fits.",
     summary: "Casual, sincere, funny, and supportive messages.",
     intro: "A friend message can be warmer and more personal. The trick is to sound like yourself, not like a greeting card aisle.",
     nav: "For a friend",
@@ -204,6 +232,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I text a sick friend?",
+        answer: "Use a friendly, low-pressure note: No need to reply. Just wanted you to know I am thinking of you and sending love."
+      },
+      {
+        question: "How can I make a get well message for a friend feel personal?",
+        answer: "Sound like yourself and offer something real, such as food, errands, a ride, a distraction, or quiet company."
+      },
+      {
+        question: "Can I send a funny get well message to a friend?",
+        answer: "Yes, if the illness is minor and humor is normal between you. Keep the joke affectionate and away from pain or diagnosis."
+      }
+    ],
     dos: ["Sound like yourself.", "Offer a specific way to help.", "Let them be honest if the day is hard."],
     donts: ["Do not force positivity.", "Do not make the message about your anxiety.", "Do not ask for updates every day."],
     related: ["funny-get-well-soon-messages", "what-to-say-instead-of-get-well-soon", "get-well-soon-messages-after-surgery"]
@@ -212,7 +254,7 @@ const pages = [
     slug: "funny-get-well-soon-messages",
     title: "Funny Get Well Soon Messages",
     eyebrow: "Light humor",
-    description: "Funny get well soon messages that are light, kind, and safe for friends, coworkers, cards, texts, and minor illness recovery.",
+    description: "Funny get well soon messages that keep the joke light, kind, and appropriate for minor illness or close relationships.",
     summary: "Light humor that still feels kind.",
     intro: "Funny works when the illness is minor, the relationship is close, and the joke makes them feel remembered rather than minimized.",
     nav: "Funny messages",
@@ -222,7 +264,7 @@ const pages = [
         title: "Quick funny messages",
         messages: [
           "Get well soon. Your germs have made their point.",
-          "Please recover quickly. Being nice to you while you are sick is exhausting.",
+          "Please feel better soon. Being nice to you while you are sick is exhausting.",
           "Feel better soon. I have saved several jokes that are only funny if you are here to hear them.",
           "Get well soon. The world needs your nonsense back in circulation."
         ]
@@ -242,8 +284,22 @@ const pages = [
         messages: [
           "Get well soon. Someone scheduled a meeting that should have been an email, and we need your reaction.",
           "The office tried to function without you. We have notes. Feel better soon.",
-          "Your chair looks too peaceful without you. Wishing you a quick recovery."
+          "Your chair looks too peaceful without you. Hope you get plenty of rest."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "When is a funny get well soon message appropriate?",
+        answer: "Use humor when the illness is minor, the relationship is close, and the person usually enjoys that kind of joke."
+      },
+      {
+        question: "What makes a funny get well message feel kind?",
+        answer: "Make the joke about the situation, boredom, soup, germs, or missing their personality. Do not joke about pain, fear, or diagnosis."
+      },
+      {
+        question: "Can I send a funny message to a coworker?",
+        answer: "Only if you know them well. For most workplace notes, keep the message friendly, brief, and free of sarcasm."
       }
     ],
     dos: ["Use humor when you know their style.", "Keep the joke affectionate.", "Switch to warmth if the illness is serious."],
@@ -254,7 +310,7 @@ const pages = [
     slug: "short-get-well-soon-messages",
     title: "Short Get Well Soon Messages",
     eyebrow: "One-line notes",
-    description: "Short get well soon messages for texts, cards, flowers, gift notes, coworkers, friends, family, and serious illness support.",
+    description: "Short get well soon messages for texts, cards, flowers, and quick notes that still feel warm.",
     summary: "One-line texts, card notes, and gift tags.",
     intro: "Short works when the channel is small, like a text, flower card, group card, Slack note, or gift tag. The best short message still feels personal.",
     nav: "Short messages",
@@ -266,7 +322,7 @@ const pages = [
           "Feel better soon. I am thinking of you.",
           "Sending comfort and steady healing your way.",
           "Rest well. I hope today is easier.",
-          "Wishing you a smooth recovery.",
+          "Wishing you comfort and steady rest.",
           "Thinking of you and sending love."
         ]
       },
@@ -289,6 +345,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What is the shortest get well soon message?",
+        answer: "Feel better soon. I am thinking of you. This works well for a text, flower card, or quick note."
+      },
+      {
+        question: "How do I make a short message feel warm?",
+        answer: "Add one personal detail or a low-pressure line, such as no need to reply or I am here if you need anything."
+      },
+      {
+        question: "Are short messages okay for serious illness?",
+        answer: "Yes, if the wording is careful. Use presence-focused lines like I am thinking of you today or I am here with you through this."
+      }
+    ],
     dos: ["Keep it clear.", "Add no need to reply when appropriate.", "Use warmer wording for close relationships."],
     donts: ["Do not be vague if you can be kind.", "Do not make a short note sound cold.", "Do not use cheerful cliches for serious illness."],
     related: ["get-well-soon-messages-after-surgery", "get-well-soon-messages-for-serious-illness", "what-to-say-instead-of-get-well-soon"]
@@ -297,7 +367,7 @@ const pages = [
     slug: "what-to-say-instead-of-get-well-soon",
     title: "Alternative to \"Get Well Soon\"",
     eyebrow: "Safer wording",
-    description: "Alternatives to get well soon for chronic illness, serious illness, cancer, long recovery, mental health, and situations where quick recovery wording feels wrong.",
+    description: "Alternatives to get well soon for chronic illness, serious illness, cancer, long recovery, mental health, and situations where simple recovery wishes feel wrong.",
     summary: "Better wording for chronic or serious illness.",
     intro: "When recovery is uncertain, long, chronic, or emotionally heavy, get well soon can sound too neat. Use language that offers support without pretending the situation is simple.",
     nav: "Instead of get well soon",
@@ -358,7 +428,7 @@ const pages = [
     slug: "get-well-soon-messages-for-serious-illness",
     title: "Get Well Soon Messages for Serious Illness",
     eyebrow: "Careful support",
-    description: "Supportive get well messages for serious illness, including safer wording, card notes, texts, and what not to say when recovery is uncertain.",
+    description: "Supportive get well messages for serious illness when recovery is uncertain and ordinary wishes feel too simple.",
     summary: "Supportive language when optimism needs restraint.",
     intro: "For serious illness, the goal is not to fix the feeling or explain the situation. The goal is to show up without pressure, false certainty, or cheerful shortcuts.",
     nav: "Serious illness",
@@ -418,7 +488,7 @@ const pages = [
     slug: "get-well-soon-messages-for-family",
     title: "Get Well Soon Messages for Family",
     eyebrow: "Family support",
-    description: "Get well soon messages for family members, including warm texts, card notes, surgery recovery wishes, and serious illness support.",
+    description: "Warm get well soon messages for family members when you want to offer love, practical help, and steady support.",
     summary: "Warm messages for relatives, home care, and family cards.",
     intro: "Family messages can be direct and steady. Say they are loved, name the support around them, and avoid making them manage everyone else's worry.",
     nav: "For family",
@@ -452,6 +522,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I say to a sick family member?",
+        answer: "Say they are loved, remind them they do not have to manage everyone else's worry, and offer one practical way you can help."
+      },
+      {
+        question: "How do I write a family get well card from everyone?",
+        answer: "Use a shared voice: We love you, we are thinking of you, and we are here for meals, rides, calls, or anything that makes recovery easier."
+      },
+      {
+        question: "What should I avoid in a family illness message?",
+        answer: "Avoid guilt about missed events, pressure to recover quickly, and messages that make the person comfort the rest of the family."
+      }
+    ],
     dos: ["Say we or I clearly.", "Offer help with meals, rides, or home tasks.", "Let them rest without updating everyone."],
     donts: ["Do not make them comfort the family.", "Do not push a fast recovery.", "Do not use guilt about missed events."],
     related: ["get-well-soon-messages-for-mom", "get-well-soon-messages-for-dad", "get-well-soon-messages-for-serious-illness"]
@@ -460,7 +544,7 @@ const pages = [
     slug: "get-well-soon-messages-for-mom",
     title: "Get Well Soon Messages for Mom",
     eyebrow: "For mom",
-    description: "Loving get well soon messages for mom, including short texts, heartfelt card notes, surgery recovery wishes, and supportive messages.",
+    description: "Loving get well soon messages for mom that tell her to rest, feel cared for, and stop worrying about everyone else.",
     summary: "Loving notes for the person who usually cares for everyone else.",
     intro: "A message for mom can acknowledge the role she usually plays while making it clear she does not need to care for anyone right now.",
     nav: "For mom",
@@ -489,9 +573,23 @@ const pages = [
         title: "After surgery",
         messages: [
           "Mom, I am grateful the surgery is behind you. Take every day slowly and let your body heal.",
-          "Wishing you a smooth recovery and peaceful rest. I love you more than I can fit in a card.",
+          "Wishing you peaceful rest and all the care you deserve. I love you more than I can fit in a card.",
           "You do not have to rush back to normal. We are here, and we love you."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What is a good get well message for mom?",
+        answer: "A good message tells her she is loved and that she does not need to take care of anyone right now: Mom, I love you. Please rest and let us care for you."
+      },
+      {
+        question: "What can I write to my mom after surgery?",
+        answer: "Keep it gentle and reassuring. Say you are grateful the surgery is behind her, then offer help with food, calls, errands, or quiet company."
+      },
+      {
+        question: "How do I make a message for mom more personal?",
+        answer: "Mention something she usually does for others, then turn that care back toward her. For example, tell her it is your turn to look after the small things."
       }
     ],
     dos: ["Make the love explicit.", "Tell her she does not need to manage anyone.", "Offer concrete help."],
@@ -502,7 +600,7 @@ const pages = [
     slug: "get-well-soon-messages-for-dad",
     title: "Get Well Soon Messages for Dad",
     eyebrow: "For dad",
-    description: "Get well soon messages for dad, including short notes, heartfelt wishes, surgery recovery messages, and steady support.",
+    description: "Steady get well soon messages for dad when you want to show love, respect, and practical support without overdoing it.",
     summary: "Steady, warm messages for dad during recovery.",
     intro: "A message for dad does not need to be elaborate. Steady affection, respect, and practical support usually land best.",
     nav: "For dad",
@@ -536,6 +634,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I write in a get well card for dad?",
+        answer: "Use steady, plain language: Dad, I am thinking of you, I love you, and I am here for anything that would make this easier."
+      },
+      {
+        question: "How do I support a dad who does not like emotional messages?",
+        answer: "Keep the note short and practical. Offer rides, meals, errands, or help at home, and let the love show through what you are willing to do."
+      },
+      {
+        question: "What should I avoid saying to dad during recovery?",
+        answer: "Avoid pressuring him to be tough, joking when he seems worried, or making him feel he has to minimize pain for everyone else."
+      }
+    ],
     dos: ["Keep the wording steady.", "Make support practical.", "Respect privacy if he is not expressive."],
     donts: ["Do not pressure him to be tough.", "Do not joke if he seems worried.", "Do not skip saying love if you mean it."],
     related: ["get-well-soon-messages-for-family", "get-well-soon-messages-after-surgery", "get-well-soon-messages-for-serious-illness"]
@@ -544,7 +656,7 @@ const pages = [
     slug: "get-well-soon-messages-for-boss",
     title: "Get Well Soon Messages for Boss",
     eyebrow: "Professional support",
-    description: "Professional get well soon messages for a boss or manager, including emails, cards, team notes, and surgery recovery wishes.",
+    description: "Professional get well soon messages for a boss or manager that sound respectful and avoid work pressure.",
     summary: "Respectful messages for managers and team leaders.",
     intro: "A message to a boss should be respectful and calm. It can be warm, but it should not create work pressure or invite private medical details.",
     nav: "For boss",
@@ -553,17 +665,17 @@ const pages = [
         id: "quick",
         title: "Quick professional messages",
         messages: [
-          "Wishing you a smooth recovery and plenty of rest. Please take care of yourself.",
+          "Wishing you a steady recovery and plenty of rest. Please take care of yourself.",
           "I am sorry to hear you have been unwell. Sending best wishes for a steady recovery.",
           "Hope you are able to rest and feel better soon. The team is thinking of you.",
-          "Wishing you comfort, rest, and a full recovery in your own time."
+          "Wishing you comfort, rest, and recovery in your own time."
         ]
       },
       {
         id: "team",
         title: "From the team",
         messages: [
-          "The team is thinking of you and wishing you a smooth recovery. Please take the time you need.",
+          "The team is thinking of you and wishing you a restful recovery. Please take the time you need.",
           "We appreciate everything you do and hope you are getting the rest you need to recover well.",
           "Sending warm wishes from all of us. We look forward to seeing you when you are ready."
         ]
@@ -574,8 +686,22 @@ const pages = [
         messages: [
           "Wishing you a steady recovery after surgery. Please focus on rest and healing.",
           "I hope each day after your procedure brings more comfort and strength.",
-          "Sending best wishes for a smooth recovery and a restful time away."
+          "Sending best wishes for rest, comfort, and an unhurried return."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "How formal should a get well message to a boss be?",
+        answer: "Use a respectful tone and keep it brief. Warmth is fine, but avoid private questions, jokes, or anything that mentions work pressure."
+      },
+      {
+        question: "Can the team sign one get well card for a manager?",
+        answer: "Yes. A group note works well if it focuses on care and rest: The team is thinking of you, and we hope you can take the time you need."
+      },
+      {
+        question: "What should I avoid saying to my boss?",
+        answer: "Do not mention urgent decisions, deadlines, coverage gaps, or questions about what happened medically."
       }
     ],
     dos: ["Keep it professional.", "Say the team is thinking of them.", "Avoid work reminders."],
@@ -586,7 +712,7 @@ const pages = [
     slug: "get-well-soon-messages-for-client",
     title: "Get Well Soon Messages for Client",
     eyebrow: "Client wording",
-    description: "Simple and professional get well soon messages for clients, customers, business contacts, and formal emails.",
+    description: "Professional get well soon messages for clients that stay respectful, brief, and free of business pressure.",
     summary: "Simple, polished messages for clients and business contacts.",
     intro: "A client message should be brief, polished, and respectful. It should not pry or create an obligation to respond.",
     nav: "For client",
@@ -595,7 +721,7 @@ const pages = [
         id: "quick",
         title: "Quick client messages",
         messages: [
-          "I am sorry to hear you have been unwell. Wishing you a smooth recovery and better days ahead.",
+          "I am sorry to hear you have been unwell. Wishing you rest, comfort, and better days ahead.",
           "Sending warm thoughts and best wishes for your recovery.",
           "I hope you are able to rest and recover comfortably.",
           "Please accept my best wishes for comfort, rest, and steady healing."
@@ -620,6 +746,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "How formal should a get well message to a client be?",
+        answer: "Keep it brief, polished, and respectful. Acknowledge that you heard they were unwell, wish them comfort, and avoid asking for details."
+      },
+      {
+        question: "Can I mention business timing in a client get well email?",
+        answer: "Only to remove pressure. Say there is no rush on your side or that you can revisit outstanding items when the timing is better."
+      },
+      {
+        question: "What should I avoid in a client get well message?",
+        answer: "Avoid casual jokes, private medical questions, urgency around work, and language that sounds too intimate for the relationship."
+      }
+    ],
     dos: ["Be concise.", "Avoid personal questions.", "Make business timing flexible if relevant."],
     donts: ["Do not ask for details.", "Do not sound casual unless the relationship is casual.", "Do not imply work urgency."],
     related: ["get-well-soon-messages-for-boss", "short-get-well-soon-messages", "get-well-soon-messages-for-serious-illness"]
@@ -628,7 +768,7 @@ const pages = [
     slug: "get-well-soon-messages-for-boyfriend",
     title: "Get Well Soon Messages for Boyfriend",
     eyebrow: "Romantic support",
-    description: "Sweet and supportive get well soon messages for your boyfriend, including short texts, heartfelt notes, funny messages, and surgery recovery wishes.",
+    description: "Sweet get well soon messages for your boyfriend that mix affection, practical care, and space to rest.",
     summary: "Sweet, practical, and affectionate messages for him.",
     intro: "A message for your boyfriend can be loving without becoming dramatic. Mix affection with practical care and permission to rest.",
     nav: "For boyfriend",
@@ -662,6 +802,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I text my boyfriend when he is sick?",
+        answer: "Send something affectionate and low pressure: I love you. No need to reply. Rest up and let me handle the little things."
+      },
+      {
+        question: "How do I write a message for my boyfriend after surgery?",
+        answer: "Say you are glad surgery is behind him, encourage slow recovery, and offer specific help like food, errands, or company."
+      },
+      {
+        question: "Can a get well message for my boyfriend be funny?",
+        answer: "Yes, if he is dealing with a minor illness or already joking. If he is scared, in pain, or recovering from surgery, keep it tender."
+      }
+    ],
     dos: ["Be affectionate.", "Offer practical care.", "Let him rest without performing confidence."],
     donts: ["Do not make him reassure you.", "Do not pressure him to reply.", "Do not turn pain into a joke unless he does first."],
     related: ["get-well-soon-messages-after-surgery", "funny-get-well-soon-messages", "short-get-well-soon-messages"]
@@ -670,7 +824,7 @@ const pages = [
     slug: "get-well-soon-messages-for-girlfriend",
     title: "Get Well Soon Messages for Girlfriend",
     eyebrow: "Romantic support",
-    description: "Sweet and thoughtful get well soon messages for your girlfriend, including short texts, heartfelt notes, funny messages, and recovery wishes.",
+    description: "Thoughtful get well soon messages for your girlfriend that feel tender, specific, and easy to receive.",
     summary: "Tender messages for comfort, care, and recovery.",
     intro: "A message for your girlfriend should feel personal. Be tender, be specific, and make it clear she does not need to be cheerful for you.",
     nav: "For girlfriend",
@@ -704,6 +858,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I say to my girlfriend when she is sick?",
+        answer: "Use a tender, specific line: I love you. No need to reply. I hope today feels softer and I am here for anything you need."
+      },
+      {
+        question: "How do I make a message for my girlfriend feel less generic?",
+        answer: "Mention what you can actually do for her, such as bringing food, handling an errand, calling later, or giving her quiet space."
+      },
+      {
+        question: "What should I avoid saying to my girlfriend during recovery?",
+        answer: "Avoid minimizing how she feels, asking her to stay cheerful for you, or making your worry something she has to manage."
+      }
+    ],
     dos: ["Use her name if it feels natural.", "Offer specific care.", "Make room for hard feelings."],
     donts: ["Do not minimize the illness.", "Do not overpromise a fast recovery.", "Do not make the note generic."],
     related: ["get-well-soon-messages-after-surgery", "what-to-say-instead-of-get-well-soon", "short-get-well-soon-messages"]
@@ -721,7 +889,7 @@ const pages = [
         id: "quick",
         title: "Quick religious messages",
         messages: [
-          "Praying for comfort, strength, and steady healing today.",
+          "Praying for comfort, strength, and peace today.",
           "May God surround you with peace, rest, and care as you recover.",
           "You are in my prayers. May each day bring more comfort.",
           "Praying that you feel held, loved, and strengthened through this."
@@ -740,10 +908,24 @@ const pages = [
         id: "surgery",
         title: "After surgery",
         messages: [
-          "Praying for a smooth recovery and renewed strength after surgery.",
+          "Praying for peace, patience, and support after surgery.",
           "May God stay close to you and bring peace to each day of recovery.",
           "Thankful your surgery is behind you and praying for comfort as you rest."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "When is a religious get well message appropriate?",
+        answer: "Use one when faith is already part of the relationship or you know the person welcomes religious language."
+      },
+      {
+        question: "How do I keep a faith-based message comforting?",
+        answer: "Pray for peace, strength, care, and support. Avoid explaining why the illness happened or implying the person needs more faith."
+      },
+      {
+        question: "Can I send a religious message after surgery?",
+        answer: "Yes, if it fits the relationship. Keep it gentle and focused on comfort, patience, and the people caring for them."
       }
     ],
     dos: ["Use faith language they share.", "Pray for comfort, strength, and peace.", "Keep the message gentle."],
@@ -756,26 +938,26 @@ const pages = [
     eyebrow: "Prayer wording",
     description: "Get well soon prayers for healing, comfort, surgery recovery, serious illness, family, friends, and cards.",
     summary: "Prayer wording for healing, peace, and strength.",
-    intro: "A prayer can be short and sincere. Focus on comfort, healing, wisdom for caregivers, and peace for the person recovering.",
+    intro: "A prayer can be short and sincere. Focus on comfort, care, wisdom for caregivers, and peace for the person recovering.",
     nav: "Prayers",
     sections: [
       {
         id: "short",
         title: "Short get well prayers",
         messages: [
-          "Lord, bring comfort, rest, and steady healing today. Amen.",
+          "Lord, bring comfort, rest, and steady support today. Amen.",
           "God, please surround them with peace and strength as they recover. Amen.",
-          "May healing come gently, and may they feel loved through every hour. Amen.",
-          "Lord, ease their pain and renew their strength. Amen."
+          "May they feel loved, cared for, and less alone through every hour. Amen.",
+          "Lord, bring calm to painful moments and strength for today. Amen."
         ]
       },
       {
         id: "surgery",
         title: "Prayers after surgery",
         messages: [
-          "God, thank you for bringing them through surgery. Please guide their recovery with peace, patience, and strength. Amen.",
-          "Lord, help their body heal, help their mind rest, and bless everyone caring for them. Amen.",
-          "May each recovery day bring more comfort and less fear. Amen."
+          "God, thank you for the care they have received. Please bring peace, patience, and strength for the days ahead. Amen.",
+          "Lord, help their mind rest and bless everyone caring for them. Amen.",
+          "May today bring more comfort, less fear, and the support they need. Amen."
         ]
       },
       {
@@ -788,6 +970,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should a get well prayer focus on?",
+        answer: "Focus on comfort, peace, strength, caregivers, and practical support. Avoid making promises about outcomes."
+      },
+      {
+        question: "Can I write a short prayer in a card?",
+        answer: "Yes. One or two sincere lines are enough, especially if the person is tired or the card space is small."
+      },
+      {
+        question: "What should I avoid in a prayer for serious illness?",
+        answer: "Avoid explaining the illness, blaming faith, or making the person feel responsible for staying hopeful."
+      }
+    ],
     dos: ["Pray for comfort and care.", "Keep the prayer simple.", "Respect the person's beliefs."],
     donts: ["Do not make theological claims about why they are sick.", "Do not promise a miracle.", "Do not use prayer to avoid practical help."],
     related: ["religious-get-well-soon-messages", "get-well-soon-messages-for-serious-illness", "get-well-soon-messages-after-surgery"]
@@ -796,7 +992,7 @@ const pages = [
     slug: "get-well-soon-card-messages",
     title: "Get Well Soon Card Messages",
     eyebrow: "Card wording",
-    description: "Get well soon card messages for friends, family, coworkers, surgery recovery, serious illness, flowers, and group cards.",
+    description: "Get well soon card messages that fit handwritten notes, group cards, flowers, and recovery gifts.",
     summary: "Messages that fit handwritten cards and gift notes.",
     intro: "A card gives you more room than a text, but it still needs restraint. Write one clear message, then add a personal line.",
     nav: "Card messages",
@@ -830,6 +1026,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I write in a get well soon card?",
+        answer: "Write one warm sentence, add a personal line, and close with support. For example: Thinking of you and wishing you comfort, rest, and good care."
+      },
+      {
+        question: "How long should a get well card message be?",
+        answer: "Two to four sentences is usually enough. For a small flower card or group card, one sincere line can be better than a long paragraph."
+      },
+      {
+        question: "What should a group get well card say?",
+        answer: "Use shared support without pressure: We are thinking of you, we hope you can rest, and we are sending warm wishes from all of us."
+      }
+    ],
     dos: ["Add one personal detail.", "Write clearly enough to read by hand.", "Match the card tone to the illness."],
     donts: ["Do not fill the whole card with filler.", "Do not choose a joke card for serious illness.", "Do not ask for a reply."],
     related: ["short-get-well-soon-messages", "get-well-soon-text-messages", "get-well-soon-messages-after-surgery"]
@@ -838,7 +1048,7 @@ const pages = [
     slug: "get-well-soon-text-messages",
     title: "Get Well Soon Text Messages",
     eyebrow: "Texts",
-    description: "Get well soon text messages that are short, warm, easy to copy, and suitable for friends, family, coworkers, surgery recovery, and serious illness.",
+    description: "Get well soon text messages that are short, warm, easy to copy, and low pressure for the person receiving them.",
     summary: "Copy-ready texts for quick check-ins.",
     intro: "A text should be easy to receive. Keep it short, remove pressure to reply, and offer one concrete form of support if you can.",
     nav: "Text messages",
@@ -872,6 +1082,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What is a good get well soon text?",
+        answer: "Try: No need to reply. I just wanted you to know I am thinking of you and hoping today feels easier."
+      },
+      {
+        question: "Should I add no need to reply?",
+        answer: "Yes when the person may be tired, in treatment, recovering from surgery, or overwhelmed. It makes the text easier to receive."
+      },
+      {
+        question: "How often should I text someone who is sick?",
+        answer: "Check in lightly and avoid asking for updates every day. A low-pressure message every few days can feel supportive without becoming another task."
+      }
+    ],
     dos: ["Keep it easy to receive.", "Say no need to reply.", "Offer one specific help option."],
     donts: ["Do not send a wall of text.", "Do not ask for medical updates repeatedly.", "Do not use too many cheerful slogans."],
     related: ["short-get-well-soon-messages", "what-to-say-instead-of-get-well-soon", "get-well-soon-card-messages"]
@@ -880,7 +1104,7 @@ const pages = [
     slug: "get-well-soon-messages-for-hospital-stay",
     title: "Get Well Soon Messages for a Hospital Stay",
     eyebrow: "Hospital stay",
-    description: "Get well soon messages for someone in the hospital, including texts, card notes, flower messages, and supportive wording.",
+    description: "Get well soon messages for someone in the hospital that feel calm, private, and easy to receive.",
     summary: "Comforting notes for hospital rooms, flowers, and texts.",
     intro: "Hospital messages should feel calm and low-pressure. They should offer comfort without asking for medical details, constant updates, or visitor access.",
     nav: "Hospital stay",
@@ -940,7 +1164,7 @@ const pages = [
     slug: "get-well-soon-messages-for-injury",
     title: "Get Well Soon Messages for Injury",
     eyebrow: "Injury recovery",
-    description: "Get well soon messages for injury recovery, including broken bones, sports injuries, accidents, surgery, and frustrating healing timelines.",
+    description: "Get well soon messages for injury recovery that acknowledge pain, frustration, and slow physical healing.",
     summary: "Messages for injuries, accidents, and physical recovery.",
     intro: "Injury recovery can be frustrating because progress is visible but slow. A good message acknowledges the annoyance and offers practical help.",
     nav: "Injury recovery",
@@ -952,7 +1176,7 @@ const pages = [
           "I know recovery from an injury can be frustrating. Hoping today brings a little more comfort.",
           "Wishing you steady healing and fewer annoying limitations each day.",
           "Rest up and let your body do its repair work.",
-          "Hope the pain eases soon and recovery feels less slow."
+          "Hope today feels a little easier and the recovery routine is less frustrating."
         ]
       },
       {
@@ -960,7 +1184,7 @@ const pages = [
         title: "Funny injury messages",
         messages: [
           "Heal up soon. I will save the jokes until you are cleared for laughing.",
-          "Please recover quickly. Your dramatic comeback story needs a strong ending.",
+          "Please rest dramatically. Your comeback story needs a strong ending.",
           "Get well soon. I assume this was all part of your plan to avoid chores."
         ]
       },
@@ -969,9 +1193,23 @@ const pages = [
         title: "Supportive injury messages",
         messages: [
           "If you need rides, groceries, or help with anything awkward while you recover, I am in.",
-          "You do not have to rush healing. I hope each day brings more movement and less pain.",
+          "You do not have to rush healing. I hope each day feels a little more manageable.",
           "Sending patience for the boring parts and strength for the painful parts."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What is a good message for someone recovering from an injury?",
+        answer: "Acknowledge that recovery can be frustrating, wish them patience and comfort, and offer practical help with errands, rides, or tasks."
+      },
+      {
+        question: "Is humor okay in an injury get well message?",
+        answer: "Only if the injury is not severe and you know they enjoy that kind of humor. Keep the joke about the inconvenience, not their pain."
+      },
+      {
+        question: "What should I avoid saying after an accident?",
+        answer: "Do not make them retell what happened, compare injuries, or say it could have been worse."
       }
     ],
     dos: ["Acknowledge frustration.", "Offer help with mobility or errands.", "Use humor only if the injury is not severe."],
@@ -982,7 +1220,7 @@ const pages = [
     slug: "get-well-soon-messages-for-grandma",
     title: "Get Well Soon Messages for Grandma",
     eyebrow: "For grandma",
-    description: "Sweet get well soon messages for grandma, including short texts, heartfelt card notes, surgery recovery wishes, and serious illness support.",
+    description: "Gentle get well soon messages for grandma that send love, patience, and comfort while she rests.",
     summary: "Gentle, loving notes for grandma during recovery.",
     intro: "A message for grandma should feel warm and steady. Say she is loved, avoid making her worry about everyone else, and offer practical care if you can.",
     nav: "For grandma",
@@ -1016,6 +1254,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I write to my grandma when she is sick?",
+        answer: "Keep it warm and simple. Tell her she is loved, that you are thinking of her, and that she does not need to worry about anyone else."
+      },
+      {
+        question: "How do I make a get well message for grandma feel heartfelt?",
+        answer: "Mention the care she has given your family, then say you hope she feels that same care coming back to her now."
+      },
+      {
+        question: "What should I avoid in a message for grandma?",
+        answer: "Avoid asking for frequent updates, making her reassure you, or using language that rushes her recovery."
+      }
+    ],
     dos: ["Use warm family language.", "Tell her she does not need to worry about others.", "Offer help with calls, errands, or meals."],
     donts: ["Do not make her comfort you.", "Do not pressure her to recover quickly.", "Do not ask for too many updates."],
     related: ["get-well-soon-messages-for-family", "get-well-soon-messages-for-mom", "get-well-soon-messages-after-surgery"]
@@ -1024,7 +1276,7 @@ const pages = [
     slug: "get-well-soon-messages-for-grandpa",
     title: "Get Well Soon Messages for Grandpa",
     eyebrow: "For grandpa",
-    description: "Thoughtful get well soon messages for grandpa, including short notes, heartfelt card messages, surgery wishes, and steady support.",
+    description: "Thoughtful get well soon messages for grandpa that sound steady, respectful, and genuinely supportive.",
     summary: "Respectful, warm messages for grandpa while he heals.",
     intro: "A message for grandpa can be simple and sincere. Keep the tone steady, make the love clear, and give him permission to rest.",
     nav: "For grandpa",
@@ -1058,6 +1310,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What is a good get well message for grandpa?",
+        answer: "Try a steady line such as: Grandpa, I am thinking of you and wishing you comfort, rest, and good care today."
+      },
+      {
+        question: "How do I write a respectful message for grandpa after surgery?",
+        answer: "Say you are glad the surgery is behind him, encourage rest, and offer practical support like rides, meals, or help at home."
+      },
+      {
+        question: "Can I keep a message for grandpa very short?",
+        answer: "Yes. A short, sincere note often works best, especially if he does not like overly emotional wording."
+      }
+    ],
     dos: ["Keep the wording steady.", "Make support practical.", "Say love clearly if that fits your relationship."],
     donts: ["Do not pressure him to be tough.", "Do not joke if he seems worried.", "Do not ask him to minimize how hard it feels."],
     related: ["get-well-soon-messages-for-family", "get-well-soon-messages-for-dad", "get-well-soon-messages-after-surgery"]
@@ -1066,7 +1332,7 @@ const pages = [
     slug: "get-well-soon-messages-for-sister",
     title: "Get Well Soon Messages for Sister",
     eyebrow: "For sister",
-    description: "Get well soon messages for sister, including sweet texts, funny notes, heartfelt card messages, and surgery recovery wishes.",
+    description: "Get well soon messages for your sister, from affectionate texts to honest support when recovery feels hard.",
     summary: "Sweet, sibling-style messages for your sister.",
     intro: "A sister message can be affectionate, honest, and a little more personal. Match the tone to your relationship and the seriousness of what she is facing.",
     nav: "For sister",
@@ -1095,9 +1361,23 @@ const pages = [
         title: "Funny messages for your sister",
         messages: [
           "Get well soon. I cannot be the only dramatic one in this family.",
-          "Please recover quickly. I need someone to judge people with me.",
+          "Please feel better soon. I need someone to judge people with me.",
           "Feel better soon, because I am saving all family gossip until you are ready."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What should I text my sister when she is sick?",
+        answer: "Use the tone of your relationship. A good option is: Thinking of you, sis. No need to reply. I love you and I am here."
+      },
+      {
+        question: "Can I send a funny get well message to my sister?",
+        answer: "Yes, if the illness is minor or she usually jokes with you. For serious illness or surgery, keep the humor gentle or skip it."
+      },
+      {
+        question: "How can I make a sister message more supportive?",
+        answer: "Offer something specific, like dropping off food, handling an errand, calling later, or sitting with her during a hard day."
       }
     ],
     dos: ["Sound like your actual relationship.", "Offer a specific errand or check-in.", "Use humor only when the situation is mild."],
@@ -1108,7 +1388,7 @@ const pages = [
     slug: "get-well-soon-messages-for-brother",
     title: "Get Well Soon Messages for Brother",
     eyebrow: "For brother",
-    description: "Get well soon messages for brother, including short texts, funny notes, supportive card messages, and surgery recovery wishes.",
+    description: "Get well soon messages for your brother that balance natural sibling tone with real support.",
     summary: "Supportive and funny messages for your brother.",
     intro: "A brother message can be short, warm, or lightly funny. If the illness is serious, skip the teasing and keep the support steady.",
     nav: "For brother",
@@ -1137,9 +1417,23 @@ const pages = [
         title: "Funny messages for your brother",
         messages: [
           "Get well soon. I need my backup for family events.",
-          "Please recover quickly. I am running out of people to annoy.",
+          "Please feel better soon. I am running out of people to annoy.",
           "Feel better soon. I promise to be only moderately annoying while you heal."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What should I say to my brother when he is recovering?",
+        answer: "Say you have his back, then offer concrete help. A simple message is: Rest up. I am here for food, rides, errands, or anything else."
+      },
+      {
+        question: "Is it okay to tease my brother in a get well message?",
+        answer: "Only if the situation is minor and teasing is normal between you. Avoid jokes about pain, fear, or anything medically serious."
+      },
+      {
+        question: "How do I write a serious get well message for my brother?",
+        answer: "Skip the jokes and use direct support: I know this is hard. You do not have to tough it out alone."
       }
     ],
     dos: ["Keep it natural.", "Offer concrete help.", "Switch to serious support when needed."],
@@ -1150,7 +1444,7 @@ const pages = [
     slug: "get-well-soon-messages-for-teacher",
     title: "Get Well Soon Messages for Teacher",
     eyebrow: "For teacher",
-    description: "Respectful get well soon messages for a teacher, including student notes, class cards, parent messages, and short wishes.",
+    description: "Respectful get well soon messages for a teacher from students, parents, or a whole class.",
     summary: "Respectful messages for teachers from students or parents.",
     intro: "A teacher message should be kind and respectful. Keep it simple, avoid private medical questions, and let them know their care is appreciated.",
     nav: "For teacher",
@@ -1159,7 +1453,7 @@ const pages = [
         id: "quick",
         title: "Quick messages for a teacher",
         messages: [
-          "Wishing you a smooth recovery and plenty of rest.",
+          "Wishing you a restful recovery and plenty of care.",
           "We hope you feel better soon. Thank you for everything you do for us.",
           "Sending warm wishes from our class. Please take care of yourself.",
           "Hope each day brings more comfort and strength."
@@ -1178,10 +1472,24 @@ const pages = [
         id: "parent",
         title: "From a parent",
         messages: [
-          "Wishing you a smooth recovery. We appreciate your care and hope you can take the time you need.",
+          "Wishing you rest and comfort. We appreciate your care and hope you can take the time you need.",
           "I am sorry to hear you have been unwell. Sending best wishes for comfort and rest.",
           "Thank you for all you do for the students. Please take good care of yourself."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What should students write in a get well card for a teacher?",
+        answer: "Keep it simple and kind: We are thinking of you, we hope you get rest, and thank you for everything you do for our class."
+      },
+      {
+        question: "Should a parent mention missed lessons?",
+        answer: "No. Focus on care and appreciation, not school logistics or pressure to return."
+      },
+      {
+        question: "Can a class card be cheerful?",
+        answer: "Yes, as long as it stays respectful and avoids private medical questions."
       }
     ],
     dos: ["Keep it respectful.", "Mention appreciation if appropriate.", "Use a class message for group cards."],
@@ -1192,7 +1500,7 @@ const pages = [
     slug: "get-well-soon-messages-for-child",
     title: "Get Well Soon Messages for Child",
     eyebrow: "For a child",
-    description: "Gentle get well soon messages for a child, including short notes, funny wishes, card messages, and hospital or recovery support.",
+    description: "Gentle get well soon messages for a child that feel simple, reassuring, and not scary.",
     summary: "Simple, cheerful notes that feel safe for kids.",
     intro: "A message for a child should be simple, warm, and not scary. Focus on comfort, small joys, and people who are caring for them.",
     nav: "For a child",
@@ -1222,8 +1530,22 @@ const pages = [
         messages: [
           "Get well soon. Your toys are asking when playtime starts again.",
           "Rest up and let the grown-ups bring snacks. That is the rule.",
-          "Sending superhero strength for a super speedy feel-better day."
+          "Sending superhero strength for a better-feeling day."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What should I write to a sick child?",
+        answer: "Use simple, warm words. Mention hugs, comfort, stories, blankets, or small joys instead of medical details."
+      },
+      {
+        question: "Can I call a child brave in a get well message?",
+        answer: "Yes, but do not make bravery feel like a job. Pair it with reassurance that they are loved and cared for."
+      },
+      {
+        question: "What should I avoid in a get well message for a child?",
+        answer: "Avoid scary medical language, timelines, and anything that makes the child responsible for making adults feel better."
       }
     ],
     dos: ["Use simple words.", "Keep the tone reassuring.", "Mention comfort items or small joys."],
@@ -1234,8 +1556,8 @@ const pages = [
     slug: "get-well-soon-messages-for-cancer",
     title: "Get Well Soon Messages for Cancer",
     eyebrow: "Cancer support",
-    description: "Careful messages for someone with cancer, including supportive texts, card notes, treatment encouragement, and what not to say.",
-    summary: "Careful support when quick recovery language may not fit.",
+    description: "Careful messages for someone with cancer that focus on presence, practical help, and low-pressure support.",
+    summary: "Careful support when simple recovery wishes may not fit.",
     intro: "Cancer messages need extra care. Avoid promising outcomes, avoid pressure to stay positive, and focus on presence, practical help, and support they do not have to manage.",
     nav: "Cancer support",
     sections: [
@@ -1294,7 +1616,7 @@ const pages = [
     slug: "get-well-soon-messages-for-flu",
     title: "Get Well Soon Messages for Flu",
     eyebrow: "Flu recovery",
-    description: "Get well soon messages for the flu, including short texts, funny notes, coworker messages, and comforting wishes.",
+    description: "Get well soon messages for the flu that are light, comforting, and easy to send on rough sick days.",
     summary: "Short, light messages for flu, fever, and rough sick days.",
     intro: "Flu messages can be simple and lighter than serious illness notes. Wish them rest, low-effort comfort, and an easier day without asking for energy back.",
     nav: "For flu",
@@ -1354,7 +1676,7 @@ const pages = [
     slug: "get-well-soon-messages-for-broken-bone",
     title: "Get Well Soon Messages for Broken Bone",
     eyebrow: "Broken bone",
-    description: "Get well soon messages for a broken bone, including funny notes, short texts, practical support, and recovery wishes.",
+    description: "Get well soon messages for a broken bone that balance patience, practical help, and light humor.",
     summary: "Messages for casts, crutches, and slow physical healing.",
     intro: "A broken bone is painful and annoying. A good message can acknowledge the inconvenience, add a little humor if appropriate, and offer practical help.",
     nav: "Broken bone",
@@ -1366,7 +1688,7 @@ const pages = [
           "Wishing you steady healing and fewer annoying cast moments.",
           "Hope the pain eases and recovery feels a little less slow each day.",
           "Rest up and let that bone do its repair work.",
-          "Sending patience, comfort, and wishes for a smooth recovery."
+          "Sending patience, comfort, and support for the slow parts."
         ]
       },
       {
@@ -1374,7 +1696,7 @@ const pages = [
         title: "Funny broken bone messages",
         messages: [
           "Get well soon. Your bone clearly misunderstood the assignment.",
-          "Hope you heal fast and get excellent signatures on that cast.",
+          "Hope your cast gets excellent signatures and your days feel easier.",
           "Rest up. I will save the dramatic comeback music for your return."
         ]
       },
@@ -1384,8 +1706,22 @@ const pages = [
         messages: [
           "If crutches are making life annoying, I can help with groceries or errands this week.",
           "I can drive, carry things, or bring food while you recover. Just say the word.",
-          "Hope recovery is smooth. I am around if you need help with anything awkward."
+          "I am around if you need help with anything awkward while moving around is harder."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What do you write to someone with a broken bone?",
+        answer: "Keep it practical and encouraging. Mention patience, comfort, and help with everyday tasks while moving around is harder."
+      },
+      {
+        question: "Can I joke about a broken bone?",
+        answer: "Light humor can work if the person is already joking about it. Avoid jokes about pain, the accident, or blame."
+      },
+      {
+        question: "What practical help can I offer?",
+        answer: "Offer errands, rides, carrying things, meals, or help with tasks that are difficult with a cast or crutches."
       }
     ],
     dos: ["Acknowledge the frustration.", "Offer help with mobility or errands.", "Use humor if the person likes it."],
@@ -1396,7 +1732,7 @@ const pages = [
     slug: "get-well-soon-messages-for-flowers",
     title: "Get Well Soon Messages for Flowers",
     eyebrow: "Flower notes",
-    description: "Short get well soon messages for flowers, bouquets, plant gifts, hospital delivery notes, and sympathy-friendly recovery cards.",
+    description: "Short get well soon messages for flowers, bouquets, plant gifts, and hospital delivery cards.",
     summary: "Short notes for bouquets, plants, and gift deliveries.",
     intro: "Flower cards are small, so the message should be short. Aim for warmth, brightness, and no pressure to reply.",
     nav: "For flowers",
@@ -1430,15 +1766,29 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I write on get well flowers?",
+        answer: "Keep it short: A little brightness for your room and a lot of love for your day."
+      },
+      {
+        question: "How long should a flower card message be?",
+        answer: "One or two sentences is enough because the card is small. Choose warmth over detail."
+      },
+      {
+        question: "What should I write on flowers for serious illness?",
+        answer: "Use quiet support rather than cheerful pressure: Thinking of you and sending comfort through this difficult time."
+      }
+    ],
     dos: ["Keep it short.", "Match the note to the seriousness of the illness.", "Use no need to reply when appropriate."],
-    donts: ["Do not write a long paragraph on a tiny card.", "Do not use jokes for serious illness.", "Do not promise a quick recovery."],
+    donts: ["Do not write a long paragraph on a tiny card.", "Do not use jokes for serious illness.", "Do not promise a timeline."],
     related: ["get-well-soon-card-messages", "get-well-soon-messages-for-hospital-stay", "short-get-well-soon-messages"]
   },
   {
     slug: "get-well-soon-messages-for-wife",
     title: "Get Well Soon Messages for Wife",
     eyebrow: "For wife",
-    description: "Loving get well soon messages for your wife, including short texts, heartfelt notes, surgery recovery wishes, and practical support.",
+    description: "Loving get well soon messages for your wife that pair affection with real help and permission to rest.",
     summary: "Loving messages that combine affection and care.",
     intro: "A message for your wife should make care feel practical, not performative. Say you love her, remove pressure, and offer real help.",
     nav: "For wife",
@@ -1472,6 +1822,20 @@ const pages = [
         ]
       }
     ],
+    faqs: [
+      {
+        question: "What should I write to my wife when she is sick?",
+        answer: "Say you love her, remove pressure, and name the help you will take on. A good line is: Rest as much as you need and let me handle the little things."
+      },
+      {
+        question: "How do I support my wife after surgery in a message?",
+        answer: "Make the message practical. Tell her you will handle food, errands, reminders, visitors, or anything that protects her rest."
+      },
+      {
+        question: "What should I avoid in a get well message for my wife?",
+        answer: "Avoid making her reassure you, treating care like a favor, or calling her dramatic when she is tired, scared, or in pain."
+      }
+    ],
     dos: ["Be specific about help.", "Say love plainly.", "Make rest feel allowed."],
     donts: ["Do not make her reassure you.", "Do not call her dramatic.", "Do not treat care as a favor."],
     related: ["get-well-soon-messages-for-girlfriend", "get-well-soon-messages-after-surgery", "what-to-say-instead-of-get-well-soon"]
@@ -1480,7 +1844,7 @@ const pages = [
     slug: "get-well-soon-messages-for-husband",
     title: "Get Well Soon Messages for Husband",
     eyebrow: "For husband",
-    description: "Supportive get well soon messages for your husband, including short texts, heartfelt notes, funny wishes, and surgery recovery support.",
+    description: "Supportive get well soon messages for your husband that make rest, care, and help feel normal.",
     summary: "Warm messages that make rest and care feel natural.",
     intro: "A message for your husband can be warm, practical, and gently reassuring. Let him know he does not need to power through recovery.",
     nav: "For husband",
@@ -1509,9 +1873,23 @@ const pages = [
         title: "Light funny messages",
         messages: [
           "Get well soon. I am temporarily accepting your dramatic patient era.",
-          "Please recover quickly, but not so quickly that you skip resting.",
+          "Please rest properly, even if you start feeling better.",
           "I love you, even when you are a terrible patient."
         ]
+      }
+    ],
+    faqs: [
+      {
+        question: "What should I text my husband when he is sick?",
+        answer: "Use a warm, practical line: I love you. Rest up and let me take care of things for a while."
+      },
+      {
+        question: "Can I send a funny get well message to my husband?",
+        answer: "Yes, if he enjoys that tone and the situation is not serious. Keep humor gentle and never make pain or fear the joke."
+      },
+      {
+        question: "How do I write a more heartfelt message for my husband?",
+        answer: "Tell him he does not need to be strong every minute, then say exactly how you will show up while he recovers."
       }
     ],
     dos: ["Offer practical care.", "Give permission to rest.", "Use humor only if he enjoys it."],

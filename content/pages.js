@@ -195,7 +195,7 @@ const pages = [
         messages: [
           "Wishing you a restful recovery and time away without pressure. Please take the time you need.",
           "We miss having you around, but your health comes first. Wishing you rest and steady progress.",
-          "Sending warm thoughts your way. I hope you feel supported and have the space to recover fully.",
+          "Sending warm thoughts your way. I hope you feel supported and have space to rest without pressure.",
           "Hope you are able to rest and recover comfortably. Looking forward to seeing you when you are ready."
         ]
       },
@@ -316,7 +316,7 @@ const pages = [
         messages: [
           "Please feel better soon. I am being forced to make my own decisions and it is not going well.",
           "Get well soon. I need you back to your usual level of questionable advice.",
-          "I would bring soup, but we both know snacks are the real medicine. Feel better soon."
+          "I would bring soup, but we both know snacks are the real comfort food. Feel better soon."
         ]
       },
       {
@@ -405,7 +405,7 @@ const pages = [
         title: "Quick funny messages",
         messages: [
           "Get well soon. Your germs have made their point.",
-          "Please feel better soon. Being nice to you while you are sick is exhausting.",
+          "Please feel better soon. My best material is wasted when you are not here to laugh at it.",
           "Feel better soon. I have saved several jokes that are only funny if you are here to hear them.",
           "Get well soon. The world needs your nonsense back in circulation."
         ]
@@ -567,9 +567,9 @@ const pages = [
   },
   {
     slug: "get-well-soon-messages-for-serious-illness",
-    title: "Get Well Soon Messages for Serious Illness",
+    title: "Messages for Someone with a Serious Illness",
     eyebrow: "Careful support",
-    description: "Supportive get well messages for serious illness when recovery is uncertain and ordinary wishes feel too simple.",
+    description: "Supportive messages for serious illness when recovery is uncertain and ordinary get well wishes feel too simple.",
     summary: "Supportive language when optimism needs restraint.",
     intro: "For serious illness, the goal is not to fix the feeling or explain the situation. The goal is to show up without pressure, false certainty, or cheerful shortcuts.",
     nav: "Serious illness",
@@ -1190,7 +1190,7 @@ const pages = [
     title: "Get Well Soon Text Messages",
     eyebrow: "Texts",
     description: "Get well soon text messages that are short, warm, easy to copy, and low pressure for the person receiving them.",
-    summary: "Copy-ready texts for quick check-ins.",
+    summary: "Ready-to-send texts for quick check-ins.",
     intro: "A text should be easy to receive. Keep it short, remove pressure to reply, and offer one concrete form of support if you can.",
     nav: "Text messages",
     sections: [
@@ -1695,11 +1695,11 @@ const pages = [
   },
   {
     slug: "get-well-soon-messages-for-cancer",
-    title: "Get Well Soon Messages for Cancer",
+    title: "Messages for Someone with Cancer",
     eyebrow: "Cancer support",
     description: "Careful messages for someone with cancer that focus on presence, practical help, and low-pressure support.",
     summary: "Careful support when simple recovery wishes may not fit.",
-    intro: "Cancer messages need extra care. Avoid promising outcomes, avoid pressure to stay positive, and focus on presence, practical help, and support they do not have to manage.",
+    intro: "Cancer messages need extra care. If \"get well soon\" feels too simple, focus on presence, practical help, and support they do not have to manage.",
     nav: "Cancer support",
     sections: [
       {
@@ -2068,7 +2068,7 @@ const pages = [
         messages: [
           "Get well soon. I am temporarily accepting your dramatic patient era.",
           "Please rest properly, even if you start feeling better.",
-          "I love you, even when you are a terrible patient."
+          "I love you, even when rest is not your favorite skill."
         ]
       }
     ],

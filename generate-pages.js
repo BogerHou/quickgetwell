@@ -13,7 +13,15 @@ const staticFiles = ["styles.css", "script.js"];
 const staticDirectories = ["assets"];
 const contentMonthLabel = "April 2026";
 const contentDate = "2026-04-25";
-const trustStatement = "Reviewed for tone and sensitivity. Writing guidance only, not medical advice.";
+const trustStatement = "Editorially reviewed for tone and sensitivity. Writing guidance only, not medical or clinician-reviewed advice.";
+const contactEmail = {
+  user: "hello",
+  domain: "quickgetwell.com"
+};
+const securityHeaders = `  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()`;
 const faqSchemaSlugs = new Set([
   "get-well-soon-messages",
   "get-well-soon-messages-after-surgery",
@@ -50,15 +58,15 @@ const infoPages = [
       },
       {
         title: "What this site does not do",
-        body: "This site does not provide medical advice, diagnosis, treatment guidance, or health claims. For medical questions, rely on a qualified clinician."
+        body: "This site does not provide medical advice, diagnosis, treatment guidance, or health claims. It is not written or reviewed by clinicians. For medical questions, rely on a qualified clinician."
       },
       {
         title: "Editorial responsibility",
-        body: "Quick Get Well is maintained as an independent writing resource. Each page is reviewed for plain language, emotional tone, and whether the wording avoids medical promises before it is published."
+        body: "Quick Get Well is maintained as an independent writing resource. Each page is reviewed for plain language, emotional tone, privacy, pressure, and whether the wording avoids medical promises before it is published."
       },
       {
         title: "Contact",
-        body: "For corrections or wording concerns, email hello@quickgetwell.com with the page URL and the sentence you want reviewed."
+        body: "For corrections or wording concerns, use the Contact page and include the page URL plus the sentence you want reviewed."
       }
     ]
   },
@@ -78,12 +86,16 @@ const infoPages = [
         body: "Pages about cancer, serious illness, surgery, hospital stays, chronic illness, prayers, and workplace notes receive extra checks for privacy, pressure, faith language, humor, and recovery timelines."
       },
       {
+        title: "Medical boundary",
+        body: "Quick Get Well is not a medical site, and pages are not clinician reviewed. The guidance is limited to wording, tone, and message examples."
+      },
+      {
         title: "Sensitive topics",
         body: "Pages about cancer, serious illness, hospital stays, surgery, and long recovery include extra caution. They are meant to help with supportive language, not medical decisions."
       },
       {
         title: "Corrections",
-        body: "When a correction affects sensitivity, accuracy of wording guidance, accessibility, or broken links, it is prioritized for review. Readers can send concerns to hello@quickgetwell.com."
+        body: "When a correction affects sensitivity, accuracy of wording guidance, accessibility, or broken links, it is prioritized for review. Readers can send concerns through the Contact page."
       },
       {
         title: "Updates",
@@ -280,7 +292,7 @@ const topicGroups = [
 ];
 
 function renderTopicCard(page) {
-  const searchText = [page.title, page.summary, page.description, page.eyebrow, page.nav, ...(topicAliases[page.slug] || [])]
+  const searchText = [page.title, page.summary, page.eyebrow, page.nav, ...(topicAliases[page.slug] || [])]
     .filter(Boolean)
     .join(" ")
     .toLowerCase()
@@ -460,6 +472,8 @@ ${renderRootHeader()}
               <span>Offer of help, optional</span>
               <input id="helpOffer" type="text" placeholder="drop off dinner this week">
             </label>
+
+            <p class="finder-privacy-note">Runs in your browser. Do not enter private medical details. Inputs are not submitted or stored by Quick Get Well.</p>
 
             <div class="quick-tune" aria-label="Quick tone controls">
               <button type="button" data-action="shorter">Make shorter</button>
@@ -777,7 +791,7 @@ function renderTrustInfo() {
           <section class="trust-info" aria-label="Content review information">
             <p>${escapeHtml(trustStatement)}</p>
             <p>Last updated: ${escapeHtml(contentMonthLabel)}</p>
-            <p>Published by ${escapeHtml(siteName)}. Corrections and wording concerns can be sent to hello@quickgetwell.com.</p>
+            <p>Published by ${escapeHtml(siteName)}. Corrections and wording concerns can be sent through the Contact page.</p>
           </section>`;
 }
 
@@ -958,21 +972,26 @@ Sitemap: ${baseUrl}/sitemap.xml
 function renderHeaders() {
   return `/assets/*
   Cache-Control: public, max-age=31536000, immutable
+${securityHeaders}
 
 /styles.css
   Cache-Control: public, max-age=31536000, immutable
+${securityHeaders}
 
 /script.js
   Cache-Control: public, max-age=31536000, immutable
+${securityHeaders}
+
+/search-index.json
+  X-Robots-Tag: noindex
+${securityHeaders}
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+${securityHeaders}
 
 /*
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+${securityHeaders}
 `;
 }
 
@@ -981,6 +1000,10 @@ function renderRedirects() {
   return `/favicon.ico /assets/favicon.svg 302
 https://www.${host}/* ${baseUrl}/:splat 301!
 `;
+}
+
+function renderEmailLink() {
+  return `<a class="info-email" href="./" data-email-link data-email-user="${escapeHtml(contactEmail.user)}" data-email-domain="${escapeHtml(contactEmail.domain)}" aria-label="Email Quick Get Well"><span data-email-text>Email Quick Get Well</span></a>`;
 }
 
 function renderInfoPage(page) {
@@ -1011,12 +1034,13 @@ ${renderHeader()}
           .map((section) => `<article>
           <h2>${escapeHtml(section.title)}</h2>
           <p>${escapeHtml(section.body)}</p>
-          ${section.email ? `<p><a class="info-email" href="mailto:${escapeHtml(section.email)}">${escapeHtml(section.email)}</a></p>` : ""}
+          ${section.email ? `<p>${renderEmailLink()}</p>` : ""}
         </article>`)
           .join("\n        ")}
       </section>
     </main>
 ${renderFooter({ prefix: "../", homeHref: "../" })}
+    <script src="../${assetHref("script.js")}"></script>
   </body>
 </html>
 `;

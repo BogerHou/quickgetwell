@@ -1,6 +1,6 @@
 # Get Well Soon Messages
 
-Static SEO site for copy-ready get well soon messages by relationship, situation, tone, and format.
+Static writing resource for ready-to-send get well soon messages by relationship, situation, tone, and format.
 
 Production domain: `https://quickgetwell.com`
 
@@ -18,6 +18,12 @@ Check JavaScript syntax:
 npm run check
 ```
 
+After Cloudflare finishes a production deployment, verify the live site matches the local build:
+
+```powershell
+npm run validate:live
+```
+
 Open the generated site locally:
 
 ```powershell
@@ -26,12 +32,12 @@ start .\dist\index.html
 
 ## Content workflow
 
-Edit `content/pages.js` to add or revise SEO pages. Each page object controls:
+Edit `content/pages.js` to add or revise message pages. Each page object controls:
 
 - URL slug
 - title and meta description
 - page intro
-- copy-ready message sections
+- ready-to-send message sections
 - do / avoid guidance
 - related internal links
 
@@ -82,4 +88,4 @@ Full Cloudflare Pages deployment notes, including the first-launch issues we hit
 - Do not imply that words speed physical recovery.
 - For serious illness, chronic illness, or uncertain recovery, avoid "get well soon" when it sounds rushed.
 - Prefer concrete support over vague offers.
-- Keep messages copy-ready and easy to personalize.
+- Keep messages ready to send and easy to personalize.

@@ -21,6 +21,9 @@ const forbiddenHtmlPatterns = [
   /public project/i,
   /Long-tail/i,
   /SearchAction/i,
+  /cdn-cgi\/l\/email-protection/i,
+  /hello@quickgetwell\.com/i,
+  /mailto:hello@quickgetwell\.com/i,
   /I can I can/i,
   /\ba email\b/i,
   /coming soon/i,
@@ -29,10 +32,15 @@ const forbiddenHtmlPatterns = [
   /fast recovery/i,
   /quick recovery/i,
   /smooth recovery/i,
+  /recover fully/i,
   /recover quickly/i,
   /recover soon/i,
   /bounce back/i,
-  /beat it/i
+  /beat it/i,
+  /copy-ready/i,
+  /real medicine/i,
+  /terrible patient/i,
+  /Being nice to you while you are sick is exhausting/i
 ];
 
 if (!fs.existsSync(dist)) {

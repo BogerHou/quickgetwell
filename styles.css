@@ -307,13 +307,20 @@ section:not(.hero) {
   padding: 0 12px;
 }
 
+.finder-privacy-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
 .quick-tune {
   margin-top: 4px;
 }
 
 .quick-tune button {
   flex: 1 1 120px;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 12px;
   background: #e7eee8;
   color: var(--forest);
@@ -393,7 +400,7 @@ section:not(.hero) {
 
 .copy-button {
   justify-self: start;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 14px;
   background: var(--forest);
   color: #fffdf8;
@@ -581,6 +588,12 @@ section:not(.hero) {
   font-weight: 850;
   line-height: 1;
   white-space: nowrap;
+}
+
+.copy-line.copied::after {
+  content: "Copied";
+  background: var(--forest);
+  color: #fffdf8;
 }
 
 .copy-line:hover {
@@ -938,7 +951,7 @@ section.article-hero {
   position: fixed;
   right: 18px;
   bottom: 18px;
-  z-index: 40;
+  z-index: 1000;
   padding: 12px 14px;
   border-radius: var(--radius);
   background: var(--forest);
@@ -1014,7 +1027,7 @@ section.article-hero {
 
   .top-nav a {
     display: inline-flex;
-    min-height: 34px;
+    min-height: 44px;
     align-items: center;
     padding: 0 10px;
     border: 1px solid rgba(255, 253, 248, 0.2);
@@ -1030,10 +1043,6 @@ section.article-hero {
   .finder-layout,
   .guidance-section {
     grid-template-columns: 1fr;
-  }
-
-  .results-panel {
-    order: -1;
   }
 
   .finder-controls {
@@ -1093,7 +1102,7 @@ section.article-hero {
 
   .top-nav a {
     flex: 0 0 auto;
-    min-height: 28px;
+    min-height: 44px;
     padding: 0 8px;
   }
 
@@ -1159,8 +1168,9 @@ section.article-hero {
 
   .article-nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    overflow-x: auto;
+    overflow-x: visible;
     padding: 10px 0;
     scrollbar-width: none;
   }
@@ -1170,7 +1180,10 @@ section.article-hero {
   }
 
   .article-nav a {
-    flex: 0 0 auto;
+    display: inline-flex;
+    flex: 0 1 auto;
+    min-height: 44px;
+    align-items: center;
     padding: 8px 10px;
     border: 1px solid var(--line);
     border-radius: 999px;

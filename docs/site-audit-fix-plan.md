@@ -108,6 +108,30 @@
 - 进一步做主题集群内链：serious illness hub、relationship hub、card/text/flowers hub。
 - 若 `hello@quickgetwell.com` 暂未配置，需在 Cloudflare Email Routing 中创建并转发到真实邮箱。
 
+## 2026-04-25 Multi-Agent UX/Trust Follow-Up
+
+针对第二轮 agent 报告继续修复用户可见问题：
+
+- 敏感页标题从关键词式 `Get Well Soon Messages for Cancer / Serious Illness` 改为更符合处境的 `Messages for Someone with Cancer / a Serious Illness`。
+- Contact 邮箱不再在 HTML 源码里输出明文 `mailto:`，改为浏览器端拼接，避免 Cloudflare Email Obfuscation 生成 `/cdn-cgi/l/email-protection` 静态 404 链接。
+- Finder 在 funny + surgery/hospital/serious/chronic 或 client/boss 等组合下，结果标题和 chip 使用实际生效 tone，不再显示 `Funny` 但输出 supportive/professional 文案。
+- Finder 对 coworker/boss/client 的 religious tone 自动降为 professional，并提示只有确定对方欢迎宗教语言时才使用。
+- Finder 增加短文案专用模板，`Make shorter` 后每条文案控制在短句范围内。
+- Finder 复制前优先读取当前可见 message 文本，并增加清空 name/help 后不残留旧内容的回归断言。
+- 所有 copy 按钮点击后都有可见反馈：toast 显示，按钮短暂变为 `Copied`。
+- 移动端 Finder 恢复“筛选器 -> 快捷调节 -> 结果”的顺序，避免调节按钮被 6 条结果压到后面。
+- topic search 改为按可见标题/摘要和显式别名匹配，减少 `surgery` 搜出无明显相关卡片的问题。
+- 文章移动端目录从横向滚动改为自动换行 chips，触控目标提升到 44px。
+- `search-index.json` 增加 `X-Robots-Tag: noindex`，静态资源规则也补齐安全响应头。
+- 新增 `validate-live.js` 和 `npm run validate:live`，用于 Cloudflare 部署后验证线上 HTML 引用的 CSS/JS hash、Contact、禁用词和 search-index header。
+
+本轮保留为后续的内容型问题：
+
+- 低词数长尾页仍需要分批加深、合并或 noindex。
+- 每页独立发布时间/修改时间仍未做。
+- 主题集群内链仍可增强。
+- 若未来要进一步增强 E-E-A-T，需要真实作者/编辑责任页，而不是伪造资质。
+
 ## 发布验收
 
 每次集成后必须跑：
@@ -119,10 +143,7 @@ npm run check
 线上部署后检查：
 
 ```powershell
-Invoke-WebRequest -Uri "https://quickgetwell.com/"
-Invoke-WebRequest -Uri "https://quickgetwell.com/what-to-say-instead-of-get-well-soon/"
-Invoke-WebRequest -Uri "https://quickgetwell.com/get-well-soon-messages-for-cancer/"
-Invoke-WebRequest -Uri "https://quickgetwell.com/sitemap.xml"
+npm run validate:live
 ```
 
 浏览器 QA：

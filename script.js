@@ -242,6 +242,7 @@ const helpOffer = document.getElementById("helpOffer");
 const topicSearch = document.getElementById("topicSearch");
 const topicGrid = document.getElementById("topicGrid");
 const tuneButtons = Array.from(document.querySelectorAll("[data-action]"));
+const emailLinks = Array.from(document.querySelectorAll("[data-email-link]"));
 
 const noteSituationLabels = {
   minor: "a minor illness",
@@ -330,7 +331,7 @@ const situationProfiles = {
     short: "Thinking of you today. No need to reply.",
     lowPressure: "today brings a little comfort and support",
     care: "I am sorry this is so hard, and I am here without needing an update.",
-    professional: "Please accept steady support and warm thoughts during this difficult time.",
+    professional: "Sending steady support and warm thoughts during this difficult time.",
     faith: "Praying for comfort, peace, and the right support around you today.",
     help: "meals, rides, appointment support, errands, or handling updates for others"
   },
@@ -383,6 +384,17 @@ function scoreMessage(message, filters) {
 }
 
 function buildFinderMessages(filters) {
+  const displayTone = effectiveTone(filters);
+  if (displayTone === "short") {
+    return buildShortFinderMessages(filters).map((text) => ({
+      recipient: filters.recipient,
+      situation: filters.situation,
+      tone: displayTone,
+      format: filters.format,
+      text
+    }));
+  }
+
   const generated = [
     buildPrimaryMessage(filters),
     buildLowPressureMessage(filters),
@@ -395,10 +407,35 @@ function buildFinderMessages(filters) {
   return generated.map((text) => ({
     recipient: filters.recipient,
     situation: filters.situation,
-    tone: filters.tone,
+    tone: displayTone,
     format: filters.format,
     text
   }));
+}
+
+function buildShortFinderMessages(filters) {
+  const situation = situationProfiles[filters.situation];
+  const recipient = recipientProfiles[filters.recipient];
+
+  if (isWorkplaceRecipient(filters)) {
+    return [
+      `{name}${situation.professional}`,
+      "{name}Sending warm thoughts. No response needed.",
+      `{name}${recipient.professional}`,
+      "{name}Please take the time you need.",
+      "{name}Thinking of you and wishing you comfort.",
+      "{name}No need to reply. Just sending support."
+    ];
+  }
+
+  return [
+    `{name}${situation.short}`,
+    "{name}No need to reply. Just thinking of you.",
+    "{name}I hope today feels a little gentler.",
+    "{name}Sending love, comfort, and steady support.",
+    "{name}I am here if a specific kind of help would make today easier.",
+    "{name}Thinking of you and hoping you feel cared for."
+  ];
 }
 
 function buildPrimaryMessage(filters) {
@@ -419,6 +456,10 @@ function buildLowPressureMessage(filters) {
   const situation = situationProfiles[filters.situation];
   const voice = senderVoice(filters);
 
+  if (isWorkplaceRecipient(filters)) {
+    return `{name}Sending warm thoughts. No response is needed. ${situation.professional}`;
+  }
+
   return `{name}${voice.subject} just wanted to check in. No need to reply; ${voice.subjectLower} ${voice.hope} ${situation.lowPressure}.`;
 }
 
@@ -434,7 +475,8 @@ function buildHelpMessage(filters) {
   }
 
   if (filters.recipient === "boss" || filters.recipient === "coworker") {
-    return `{name}${recipient.help} Please focus on rest and care; ${voice.subjectLower} ${voice.hope} you feel supported.`;
+    const subject = sharedVoice ? "we" : voice.subjectLower;
+    return `{name}${recipient.help} Please focus on rest and care; ${subject} ${voice.hope} you feel supported.`;
   }
 
   return `{name}${recipient.help} If ${situation.help} would help, ${gladPhrase} glad to do something specific.`;
@@ -460,6 +502,10 @@ function buildFormatSpecificMessage(filters) {
     return `{name}All of us are thinking of you. ${situation.professional} You have our support and no pressure to reply.`;
   }
 
+  if (/no need to reply/i.test(situation.short)) {
+    return `{name}${situation.short}`;
+  }
+
   return `{name}${situation.short} No need to reply; I just wanted you to know I am thinking of you.`;
 }
 
@@ -468,7 +514,8 @@ function buildProfessionalMessage(filters) {
   const situation = situationProfiles[filters.situation];
 
   if (filters.recipient === "client") {
-    return `${recipient.care} ${situation.professional}`;
+    if (filters.situation === "minor") return `${recipient.care} ${situation.professional}`;
+    return situation.professional;
   }
 
   if (filters.recipient === "boss") {
@@ -481,9 +528,14 @@ function buildProfessionalMessage(filters) {
 function buildCheckInMessage(filters) {
   const situation = situationProfiles[filters.situation];
   const recipient = recipientProfiles[filters.recipient];
+  const tone = effectiveTone(filters);
 
-  if (filters.tone === "short") {
+  if (tone === "short") {
     return `{name}Just checking in gently. ${situation.short}`;
+  }
+
+  if (isWorkplaceRecipient(filters)) {
+    return `{name}Just checking in with warm thoughts. ${situation.professional} There is no need to respond until the timing is right.`;
   }
 
   return `{name}Just checking in gently. ${situation.care} ${recipient.help}`;
@@ -505,13 +557,34 @@ function buildGentleAlternativeMessage(filters) {
 }
 
 function effectiveTone(filters) {
-  if (filters.tone === "funny" && isSensitiveFilter(filters)) return "supportive";
-  if ((filters.recipient === "boss" || filters.recipient === "client") && filters.tone === "funny") return "professional";
+  if (filters.tone === "funny" && !isFunnyAllowed(filters)) {
+    return isProfessionalRecipient(filters) ? "professional" : "supportive";
+  }
+
+  if (filters.tone === "religious" && isWorkplaceRecipient(filters)) return "professional";
+
   return filters.tone;
 }
 
 function isSensitiveFilter(filters) {
-  return filters.situation === "serious" || filters.situation === "chronic" || filters.situation === "hospital";
+  return filters.situation === "surgery" || filters.situation === "serious" || filters.situation === "chronic" || filters.situation === "hospital";
+}
+
+function isProfessionalRecipient(filters) {
+  return filters.recipient === "boss" || filters.recipient === "client";
+}
+
+function isWorkplaceRecipient(filters) {
+  return filters.recipient === "boss" || filters.recipient === "client" || filters.recipient === "coworker";
+}
+
+function isFunnyAllowed(filters) {
+  return filters.situation === "minor" && (
+    filters.recipient === "friend" ||
+    filters.recipient === "family" ||
+    filters.recipient === "partner" ||
+    filters.recipient === "coworker"
+  );
 }
 
 function senderVoice(filters) {
@@ -579,9 +652,10 @@ function addTerminalPunctuation(value) {
 function renderMessages() {
   if (!form || !resultRoot || !title || !note) return;
   const filters = currentFilters();
+  const displayTone = effectiveTone(filters);
   const finderMessages = buildFinderMessages(filters);
 
-  title.textContent = `${capitalize(labels[filters.tone])} messages for ${labels[filters.recipient]}`;
+  title.textContent = `${capitalize(labels[displayTone])} messages for ${labels[filters.recipient]}`;
   note.textContent = getResultNote(filters);
 
   resultRoot.innerHTML = finderMessages
@@ -605,13 +679,14 @@ function renderMessages() {
 
 function getResultNote(filters) {
   const feedback = activeTuneAction ? `${tuneFeedback[activeTuneAction]} ` : "";
+  const displayTone = effectiveTone(filters);
 
-  if (filters.tone === "funny" && isSensitiveFilter(filters)) {
+  if (filters.tone === "funny" && displayTone !== "funny") {
     return `${feedback}Humor is softened for this situation so the wording stays careful and low-pressure.`;
   }
 
-  if ((filters.recipient === "boss" || filters.recipient === "client") && filters.tone === "funny") {
-    return `${feedback}Humor is softened for this relationship so the wording stays professional.`;
+  if (filters.tone === "religious" && displayTone === "professional") {
+    return `${feedback}Religious wording is avoided for this relationship unless you know it is welcome.`;
   }
 
   if (filters.situation === "serious" || filters.situation === "chronic") {
@@ -635,6 +710,20 @@ function copyText(text, trigger) {
   fallbackCopy(text, trigger);
 }
 
+function setupEmailLinks() {
+  emailLinks.forEach((link) => {
+    const user = link.dataset.emailUser;
+    const domain = link.dataset.emailDomain;
+    if (!user || !domain) return;
+
+    const address = `${user}@${domain}`;
+    const text = link.querySelector("[data-email-text]");
+    link.href = `mailto:${address}`;
+    link.setAttribute("aria-label", `Email ${address}`);
+    if (text) text.textContent = address;
+  });
+}
+
 function fallbackCopy(text, trigger) {
   const textarea = document.createElement("textarea");
   textarea.value = text;
@@ -655,12 +744,14 @@ function fallbackCopy(text, trigger) {
 
 function showCopySuccess(trigger) {
   showToast("Copied");
-  if (!trigger?.classList?.contains?.("copy-button")) return;
+  if (!trigger?.classList) return;
 
+  trigger.classList.add("copied");
   const original = trigger.textContent;
   trigger.textContent = "Copied";
   window.setTimeout(() => {
     trigger.textContent = original;
+    trigger.classList.remove("copied");
   }, 1400);
 }
 
@@ -701,6 +792,12 @@ if (form) {
     renderMessages();
   });
   form.addEventListener("change", handleFinderChange);
+}
+
+for (const field of [personName, helpOffer]) {
+  if (!field) continue;
+  field.addEventListener("input", renderMessages);
+  field.addEventListener("change", renderMessages);
 }
 
 if (topicSearch) {
@@ -762,7 +859,8 @@ function updateTuneButtons(activeAction) {
 document.addEventListener("click", (event) => {
   const copyTarget = event.target.closest("[data-copy]");
   if (copyTarget) {
-    copyText(copyTarget.dataset.copy, copyTarget);
+    const visibleMessage = copyTarget.closest(".message-card")?.querySelector("p")?.textContent?.trim();
+    copyText(visibleMessage || copyTarget.dataset.copy, copyTarget);
   }
 
   const tune = event.target.closest("[data-action]");
@@ -782,5 +880,6 @@ document.addEventListener("click", (event) => {
   renderMessages();
 });
 
+setupEmailLinks();
 updateTuneButtons(null);
 renderMessages();

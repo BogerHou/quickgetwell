@@ -690,6 +690,38 @@ section.article-hero {
   padding: 18px 18px 42px;
 }
 
+.decision-list {
+  display: grid;
+  margin: 20px 0 42px;
+  border-top: 1px solid var(--line);
+}
+
+.decision-list div {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.8fr) minmax(220px, 1fr) minmax(280px, 1.2fr);
+  gap: 18px;
+  align-items: start;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.decision-list h3 {
+  margin: 0;
+  color: var(--forest);
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.decision-list p {
+  margin: 0;
+}
+
+.compact-copy {
+  min-height: auto;
+  padding: 16px 16px 40px;
+  background: #fffdf8;
+}
+
 .formula-list {
   display: grid;
   gap: 0;
@@ -997,6 +1029,10 @@ section.article-hero {
   .article-nav {
     position: static;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .decision-list div {
+    grid-template-columns: 1fr;
   }
 }
 

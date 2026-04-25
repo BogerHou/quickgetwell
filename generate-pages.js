@@ -537,6 +537,24 @@ function renderSections(page) {
     .join("\n");
 }
 
+function renderDecisionGuide(page) {
+  const guide = page.decisionGuide;
+  if (!guide?.items?.length) return "";
+
+  return `
+          <h2 id="choose-wording">${escapeHtml(guide.title)}</h2>
+          ${guide.intro ? `<p>${escapeHtml(guide.intro)}</p>` : ""}
+          <div class="decision-list">
+            ${guide.items
+              .map((item) => `<div>
+              <h3>${escapeHtml(item.label)}</h3>
+              <p>${escapeHtml(item.useWhen)}</p>
+              <button class="copy-line compact-copy" data-copy="${escapeHtml(item.try)}" aria-label="Copy suggested wording: ${escapeHtml(item.try)}">${escapeHtml(item.try)}</button>
+            </div>`)
+              .join("\n            ")}
+          </div>`;
+}
+
 function isSensitivePage(page) {
   const pageSignals = [page.slug, page.title, page.eyebrow, page.nav, page.summary, page.intro]
     .filter(Boolean)
@@ -628,8 +646,18 @@ function buildPersonalizationSteps(page) {
     ],
     "get-well-soon-messages-after-surgery": [
       "Match the message to where they are in recovery, not where you hope they will be.",
-      "Avoid pushing them to bounce back quickly.",
+      "Avoid pushing them to return to normal on anyone else's timeline.",
       "Offer one practical task, like food, errands, childcare, or a ride."
+    ],
+    "get-well-soon-messages-for-coworker": [
+      "Keep the note separate from deadlines, coverage, and open tasks.",
+      "Use no need to reply for Slack, Teams, or email check-ins.",
+      "Mention the team only as support, never as pressure to come back."
+    ],
+    "get-well-soon-messages-for-friend": [
+      "Sound like your actual friendship instead of a formal card.",
+      "Offer one concrete kind of care, such as food, errands, company, or silence.",
+      "For long recovery, keep checking in without asking them to perform a cheerful update."
     ],
     "get-well-soon-messages-for-hospital-stay": [
       "Keep the message short enough to read when they are tired.",
@@ -705,8 +733,9 @@ function renderNav(page) {
   const sectionLinks = page.sections
     .map((section) => `<a href="#${escapeHtml(section.id)}">${escapeHtml(section.title.replace(/^Quick /, "Quick "))}</a>`)
     .join("\n          ");
+  const decision = page.decisionGuide?.items?.length ? `\n          <a href="#choose-wording">Choose wording</a>` : "";
   const avoid = page.dos?.length || page.donts?.length ? `\n          <a href="#avoid">What to avoid</a>` : "";
-  return `${sectionLinks}\n          <a href="#personalize">Personalize it</a>${avoid}\n          <a href="#faq-page">FAQ</a>`;
+  return `${sectionLinks}${decision}\n          <a href="#personalize">Personalize it</a>${avoid}\n          <a href="#faq-page">FAQ</a>`;
 }
 
 function renderSchema(page) {
@@ -808,6 +837,7 @@ ${renderHeader()}
         <article class="article-content">
 ${renderSensitiveNote(page)}
 ${renderSections(page)}
+${renderDecisionGuide(page)}
 ${renderPersonalization(page)}
 ${renderDosDonts(page)}
 ${renderFaq(page)}

@@ -71,6 +71,18 @@
 - 若后续有真实邮箱或表单，替换 Contact 页中的 GitHub correction channel。
 - 继续人工提升高潜力页面正文，例如 surgery、cancer、coworker、friend，可加入更多真实场景分支和更具体的 message variants。
 
+## 2026-04-25 Content Depth Pass
+
+已继续优化高潜力页面：
+
+- `get-well-soon-messages-after-surgery` 增加 practical help、longer recovery 分支，以及 surgery 场景选择模块。
+- `get-well-soon-messages-for-coworker` 增加 Slack/Teams、after surgery at work 分支，以及 workplace 场景选择模块。
+- `get-well-soon-messages-for-friend` 增加 practical help、long recovery、after surgery 分支，以及 friend 场景选择模块。
+- `get-well-soon-messages-for-cancer` 增加 treatment、uncertain days、not close 分支，以及 cancer 场景选择模块。
+- 新增可复用 `decisionGuide` 渲染模块，让重点页从纯消息列表变成“先判断场景，再复制合适措辞”的页面。
+- 移除新增内容里的强恢复速度暗示，例如 `recover quickly`、`bounce back`、`beat it` 等表达。
+- 浏览器抽查 390px、768px、1280px 视口，无横向溢出；控制台无错误。
+
 ## 发布验收
 
 每次集成后必须跑：

@@ -18,7 +18,7 @@ const messages = [
     situation: "minor",
     tone: "funny",
     format: "text",
-    text: "{name}Please recover soon. I need my favorite person back at full sarcasm capacity."
+    text: "{name}Please feel better soon. I need my favorite person back at full sarcasm capacity."
   },
   {
     recipient: "friend",

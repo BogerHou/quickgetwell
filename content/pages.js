@@ -68,7 +68,7 @@ const pages = [
       },
       {
         question: "What should I avoid in a get well soon message?",
-        answer: "Avoid forced positivity, medical predictions, pressure to recover quickly, and jokes unless you know the person will welcome humor."
+        answer: "Avoid forced positivity, medical predictions, pressure around timelines, and jokes unless you know the person will welcome humor."
       }
     ],
     dos: ["Match the message to the situation.", "Add one personal detail or offer of help.", "Use no need to reply when the person may be tired."],
@@ -101,7 +101,7 @@ const pages = [
         messages: [
           "I am so proud of how you are handling this. Let your body take its time. I am here for errands, distractions, or quiet company.",
           "Recovery days can be boring and hard. I can drop off food, send bad jokes, or simply leave you alone in peace. Your call.",
-          "You do not have to bounce back quickly to be doing well. Rest, heal, and let people care for you."
+          "You do not have to be doing well on anyone else's timeline. Rest, heal, and let people care for you."
         ]
       },
       {
@@ -112,8 +112,52 @@ const pages = [
           "We hope your recovery time is restful and supported. Your health comes first, and we look forward to seeing you when you are ready.",
           "Sending best wishes for comfort after your procedure. Please focus on rest and care."
         ]
+      },
+      {
+        id: "help",
+        title: "Messages with practical help",
+        messages: [
+          "I can bring dinner, pick up groceries, or handle a small errand this week. No pressure to answer right away.",
+          "If rides, meals, or household things would help while you recover, I am available and happy to do something specific.",
+          "I do not want to add another task, so I will check in later this week. You never need to reply quickly."
+        ]
+      },
+      {
+        id: "longer",
+        title: "For a longer recovery",
+        messages: [
+          "Recovery can take more patience than anyone wants. I am here for the slow days too.",
+          "You do not have to measure progress for anyone. I hope today brings a little more comfort and support.",
+          "If this takes time, I will keep showing up. You are not expected to rush back for anyone."
+        ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right surgery message",
+      intro: "After surgery, the best wording depends on timing and closeness. Start with the least demanding option, then add practical help if you can follow through.",
+      items: [
+        {
+          label: "Right after surgery",
+          useWhen: "They may be tired, medicated, or not ready to update people.",
+          try: "I am glad the surgery is behind you. No need to reply. I am thinking of you and wishing you quiet rest."
+        },
+        {
+          label: "A few days later",
+          useWhen: "You want to check in without asking for a recovery report.",
+          try: "Just checking in gently. I hope today feels a little more comfortable and supported."
+        },
+        {
+          label: "Close friend or family",
+          useWhen: "You can offer real help, not just a general wish.",
+          try: "I can bring food, run errands, or sit with you quietly this week. Tell me what would actually help."
+        },
+        {
+          label: "Work message",
+          useWhen: "The relationship is professional and you should remove work pressure.",
+          try: "Thinking of you after surgery. Please take the time you need, and know the team is wishing you well."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What should I say after surgery without rushing recovery?",
@@ -133,7 +177,7 @@ const pages = [
       }
     ],
     dos: ["Use calm recovery language, such as take the time you need.", "Offer specific help, like meals or rides.", "Add no need to reply if they may be tired."],
-    donts: ["Do not pressure them to recover quickly.", "Do not ask for medical details in a card.", "Do not joke unless you know they want humor."],
+    donts: ["Do not pressure them around recovery timing.", "Do not ask for medical details in a card.", "Do not joke unless you know they want humor."],
     related: ["short-get-well-soon-messages", "get-well-soon-messages-for-coworker", "get-well-soon-messages-for-serious-illness"]
   },
   {
@@ -173,8 +217,52 @@ const pages = [
           "Your coffee mug is starting to look abandoned. Hope you get the rest you need.",
           "The team needs your professional eye-roll back in meetings. Feel better soon."
         ]
+      },
+      {
+        id: "slack",
+        title: "Slack or Teams messages",
+        messages: [
+          "No need to reply. Just wanted to say the team is thinking of you and hoping you get real rest.",
+          "Hope you are able to step away fully and take care of yourself. We have things covered here.",
+          "Sending warm thoughts from the team. Please do not worry about responding while you recover."
+        ]
+      },
+      {
+        id: "surgery",
+        title: "After surgery at work",
+        messages: [
+          "Thinking of you after surgery. Please focus on rest and recovery, and know the team is wishing you well.",
+          "We hope you have a calm, supported recovery after your procedure. Take the time you need.",
+          "Sending best wishes from all of us. Your health comes first, and there is no pressure to respond."
+        ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right coworker message",
+      intro: "Workplace get well notes should sound kind without pulling the person back into work. Keep the message private, brief, and separate from deadlines.",
+      items: [
+        {
+          label: "Direct message",
+          useWhen: "You are writing in Slack, Teams, or email to one coworker.",
+          try: "No need to reply. Just wanted to say I am thinking of you and hoping you get real rest."
+        },
+        {
+          label: "Team card",
+          useWhen: "Several people are signing and the tone should include everyone.",
+          try: "The whole team is thinking of you. Please take the time you need and know you are missed."
+        },
+        {
+          label: "After surgery",
+          useWhen: "They shared that they had a procedure, but you should not ask for details.",
+          try: "Thinking of you after surgery. Please focus on rest and care. We are all wishing you well."
+        },
+        {
+          label: "Close coworker",
+          useWhen: "You know them well enough for light warmth or humor.",
+          try: "Work is quieter without you. Rest up, ignore the inbox, and let us know only if you want company."
+        }
+      ]
+    },
     faqs: [
       {
         question: "How do I write a get well message for a coworker without adding work pressure?",
@@ -226,12 +314,65 @@ const pages = [
         title: "Funny messages for a close friend",
         intro: "Keep the joke aimed at the situation, not at their pain.",
         messages: [
-          "Please recover soon. I am being forced to make my own decisions and it is not going well.",
+          "Please feel better soon. I am being forced to make my own decisions and it is not going well.",
           "Get well soon. I need you back to your usual level of questionable advice.",
           "I would bring soup, but we both know snacks are the real medicine. Feel better soon."
         ]
+      },
+      {
+        id: "help",
+        title: "Messages with practical help",
+        messages: [
+          "I can bring food, run an errand, or sit quietly with you this week. Pick the least annoying option.",
+          "Want company, distraction, snacks, or total silence today? Any answer is fine.",
+          "I am free Thursday if groceries, a ride, or a low-effort visit would make the day easier."
+        ]
+      },
+      {
+        id: "long-recovery",
+        title: "For a long recovery",
+        messages: [
+          "I know this is not over just because the first hard day passed. I am still here.",
+          "You do not have to give me a cheerful update. I care about the real version of today.",
+          "If recovery keeps feeling slow or frustrating, I will keep checking in without making you perform okay."
+        ]
+      },
+      {
+        id: "surgery",
+        title: "For a friend after surgery",
+        messages: [
+          "I am glad the surgery is behind you. Now please let yourself rest and be annoyingly cared for.",
+          "No need to reply. I am thinking of you after surgery and hoping today is as gentle as possible.",
+          "I can drop off food, send distractions, or leave you alone in peace. You get to choose."
+        ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right friend message",
+      intro: "Friendship gives you room to sound human. The safest choice is specific care, low pressure, and a tone that matches how you already talk.",
+      items: [
+        {
+          label: "Quick check-in",
+          useWhen: "You want them to feel remembered without needing to answer.",
+          try: "No need to reply. Just wanted you to know I am thinking of you and sending love."
+        },
+        {
+          label: "Practical support",
+          useWhen: "You are close enough to offer a real task.",
+          try: "I can bring food, run an errand, or sit quietly with you this week. Pick whatever helps most."
+        },
+        {
+          label: "Hard day",
+          useWhen: "They may not be feeling positive, cheerful, or social.",
+          try: "You do not have to be upbeat with me. I am here for the honest version of today."
+        },
+        {
+          label: "Light humor",
+          useWhen: "The illness is minor and joking is normal in your friendship.",
+          try: "Feel better soon. I miss your face and your questionable advice."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What should I text a sick friend?",
@@ -477,7 +618,7 @@ const pages = [
       },
       {
         question: "What should I avoid in a serious illness message?",
-        answer: "Avoid comparisons, miracle timelines, forced positivity, and repeated requests for updates. The person should not have to comfort you or perform bravery."
+        answer: "Avoid comparisons, promised timelines, forced positivity, and repeated requests for updates. The person should not have to comfort you or perform bravery."
       }
     ],
     dos: ["Acknowledge that it is hard without trying to solve it.", "Offer support without needing a response.", "Be specific if offering help."],
@@ -533,7 +674,7 @@ const pages = [
       },
       {
         question: "What should I avoid in a family illness message?",
-        answer: "Avoid guilt about missed events, pressure to recover quickly, and messages that make the person comfort the rest of the family."
+        answer: "Avoid guilt about missed events, pressure around recovery timing, and messages that make the person comfort the rest of the family."
       }
     ],
     dos: ["Say we or I clearly.", "Offer help with meals, rides, or home tasks.", "Let them rest without updating everyone."],
@@ -985,7 +1126,7 @@ const pages = [
       }
     ],
     dos: ["Pray for comfort and care.", "Keep the prayer simple.", "Respect the person's beliefs."],
-    donts: ["Do not make theological claims about why they are sick.", "Do not promise a miracle.", "Do not use prayer to avoid practical help."],
+    donts: ["Do not make theological claims about why they are sick.", "Do not promise an outcome.", "Do not use prayer to avoid practical help."],
     related: ["religious-get-well-soon-messages", "get-well-soon-messages-for-serious-illness", "get-well-soon-messages-after-surgery"]
   },
   {
@@ -1269,7 +1410,7 @@ const pages = [
       }
     ],
     dos: ["Use warm family language.", "Tell her she does not need to worry about others.", "Offer help with calls, errands, or meals."],
-    donts: ["Do not make her comfort you.", "Do not pressure her to recover quickly.", "Do not ask for too many updates."],
+    donts: ["Do not make her comfort you.", "Do not pressure her around recovery timing.", "Do not ask for too many updates."],
     related: ["get-well-soon-messages-for-family", "get-well-soon-messages-for-mom", "get-well-soon-messages-after-surgery"]
   },
   {
@@ -1588,8 +1729,61 @@ const pages = [
           "I am free Thursday if you need company, groceries, or help with anything practical.",
           "I do not want to add another task. I will check in again next week, and you never need to reply quickly."
         ]
+      },
+      {
+        id: "treatment",
+        title: "During treatment",
+        messages: [
+          "Thinking of you during treatment this week. I hope the day brings good care, quiet moments, and support that feels useful.",
+          "I can help with a ride, a meal, or keeping people updated if that would take one thing off your plate.",
+          "No need to respond. I am just sending steady support for appointments, waiting, and everything around them."
+        ]
+      },
+      {
+        id: "uncertain",
+        title: "For hard or uncertain days",
+        messages: [
+          "I will not try to make this sound simple. I care about you and I am here for the hard parts too.",
+          "You do not have to be hopeful for me. I am here with you, whatever today looks like.",
+          "There is no right way to feel right now. I am sending quiet support and practical help whenever you want it."
+        ]
+      },
+      {
+        id: "not-close",
+        title: "When you are not very close",
+        messages: [
+          "I am sorry to hear what you are going through. Wishing you comfort, privacy, and good support around you.",
+          "Thinking of you and sending sincere support. No response needed.",
+          "Please accept my warm thoughts during this difficult time."
+        ]
       }
     ],
+    decisionGuide: {
+      title: "Choose the right cancer message",
+      intro: "Cancer messages need extra restraint. Choose wording that offers presence and practical help without asking for updates, explanations, or optimism.",
+      items: [
+        {
+          label: "Newly shared news",
+          useWhen: "They just told you about the diagnosis or treatment plan.",
+          try: "I am so sorry you are going through this. I care about you and I am here with you through it."
+        },
+        {
+          label: "During treatment",
+          useWhen: "They are in appointments, waiting, or dealing with treatment routines.",
+          try: "No need to respond. I am sending steady support for appointments, waiting, and everything around them."
+        },
+        {
+          label: "Hard or uncertain day",
+          useWhen: "You want to avoid forced positivity or promises.",
+          try: "You do not have to be hopeful for me. I am here with you, whatever today looks like."
+        },
+        {
+          label: "Not very close",
+          useWhen: "A short, respectful card or email is more appropriate.",
+          try: "I am sorry to hear what you are going through. Wishing you comfort, privacy, and good support around you."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What should I write to someone with cancer without promising recovery?",
@@ -1605,11 +1799,11 @@ const pages = [
       },
       {
         question: "What should I avoid in a cancer card?",
-        answer: "Avoid stay positive, battle language if you do not know they use it, promises that they will beat it, and comparisons to someone else's cancer story."
+        answer: "Avoid stay positive, battle language if you do not know they use it, promises about the outcome, and comparisons to someone else's cancer story."
       }
     ],
     dos: ["Say you are present.", "Offer specific practical help.", "Remove pressure to reply."],
-    donts: ["Do not tell them to stay positive.", "Do not promise they will beat it.", "Do not compare their cancer to someone else's story."],
+    donts: ["Do not tell them to stay positive.", "Do not promise an outcome.", "Do not compare their cancer to someone else's story."],
     related: ["what-to-say-instead-of-get-well-soon", "get-well-soon-messages-for-serious-illness", "short-get-well-soon-messages"]
   },
   {

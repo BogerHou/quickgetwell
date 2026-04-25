@@ -75,12 +75,11 @@ select {
 }
 
 .brand-mark {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 65% 35%, #fffdf8 0 18%, transparent 19%),
-    linear-gradient(135deg, var(--rose), var(--gold));
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border-radius: 6px;
+  background: url("assets/logo-icon-96.png") center / contain no-repeat;
   box-shadow: 0 0 0 4px rgba(255, 253, 248, 0.15);
 }
 

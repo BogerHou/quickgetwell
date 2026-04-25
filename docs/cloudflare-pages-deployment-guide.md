@@ -249,12 +249,12 @@ GET https://quickgetwell.com/favicon.ico 404
 
 我们已经修复：
 
-- 新增 `assets/favicon.svg`
-- 每个页面 head 里加 favicon 链接
+- 新增 `assets/favicon.ico`、`assets/favicon-32.png`、`assets/apple-touch-icon.png`
+- 每个页面 head 里加 favicon 和 Apple touch icon 链接
 - `_redirects` 中加：
 
 ```text
-/favicon.ico /assets/favicon.svg 302
+/favicon.ico /assets/favicon.ico 302
 ```
 
 验证：
@@ -267,7 +267,7 @@ Invoke-WebRequest -Uri "https://quickgetwell.com/favicon.ico" -MaximumRedirectio
 
 ```text
 302
-Location: /assets/favicon.svg
+Location: /assets/favicon.ico
 ```
 
 ## 部署后验证清单

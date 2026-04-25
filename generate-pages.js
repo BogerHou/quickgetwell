@@ -185,6 +185,13 @@ function assetHref(file) {
   return `${file}?v=${assetVersion(file)}`;
 }
 
+function renderIconLinks(prefix = "") {
+  return `    <link rel="icon" href="${prefix}assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="${prefix}assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="${prefix}assets/logo-icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="${prefix}assets/apple-touch-icon.png">`;
+}
+
 function renderAnalytics() {
   if (!gaMeasurementId) return "";
 
@@ -387,7 +394,7 @@ function renderHomePage() {
     <meta property="og:type" content="website">
     <meta property="og:url" content="${baseUrl}/">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+${renderIconLinks()}
     <link rel="stylesheet" href="${assetHref("styles.css")}">
 ${renderAnalytics()}
     <script type="application/ld+json">
@@ -916,7 +923,7 @@ function renderPage(page) {
     <meta property="og:type" content="article">
     <meta property="og:url" content="${pageUrl(page.slug)}">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
-    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+${renderIconLinks("../")}
     <link rel="stylesheet" href="../${assetHref("styles.css")}">
 ${renderAnalytics()}
     <script type="application/ld+json">
@@ -1031,7 +1038,7 @@ ${securityHeaders}
 
 function renderRedirects() {
   const host = new URL(baseUrl).hostname;
-  return `/favicon.ico /assets/favicon.svg 302
+  return `/favicon.ico /assets/favicon.ico 302
 https://www.${host}/* ${baseUrl}/:splat 301!
 `;
 }
@@ -1050,7 +1057,7 @@ function renderInfoPage(page) {
     <meta name="description" content="${escapeHtml(page.description)}">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="${infoPageUrl(page.slug)}">
-    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+${renderIconLinks("../")}
     <link rel="stylesheet" href="../${assetHref("styles.css")}">
 ${renderAnalytics()}
   </head>
@@ -1090,7 +1097,7 @@ function renderNotFoundPage() {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Page Not Found | ${escapeHtml(siteName)}</title>
     <meta name="robots" content="noindex,follow">
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+${renderIconLinks()}
     <link rel="stylesheet" href="${assetHref("styles.css")}">
 ${renderAnalytics()}
   </head>

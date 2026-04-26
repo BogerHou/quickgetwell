@@ -2,7 +2,7 @@
 
 Static writing resource for ready-to-send get well soon messages by relationship, situation, tone, and format.
 
-Website: [Quick Get Well](https://quickgetwell.com) - a static writing resource for thoughtful get well soon messages.
+Website: [Get Well Soon Messages](https://quickgetwell.com) by Quick Get Well - a static writing resource for thoughtful messages by relationship, situation, tone, and format.
 
 ## Local workflow
 

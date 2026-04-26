@@ -2,7 +2,7 @@
 
 Static writing resource for ready-to-send get well soon messages by relationship, situation, tone, and format.
 
-Production domain: `https://quickgetwell.com`
+Website: [Quick Get Well](https://quickgetwell.com) - a static writing resource for thoughtful get well soon messages.
 
 ## Local workflow
 

@@ -64,7 +64,8 @@ select {
   min-height: 72px;
   padding: 18px clamp(18px, 4vw, 56px);
   color: #fffdf8;
-  background: linear-gradient(180deg, rgba(9, 20, 17, 0.74), rgba(9, 20, 17, 0));
+  background: #10221e;
+  box-shadow: 0 2px 12px rgba(9, 20, 17, 0.16);
 }
 
 .brand {
@@ -306,7 +307,8 @@ section:not(.hero) {
   padding: 0 12px;
 }
 
-.finder-privacy-note {
+.finder-privacy-note,
+.finder-control-note {
   margin: 0;
   color: var(--muted);
   font-size: 0.82rem;
@@ -708,6 +710,79 @@ section.article-hero {
 .message-list .copy-line {
   min-height: auto;
   padding: 18px 18px 42px;
+  white-space: pre-line;
+}
+
+.section-links {
+  margin: -22px 0 42px;
+  padding: 0;
+  list-style: none;
+}
+
+.section-links a {
+  display: inline-block;
+  padding: 10px 0;
+  color: var(--forest);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.printable-jump {
+  margin-top: 24px;
+}
+
+.printable-cards {
+  margin: 0 0 48px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.printable-previews {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin: 24px 0;
+}
+
+.printable-previews figure {
+  margin: 0;
+}
+
+.printable-previews img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  background: white;
+}
+
+.printable-previews figcaption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.download-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.download-links .button {
+  background: var(--forest);
+  color: var(--paper);
+}
+
+.print-instructions {
+  margin: 22px 0 0;
+  padding-left: 22px;
+  color: var(--muted);
+}
+
+.print-instructions li + li {
+  margin-top: 8px;
 }
 
 .decision-list {
@@ -1004,7 +1079,7 @@ section.article-hero {
     gap: 10px 14px;
     min-height: auto;
     padding: 12px clamp(14px, 3.6vw, 28px);
-    background: rgba(16, 34, 30, 0.9);
+    background: #10221e;
     box-shadow: 0 10px 28px rgba(9, 20, 17, 0.18);
     backdrop-filter: blur(14px);
   }
@@ -1054,7 +1129,7 @@ section.article-hero {
   }
 
   .article-body {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .article-nav {
@@ -1134,6 +1209,10 @@ section.article-hero {
     padding-bottom: 42px;
   }
 
+  section.article-body {
+    padding-top: 28px;
+  }
+
   .not-found h1 {
     font-size: clamp(2.2rem, 10.5vw, 3.35rem);
     line-height: 1.06;
@@ -1165,6 +1244,15 @@ section.article-hero {
     grid-template-columns: 1fr;
   }
 
+  .printable-previews {
+    grid-template-columns: 1fr;
+  }
+
+  .download-links .button {
+    width: 100%;
+    text-align: center;
+  }
+
   .article-nav {
     display: flex;
     flex-wrap: wrap;
@@ -1187,7 +1275,8 @@ section.article-hero {
     border: 1px solid var(--line);
     border-radius: 999px;
     background: #fffdf8;
-    white-space: nowrap;
+    max-width: 100%;
+    white-space: normal;
   }
 }
 

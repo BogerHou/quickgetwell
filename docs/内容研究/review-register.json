@@ -1,0 +1,340 @@
+{
+  "version": 1,
+  "createdAt": "2026-09-22",
+  "notice": "No human approval is recorded. AI/source review is not human approval. Only record a real review of the exact content version.",
+  "items": [
+    {
+      "id": "page:get-well-soon-messages",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "e251dbecae71a568702a3f712726949a0d2818633743b969024185853112f209"
+    },
+    {
+      "id": "page:get-well-soon-messages-after-surgery",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "e1109776887ce30b8fc3dad02c34c2a5e3fd7a7010e1e6e8a264e5f21291f6ea"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-coworker",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "17d03f423ef9448f9f7020e90af9e46b5d102aa41fba46a22d040ebc0881bbd8"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-friend",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "4488e83f8e5a1c7f8e60d144394be2c401792b0a31be3e61b9eaf689c9777986"
+    },
+    {
+      "id": "page:funny-get-well-soon-messages",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "f9eb75e1963c69080cfbccfe06311e1d5c88acb85aef325db328735dd3f122df"
+    },
+    {
+      "id": "page:short-get-well-soon-messages",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "392b947cdc0380eda6d6dd24e681079e794bffd4a167bc726705f1caead0109a"
+    },
+    {
+      "id": "page:what-to-say-instead-of-get-well-soon",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "f25161021acfa620ed2e1d4fd88aa19cd06ac2a6b56f3567ab6db333794982f4"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-serious-illness",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "2c60e6e6708e84fa8e5ece16c6d317f67e5fe7f5a84d45bef54aab305abf6d32"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-family",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "540a2a2d2a789834990f6a7b1341f08d9fbeab52ceda6985f31f1b2bb7969a70"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-mom",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "0b5422a4c858d605c1658be1f4f99fa49271c77a9e899d6202c240e6e9332d26"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-dad",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "64d625f973595072fbc43ceb883b23da59a559eab136d418f374a42041d9fcc3"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-boss",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "205f98ccede9cf00f9e70333bd7bc0ac0d036b5c198feb3ca84c33293630012a"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-client",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "9b26bce8ae7db51bfe523bf7f704bd2ffa615e277b67fc3e09a33d11fb219c1d"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-boyfriend",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "46490e58ae40b7e8860adf93425ed156bc7566e943f5031f25ce870fc0f67785"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-girlfriend",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "dc3e7a1617eca996f289df1ec8159faa91d12e82eddcf590182d2cee90849f2b"
+    },
+    {
+      "id": "page:religious-get-well-soon-messages",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "786226f825dec2e663a29e6577b938ced6e019913b00f9670ff54bbe47339cc4"
+    },
+    {
+      "id": "page:get-well-soon-prayers",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "781cb7161b0a55daad223333b9e1d0d035f72e9f6f8297258f9be09444767bba"
+    },
+    {
+      "id": "page:get-well-soon-card-messages",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "e7949dab6cb60f17b07f2aec806c7ed7aa1f27a1feabec13401e44817cb9ddb1"
+    },
+    {
+      "id": "page:get-well-soon-text-messages",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "d90aec9526a72c2a187bc7bd41266ba063378c371e69f6589415736b7c10c5fb"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-hospital-stay",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "64af1dc07d5bc2f374938bd64c75cd489d335fa292610a8b820c813a2cfa2a57"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-injury",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "79d89460298198cc597c700f47d9c171a4f520e4f779a2edd24716ae683c1b6a"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-grandma",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "f95f8b155cab6e485b0d2e9e34031e7ba64255337bfefb774644b614868f28b3"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-grandpa",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "d0ee8fead71eb3d173991a0786704d33c3ca23dd12e6e865e0edb75002027b32"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-sister",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "6b202d21df9328c05836409b0bf1710876b8c002620bff1cc0f3b6b67ace4604"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-brother",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "cb7f1669fe90be59bceb577df3ac7924ea9ad63ffd310350e98a93188e8844a9"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-teacher",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "b58b92bb0ef8cd65fd8d62dc648d20fb91f14ec62e38acce7777f6c27b327aa3"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-child",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "113538bd4bb1a7943eabac5a978e49b8314db4d84ef3c064d1d6b742d3c2313f"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-cancer",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "4b39319e0b36d39331803c9f4254ff7405ee4acb4d8401d0e60c4aea6788b7e9"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-flu",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "39f5dabcb7c6509b2f83aed189dbe2cfb5cecd438b148955fb3a4f88c2117c5c"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-broken-bone",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "e0d0aecf89c80b0d9c7343669bd3a42f98bc52d2911e394895d50b4e5f863aea"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-flowers",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "119fe4268364935e604eb084a7a244a1b38cd2a7f1d87db1679660e390fec744"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-wife",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "064b4668f1787e760f28050008e6b3a1538d0f1a49cb98d179e7b6ede6631828"
+    },
+    {
+      "id": "page:get-well-soon-messages-for-husband",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "c307424f41fa0bb64bb14becaac4e33f318d41f0c2760db2ba045cab6569e80d"
+    },
+    {
+      "id": "page:how-to-respond-to-get-well-soon",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "74989ad1fe8775c71ab4ff374ecb350418a93aaad456bf7acf97c9bb0a4f247c"
+    },
+    {
+      "id": "shared-site-copy",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "29e8b7489a8199505a6f324017142e1442a7318b64ec2f972e85000523b3edbb"
+    },
+    {
+      "id": "printable:get-well-soon-messages-for-teacher:a4",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "8573f53d544c3ea2c66ca2d25d5130169ed5bfc90c50c6f84c706f2f6d96a834"
+    },
+    {
+      "id": "printable:get-well-soon-messages-for-teacher:letter",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "b8f76b1f563ab9c7e8e8ed30ec02e3ba4d6fdd656928187383ee9dc91795a102"
+    }
+  ]
+}

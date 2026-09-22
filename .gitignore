@@ -3,3 +3,11 @@ dist/
 .wrangler/
 .env
 .gstack/
+.DS_Store
+/output/
+# Private operating data and internal research notes stay local.
+/docs/网站运营数据/
+/docs/关键词研究/
+/docs/内容研究/*
+!/docs/内容研究/review-register.json
+!/docs/内容研究/内容研究与人工审核流程.md

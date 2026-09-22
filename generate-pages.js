@@ -6,15 +6,14 @@ const { siteName, siteUrl, gaMeasurementId } = require("./site.config");
 
 const root = __dirname;
 const dist = path.join(root, "dist");
-const today = new Date().toISOString().slice(0, 10);
 const baseUrl = siteUrl.replace(/\/$/, "");
 const pageBySlug = new Map(pages.map((page) => [page.slug, page]));
 const staticFiles = ["styles.css", "script.js"];
 const staticDirectories = ["assets"];
-const contentMonthLabel = "April 2026";
 const contentDate = "2026-04-25";
+const homeModifiedDate = "2026-09-22";
 const defaultPublishedDate = "2026-04-25";
-const trustStatement = "Editorially reviewed for tone and sensitivity. Writing guidance only, not medical or clinician-reviewed advice.";
+const trustStatement = "This site includes AI-assisted writing examples. Human editorial review is not documented for this version. Writing guidance only, not medical advice.";
 const contactEmail = {
   user: "hello",
   domain: "quickgetwell.com"
@@ -32,6 +31,12 @@ const faqSchemaSlugs = new Set([
   "what-to-say-instead-of-get-well-soon"
 ]);
 const topicAliases = {
+  "get-well-soon-messages": ["get well soon wishes", "well wishes", "recovery wishes"],
+  "how-to-respond-to-get-well-soon": ["reply to well wishes", "response", "respond", "thank you for well wishes", "thanks"],
+  "get-well-soon-messages-for-teacher": ["professor", "former student", "from students"],
+  "get-well-soon-messages-for-coworker": ["colleague", "sick leave", "professional"],
+  "get-well-soon-messages-for-boss": ["manager", "sick email"],
+  "get-well-soon-messages-for-client": ["customer", "business", "professional"],
   "get-well-soon-messages-after-surgery": ["operation", "procedure", "post op", "post-op"],
   "get-well-soon-messages-for-mom": ["mother", "mum", "mama"],
   "get-well-soon-messages-for-dad": ["father", "papa"],
@@ -39,15 +44,48 @@ const topicAliases = {
   "get-well-soon-messages-for-grandpa": ["grandfather"],
   "religious-get-well-soon-messages": ["faith", "religion", "christian", "god"],
   "get-well-soon-prayers": ["prayer", "pray", "faith", "religion", "god"],
-  "get-well-soon-messages-for-cancer": ["chemo", "treatment", "oncology"],
+  "get-well-soon-messages-for-cancer": ["chemo", "chemotherapy", "treatment", "oncology"],
   "get-well-soon-messages-for-hospital-stay": ["hospitalized", "hospitalised", "clinic"],
   "get-well-soon-messages-for-injury": ["accident", "hurt", "sports injury"],
   "get-well-soon-messages-for-broken-bone": ["cast", "crutches", "fracture"],
   "get-well-soon-messages-for-flowers": ["bouquet", "plant", "gift note"]
 };
+const finderContexts = {
+  "get-well-soon-messages-after-surgery": { situation: "surgery", tone: "supportive" },
+  "get-well-soon-messages-for-cancer": { situation: "serious", tone: "supportive" },
+  "get-well-soon-messages-for-serious-illness": { situation: "serious", tone: "supportive" },
+  "what-to-say-instead-of-get-well-soon": { situation: "chronic", tone: "supportive" },
+  "get-well-soon-messages-for-hospital-stay": { situation: "hospital", tone: "supportive" },
+  "get-well-soon-messages-for-injury": { situation: "injury", tone: "supportive" },
+  "get-well-soon-messages-for-broken-bone": { situation: "injury", tone: "supportive" },
+  "get-well-soon-messages-for-flu": { situation: "minor", tone: "short" },
+  "get-well-soon-messages-for-friend": { recipient: "friend" },
+  "get-well-soon-messages-for-family": { recipient: "family" },
+  "get-well-soon-messages-for-mom": { recipient: "family" },
+  "get-well-soon-messages-for-dad": { recipient: "family" },
+  "get-well-soon-messages-for-grandma": { recipient: "family" },
+  "get-well-soon-messages-for-grandpa": { recipient: "family" },
+  "get-well-soon-messages-for-sister": { recipient: "family" },
+  "get-well-soon-messages-for-brother": { recipient: "family" },
+  "get-well-soon-messages-for-wife": { recipient: "partner" },
+  "get-well-soon-messages-for-husband": { recipient: "partner" },
+  "get-well-soon-messages-for-boyfriend": { recipient: "partner" },
+  "get-well-soon-messages-for-girlfriend": { recipient: "partner" },
+  "get-well-soon-messages-for-coworker": { recipient: "coworker", tone: "professional" },
+  "get-well-soon-messages-for-boss": { recipient: "boss", tone: "professional" },
+  "get-well-soon-messages-for-client": { recipient: "client", tone: "professional" },
+  "get-well-soon-card-messages": { format: "card" },
+  "get-well-soon-text-messages": { format: "text" },
+  "get-well-soon-messages-for-flowers": { format: "flowers" },
+  "short-get-well-soon-messages": { tone: "short" },
+  "funny-get-well-soon-messages": { tone: "funny" },
+  "religious-get-well-soon-messages": { tone: "religious" },
+  "get-well-soon-prayers": { tone: "religious" }
+};
 const infoPages = [
   {
     slug: "about",
+    dateModified: "2026-09-22",
     title: `About ${siteName}`,
     description: `${siteName} helps people write thoughtful get well notes, cards, texts, and support messages.`,
     eyebrow: "About",
@@ -63,7 +101,7 @@ const infoPages = [
       },
       {
         title: "Editorial responsibility",
-        body: "Quick Get Well is maintained as an independent writing resource. Each page is reviewed for plain language, emotional tone, privacy, pressure, and whether the wording avoids medical promises before it is published."
+        body: "Quick Get Well is an independent writing resource. Some examples have been drafted or revised with AI assistance. Automated checks and AI-assisted reviews do not replace a human editor, and a completed human editorial review is not documented for this version."
       },
       {
         title: "Contact",
@@ -73,26 +111,31 @@ const infoPages = [
   },
   {
     slug: "editorial-policy",
+    dateModified: "2026-09-22",
     title: "Editorial Policy",
-    description: "How Quick Get Well reviews wording, sensitive topics, and non-medical guidance.",
+    description: "How Quick Get Well uses AI-assisted drafts, reference sources, and human review for wording suggestions.",
     eyebrow: "Editorial policy",
-    intro: "Every page is written as wording guidance. We prioritize clarity, emotional care, and avoiding promises about health outcomes.",
+    intro: "These examples are wording suggestions to adapt to your own relationship. Some have been drafted or revised with AI assistance. Research, automated checks, and human editorial review are different steps.",
     sections: [
       {
         title: "Review principles",
-        body: "Messages are reviewed for tone and sensitivity before publication. We avoid language that pressures someone to stay positive, asks for private medical details, or suggests words can change medical outcomes."
+        body: "A content review should check natural language, the relationship between sender and recipient, privacy, emotional pressure, and promises the sender may not be able to keep. An automated check cannot decide whether a message feels right to a particular person."
       },
       {
         title: "Sensitive-page checks",
-        body: "Pages about cancer, serious illness, surgery, hospital stays, chronic illness, prayers, and workplace notes receive extra checks for privacy, pressure, faith language, humor, and recovery timelines."
+        body: "Content about serious illness, surgery, hospital stays, chronic illness, faith, and workplace relationships needs particular care. A reviewer should consider privacy, humor, beliefs, and any assumption about recovery or returning to work."
       },
       {
         title: "Medical boundary",
         body: "Quick Get Well is not a medical site, and pages are not clinician reviewed. The guidance is limited to wording, tone, and message examples."
       },
       {
-        title: "Sensitive topics",
-        body: "Pages about cancer, serious illness, hospital stays, surgery, and long recovery include extra caution. They are meant to help with supportive language, not medical decisions."
+        title: "Sources and originality",
+        body: "Reference material can inform communication principles and help identify real questions. A source's presence online does not establish that it was written by a person or that every example suits every situation. Our example messages are not quotations from or endorsements by those sources."
+      },
+      {
+        title: "Current review status",
+        body: "A completed human editorial review is not documented for this version. AI-assisted review and software tests must not be presented as human approval. Check any names, shared memories, offers of help, or business arrangements before using an example."
       },
       {
         title: "Corrections",
@@ -100,7 +143,7 @@ const infoPages = [
       },
       {
         title: "Updates",
-        body: `Content is updated when we find wording that can be clearer, kinder, or safer. Current site content was last updated in ${contentMonthLabel}.`
+        body: "Each article shows its own last updated date. We revise that date when its message examples or wording guidance change substantially."
       }
     ]
   },
@@ -128,6 +171,7 @@ const infoPages = [
   },
   {
     slug: "privacy",
+    dateModified: "2026-09-22",
     title: "Privacy Policy",
     description: "Privacy notes for Quick Get Well, including analytics and non-medical site usage.",
     eyebrow: "Privacy",
@@ -136,6 +180,10 @@ const infoPages = [
       {
         title: "Analytics",
         body: "The site uses Google Analytics 4 and Cloudflare analytics to understand aggregate traffic and page usage. These tools may process page URLs, device and browser information, approximate location, IP-derived data, cookies, and event data such as page views."
+      },
+      {
+        title: "Interaction events",
+        body: "We count successful message copies, message finder choices, and printable card download clicks to understand whether the site is useful. These custom events include the page path, where the copy happened, the selected relationship, situation, tone and format, or the card pack and paper size. They do not include optional names, help offers, copied message text, or topic search text."
       },
       {
         title: "Message finder inputs",
@@ -195,23 +243,32 @@ function renderIconLinks(prefix = "") {
 function renderAnalytics() {
   if (!gaMeasurementId) return "";
 
-  const id = escapeHtml(gaMeasurementId);
-  return `    <script async src="https://www.googletagmanager.com/gtag/js?id=${id}"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag("js", new Date());
-      gtag("config", "${id}");
+  const id = JSON.stringify(gaMeasurementId);
+  const hostname = JSON.stringify(new URL(baseUrl).hostname);
+  return `    <script>
+      if (window.location.hostname === ${hostname}) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag("js", new Date());
+        window.gtag("config", ${id});
+        const analyticsScript = document.createElement("script");
+        analyticsScript.async = true;
+        analyticsScript.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(${id});
+        document.head.appendChild(analyticsScript);
+      }
     </script>
 `;
 }
 
-function renderHeader() {
+function renderHeader(page) {
+  const context = finderContexts[page?.slug];
+  const finderHref = context ? `../?${new URLSearchParams(context)}#message-finder` : "../#message-finder";
+  const finderLabel = page && !context ? "New message" : "Finder";
   return `
     <header class="site-header">
       <a class="brand" href="../"><span class="brand-mark" aria-hidden="true"></span><span>${escapeHtml(siteName)}</span></a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a href="../#message-finder">Finder</a>
+        <a href="${escapeHtml(finderHref)}">${finderLabel}</a>
         <a href="../#situations">Situations</a>
         <a href="../#guidance">Guidance</a>
         <a href="../#faq">FAQ</a>
@@ -251,7 +308,8 @@ const topicGroups = [
       "short-get-well-soon-messages",
       "get-well-soon-card-messages",
       "get-well-soon-text-messages",
-      "what-to-say-instead-of-get-well-soon"
+      "what-to-say-instead-of-get-well-soon",
+      "how-to-respond-to-get-well-soon"
     ]
   },
   {
@@ -300,7 +358,10 @@ const topicGroups = [
 ];
 
 function renderTopicCard(page) {
-  const searchText = [page.title, page.summary, page.eyebrow, page.nav, ...(topicAliases[page.slug] || [])]
+  const resourceTerms = page.printableCards ? ["printable", "PDF", "download", page.printableCards.title,
+    ...page.printableCards.files.map((file) => file.label),
+    ...page.printableCards.designs.map((design) => design.caption)] : [];
+  const searchText = [page.title, page.summary, page.eyebrow, page.nav, ...(topicAliases[page.slug] || []), ...resourceTerms]
     .filter(Boolean)
     .join(" ")
     .toLowerCase()
@@ -485,12 +546,13 @@ ${renderRootHeader()}
               <input id="helpOffer" type="text" placeholder="drop off dinner this week">
             </label>
 
-            <p class="finder-privacy-note">Runs in your browser. Do not enter private medical details. Inputs are not submitted or stored by Quick Get Well.</p>
+            <p class="finder-privacy-note">Runs in your browser. Names and help offers are not submitted or stored. We measure category selections and copy actions to improve the tool. Do not enter private medical details.</p>
 
-            <div class="quick-tune" aria-label="Quick tone controls">
-              <button type="button" data-action="shorter">Make shorter</button>
-              <button type="button" data-action="warmer">Make warmer</button>
-              <button type="button" data-action="safer">Use low-pressure wording</button>
+            <p class="finder-control-note" id="tone-shortcut-help">Switch tone: choose one. These shortcuts change the Tone selection above.</p>
+            <div class="quick-tune" role="group" aria-label="Switch tone" aria-describedby="tone-shortcut-help">
+              <button type="button" data-action="shorter">Short</button>
+              <button type="button" data-action="warmer">Warm</button>
+              <button type="button" data-action="safer">Low-pressure</button>
             </div>
           </form>
 
@@ -611,8 +673,42 @@ function renderSections(page) {
           ${section.intro ? `<p>${escapeHtml(section.intro)}</p>` : ""}
           <div class="message-list">
             ${section.messages.map(renderMessageButton).join("\n            ")}
-          </div>`)
+          </div>
+          ${renderSectionLinks(section)}`)
     .join("\n");
+}
+
+function renderSectionLinks(section) {
+  if (!section.links?.length) return "";
+
+  const links = section.links.map(({ slug, label }) => {
+    if (!pageBySlug.has(slug)) throw new Error(`Unknown section link: ${slug}`);
+    return `<li><a href="../${escapeHtml(slug)}/">${escapeHtml(label)}</a></li>`;
+  });
+
+  return `<ul class="section-links">${links.join("")}</ul>`;
+}
+
+function renderPrintableCards(cards) {
+  if (!cards) return "";
+
+  return `
+          <div class="printable-cards">
+            <h2 id="printable-cards">${escapeHtml(cards.title)}</h2>
+            <p>${escapeHtml(cards.intro)}</p>
+            <div class="download-links">
+              ${cards.files.map((file) => `<a class="button primary" href="../${escapeHtml(file.path)}" download data-card-download="${escapeHtml(cards.id)}" data-paper-size="${escapeHtml(file.paper)}">${escapeHtml(file.label)}</a>`).join("\n              ")}
+            </div>
+            <div class="printable-previews">
+              ${cards.designs.map((design) => `<figure>
+                <img src="../${escapeHtml(design.preview)}" alt="${escapeHtml(design.alt)}" width="${design.width}" height="${design.height}" loading="lazy" decoding="async">
+                <figcaption>${escapeHtml(design.caption)}</figcaption>
+              </figure>`).join("\n              ")}
+            </div>
+            <ol class="print-instructions">
+              ${cards.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("\n              ")}
+            </ol>
+          </div>`;
 }
 
 function renderDecisionGuide(page) {
@@ -706,6 +802,8 @@ function buildFaqs(page) {
 }
 
 function buildPersonalizationSteps(page) {
+  if (page.personalizationSteps?.length) return page.personalizationSteps;
+
   const custom = {
     "what-to-say-instead-of-get-well-soon": [
       "Acknowledge the situation without trying to make it sound simple.",
@@ -824,22 +922,27 @@ function pageModifiedDate(page) {
   return page.dateModified || page.updated || contentDate;
 }
 
-function renderTrustInfo() {
+function renderTrustInfo(page) {
+  const modifiedDate = pageModifiedDate(page);
+  const label = new Date(`${modifiedDate}T00:00:00Z`).toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric", timeZone: "UTC"
+  });
   return `
           <section class="trust-info" aria-label="Content review information">
             <p>${escapeHtml(trustStatement)}</p>
-            <p>Last updated: ${escapeHtml(contentMonthLabel)}</p>
+            <p>Last updated: <time datetime="${escapeHtml(modifiedDate)}">${escapeHtml(label)}</time></p>
             <p>Published by ${escapeHtml(siteName)}. Corrections and wording concerns can be sent through the Contact page.</p>
           </section>`;
 }
 
 function renderNav(page) {
   const sectionLinks = page.sections
-    .map((section) => `<a href="#${escapeHtml(section.id)}">${escapeHtml(section.title.replace(/^Quick /, "Quick "))}</a>`)
+    .map((section) => `<a href="#${escapeHtml(section.id)}">${escapeHtml(section.nav || section.title)}</a>`)
     .join("\n          ");
   const decision = page.decisionGuide?.items?.length ? `\n          <a href="#choose-wording">Choose wording</a>` : "";
+  const printables = page.printableCards ? `\n          <a href="#printable-cards">Printable cards</a>` : "";
   const avoid = page.dos?.length || page.donts?.length ? `\n          <a href="#avoid">What to avoid</a>` : "";
-  return `${sectionLinks}${decision}\n          <a href="#personalize">Personalize it</a>${avoid}\n          <a href="#faq-page">FAQ</a>`;
+  return `${sectionLinks}${printables}${decision}\n          <a href="#personalize">Personalize it</a>${avoid}\n          <a href="#faq-page">FAQ</a>`;
 }
 
 function renderSchema(page) {
@@ -914,7 +1017,7 @@ function renderPage(page) {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${escapeHtml(`${page.title} | ${siteName}`)}</title>
+    <title>${escapeHtml(`${page.seoTitle || page.title} | ${siteName}`)}</title>
     <meta name="description" content="${escapeHtml(page.description)}">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="${pageUrl(page.slug)}">
@@ -931,7 +1034,7 @@ ${renderAnalytics()}
     </script>
   </head>
   <body>
-${renderHeader()}
+${renderHeader(page)}
 
     <main>
       <section class="article-hero">
@@ -939,6 +1042,7 @@ ${renderHeader()}
         <p class="eyebrow">${escapeHtml(page.eyebrow)}</p>
         <h1>${escapeText(page.title)}</h1>
         <p>${escapeHtml(page.intro)}</p>
+        ${page.printableCards ? '<a class="button ghost printable-jump" href="#printable-cards">Print a class card</a>' : ""}
       </section>
 
       <section class="article-body">
@@ -949,13 +1053,14 @@ ${renderHeader()}
         <article class="article-content">
 ${renderSensitiveNote(page)}
 ${renderSections(page)}
+${renderPrintableCards(page.printableCards)}
 ${renderDecisionGuide(page)}
 ${renderPersonalization(page)}
 ${renderDosDonts(page)}
 ${renderFaq(page)}
 ${renderRelated(page)}
 ${renderClusterLinks(page)}
-${renderTrustInfo()}
+${renderTrustInfo(page)}
         </article>
       </section>
     </main>
@@ -985,9 +1090,9 @@ function renderSearchIndex() {
 
 function renderSitemap() {
   const urls = [
-    { loc: `${baseUrl}/`, lastmod: contentDate },
+    { loc: `${baseUrl}/`, lastmod: homeModifiedDate },
     ...pages.map((page) => ({ loc: pageUrl(page.slug), lastmod: pageModifiedDate(page) })),
-    ...infoPages.map((page) => ({ loc: infoPageUrl(page.slug), lastmod: contentDate }))
+    ...infoPages.map((page) => ({ loc: infoPageUrl(page.slug), lastmod: pageModifiedDate(page) }))
   ];
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -1014,6 +1119,9 @@ function renderHeaders() {
   return `/assets/*
   Cache-Control: public, max-age=31536000, immutable
 ${securityHeaders}
+
+/assets/printables/*.pdf
+  X-Robots-Tag: noindex
 
 /styles.css
   Cache-Control: public, max-age=31536000, immutable

@@ -1,11 +1,12 @@
 const pages = [
   {
     slug: "get-well-soon-messages",
+    dateModified: "2026-09-22",
     title: "Get Well Soon Messages",
     eyebrow: "Main collection",
     description: "Find thoughtful get well soon messages for texts, cards, work notes, family support, surgery recovery, and sensitive situations.",
     summary: "The main collection of thoughtful messages by tone and situation.",
-    intro: "Start here if you need a message fast. Choose a short, warm, funny, professional, or careful note, then add one personal detail so it sounds like you.",
+    intro: "Choose a get well soon message or wish for a text, card, or work note. Start with a short example, then use the relationship and situation guides for more specific wording. If someone has wished you well, use the reply guide below to write a thank-you.",
     nav: "All messages",
     sections: [
       {
@@ -17,6 +18,11 @@ const pages = [
           "Feel better soon. I am sending warm thoughts your way.",
           "No need to reply. I just wanted you to know you are on my mind.",
           "Take all the time you need to rest and recover."
+        ],
+        links: [
+          { slug: "get-well-soon-text-messages", label: "They just told you they are ill? Find a short text response." },
+          { slug: "get-well-soon-card-messages", label: "Writing inside a card? See complete notes and closings." },
+          { slug: "how-to-respond-to-get-well-soon", label: "Someone wished you well? Find a reply to thank them." }
         ]
       },
       {
@@ -49,7 +55,7 @@ const pages = [
       {
         id: "funny",
         title: "Funny get well soon messages",
-        intro: "Use humor only when the illness is minor and you know the person will enjoy it.",
+        intro: "Choose humor they would enjoy in your usual conversations. A serious illness does not tell you whether someone wants a joke; if you are unsure, choose a warm note and let them set the tone.",
         messages: [
           "Get well soon. Your germs have made their point.",
           "Please feel better soon. I am being forced to make my own decisions and it is not going well.",
@@ -57,6 +63,27 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Get well soon, feel better, or thinking of you?",
+      intro: "These expressions overlap. Choose wording that fits what the person has told you and how you normally speak to each other; none of them needs to promise a recovery date.",
+      items: [
+        {
+          label: "Get well soon",
+          useWhen: "You want a familiar recovery wish for a card or message, and the person is comfortable with that wording.",
+          try: "Get well soon. Thinking of you and sending warm wishes."
+        },
+        {
+          label: "Feel better soon",
+          useWhen: "You want a conversational reply when someone says they are feeling unwell. It can refer to feeling more comfortable, without claiming that an ongoing condition will disappear.",
+          try: "I'm sorry you're feeling unwell. Hope you feel better soon."
+        },
+        {
+          label: "Thinking of you",
+          useWhen: "You do not know the outlook, or the person has said recovery wishes do not fit their experience.",
+          try: "Thinking of you today. I'm here if you'd like some company."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What is a simple get well soon message?",
@@ -72,21 +99,23 @@ const pages = [
       }
     ],
     dos: ["Match the message to the situation.", "Add one personal detail or offer of help.", "Use no need to reply when the person may be tired."],
-    donts: ["Do not force positivity.", "Do not rush recovery.", "Do not use humor for serious or uncertain illness."],
+    donts: ["Do not force positivity.", "Do not rush recovery.", "Do not assume a joke will be welcome; follow the person's preferences."],
     related: ["get-well-soon-messages-after-surgery", "get-well-soon-messages-for-friend", "what-to-say-instead-of-get-well-soon"]
   },
   {
     slug: "get-well-soon-messages-after-surgery",
     title: "Get Well Soon Messages After Surgery",
     eyebrow: "After surgery",
+    dateModified: "2026-09-22",
     description: "Thoughtful get well soon messages after surgery that offer calm support without rushing recovery.",
     summary: "Careful recovery wording that does not rush healing.",
-    intro: "After surgery, the safest message is calm, patient, and practical. A good note acknowledges the procedure, leaves recovery unrushed, and offers help that does not require a reply.",
+    intro: "Choose a message for the stage they have actually reached: just after surgery, later in recovery, or still waiting for the procedure. Keep the tone familiar, leave out recovery deadlines, and offer help you can follow through on.",
     nav: "After surgery",
     sections: [
       {
         id: "quick",
         title: "Quick copy messages",
+        intro: "Use these when you know the procedure has taken place. You do not need to describe the result or ask for medical details.",
         messages: [
           "I am glad the surgery is behind you. Wishing you quiet rest, good care, and no pressure to answer.",
           "I hope today feels a little more comfortable and supported.",
@@ -96,8 +125,18 @@ const pages = [
         ]
       },
       {
+        id: "before-surgery",
+        title: "If surgery is still ahead",
+        intro: "A card sent before surgery should look ahead without assuming how the procedure will go. Replace the details below with something true to your relationship.",
+        messages: [
+          "I will be thinking of you on [day]. No need to send updates; I just wanted to send my love.",
+          "Dear [Name], I wanted you to have a note from me before your surgery. I saw [something connected to a shared interest] and thought of you. If you would like some company or a distraction this week, I would love to chat. With love, [Your name]"
+        ]
+      },
+      {
         id: "friend",
         title: "For a friend",
+        intro: "Use the way you normally talk together. A familiar joke can fit if your friend welcomes humor, but a serious procedure alone does not tell you what tone they prefer. Leave jokes about their pain or appearance out.",
         messages: [
           "I am so proud of how you are handling this. Let your body take its time. I am here for errands, distractions, or quiet company.",
           "Recovery days can be boring and hard. I can drop off food, send bad jokes, or simply leave you alone in peace. Your call.",
@@ -134,11 +173,16 @@ const pages = [
     ],
     decisionGuide: {
       title: "Choose the right surgery message",
-      intro: "After surgery, the best wording depends on timing and closeness. Start with the least demanding option, then add practical help if you can follow through.",
+      intro: "Start with the timing, then your relationship. If you do not know whether surgery has happened yet, a simple thinking-of-you note avoids guessing.",
       items: [
         {
+          label: "Before surgery",
+          useWhen: "The procedure is still ahead, even if you have already bought a get well card.",
+          try: "I will be thinking of you on [day]. No need to send updates; I just wanted to send my love."
+        },
+        {
           label: "Right after surgery",
-          useWhen: "They may be tired, medicated, or not ready to update people.",
+          useWhen: "You know the procedure has happened, but they may not be ready to update people.",
           try: "I am glad the surgery is behind you. No need to reply. I am thinking of you and wishing you quiet rest."
         },
         {
@@ -159,6 +203,10 @@ const pages = [
       ]
     },
     faqs: [
+      {
+        question: "What can I write in a card before surgery?",
+        answer: "Say you are thinking of them ahead of the procedure, then add a familiar detail or a specific offer of company. Avoid saying the surgery is behind them or promising it will go well. If they welcome humor, a joke about a shared interest can sound more like you than a formal wish."
+      },
       {
         question: "What should I say after surgery without rushing recovery?",
         answer: "Try: \"I am glad the surgery is behind you. Wishing you quiet rest, good care, and no pressure to answer.\" It acknowledges the procedure without setting a timeline."
@@ -183,10 +231,11 @@ const pages = [
   {
     slug: "get-well-soon-messages-for-coworker",
     title: "Get Well Soon Messages for a Coworker",
+    dateModified: "2026-09-22",
     eyebrow: "Workplace wording",
-    description: "Professional and friendly get well soon messages for coworkers, colleagues, bosses, team cards, email, Slack, and after-surgery recovery.",
+    description: "Short get well soon messages for coworkers and colleagues, including sick-day replies, team cards, and support during a longer recovery.",
     summary: "Warm, professional notes for work cards and Slack.",
-    intro: "Keep it warm, brief, and free of work pressure. The best coworker note says they are missed without making them worry about what is waiting.",
+    intro: "Choose a brief reply to a sick-day message, a note for a colleague you do not know well, or a card from the team. Match your usual tone and leave work requests for a separate conversation.",
     nav: "For a coworker",
     sections: [
       {
@@ -197,13 +246,41 @@ const pages = [
           "We miss having you around, but your health comes first. Wishing you rest and steady progress.",
           "Sending warm thoughts your way. I hope you feel supported and have space to rest without pressure.",
           "Hope you are able to rest and recover comfortably. Looking forward to seeing you when you are ready."
+        ],
+        links: [
+          { slug: "get-well-soon-messages-for-client", label: "Writing to a client? Find short replies and optional email examples." }
+        ]
+      },
+      {
+        id: "sick-day-reply",
+        title: "When a coworker tells you they are sick",
+        nav: "Reply to sick-day news",
+        intro: "If a colleague messages you about feeling unwell today, acknowledge the news and add a kind wish. Keep the tone as conversational as your usual messages.",
+        messages: [
+          "Thanks for letting me know. I am sorry you are feeling unwell. Hope you feel better soon.",
+          "Sorry you are having such a rough day. I hope you can get some rest."
+        ],
+        links: [
+          { slug: "how-to-respond-to-get-well-soon", label: "Are you the one who is unwell? Find replies to a coworker's get well wishes." }
+        ]
+      },
+      {
+        id: "not-close",
+        title: "For a colleague you do not know well",
+        nav: "A less familiar colleague",
+        intro: "Keep the note in your own voice and use a channel you already use together when possible. If they may not recognize your name, add the team or department where you met. You do not need to ask what happened.",
+        messages: [
+          "I was sorry to hear you have been unwell. Sending my best wishes.",
+          "Just a short note to wish you well. I hope you have some restful days ahead.",
+          "Best wishes from [Your name] in [Department]. I hope you are able to rest comfortably."
         ]
       },
       {
         id: "team",
         title: "Messages from the team",
+        intro: "Use a shared voice when you are signing on behalf of the people sending the card. Otherwise, change we to I.",
         messages: [
-          "The whole team is thinking of you and wishing you a steady recovery. Take care of yourself and come back only when you are ready.",
+          "The whole team is thinking of you and wishing you a steady recovery. We hope you feel supported and cared for.",
           "Work is not the same without you, but we hope you are getting the rest you need. Wishing you comfort and healing.",
           "We are all rooting for you and sending good thoughts. Please focus on recovery and know you are missed."
         ]
@@ -211,11 +288,11 @@ const pages = [
       {
         id: "funny",
         title: "Light humor for close coworkers",
-        intro: "Use humor only if you know the coworker well and the illness is not serious.",
+        intro: "Use humor only if you know the coworker would welcome it. Keep jokes away from their pain, diagnosis, or pressure to return.",
         messages: [
           "Get well soon. The office tried replacing your jokes and the results were deeply concerning.",
           "Your coffee mug is starting to look abandoned. Hope you get the rest you need.",
-          "The team needs your professional eye-roll back in meetings. Feel better soon."
+          "Someone said 'circle back' today and I could practically see your eye-roll. Hope you feel better soon."
         ]
       },
       {
@@ -223,8 +300,23 @@ const pages = [
         title: "Slack or Teams messages",
         messages: [
           "No need to reply. Just wanted to say the team is thinking of you and hoping you get real rest.",
-          "Hope you are able to step away fully and take care of yourself. We have things covered here.",
+          "Thinking of you today and hoping you have some time to rest. No need to reply to this note.",
           "Sending warm thoughts from the team. Please do not worry about responding while you recover."
+        ]
+      },
+      {
+        id: "longer-recovery",
+        title: "During a longer or uncertain recovery",
+        nav: "Longer recovery",
+        intro: "When you do not know what recovery will look like, you can show care without setting a return date or asking for an update. A former coworker can briefly acknowledge the time since you last spoke.",
+        messages: [
+          "Thinking of you today and sending warm wishes. There is no need to reply; I just wanted to say hello.",
+          "It has been a while since we worked together, but I wanted to let you know you are in my thoughts.",
+          "Just sending a little support your way. I hope today brings you some comfort."
+        ],
+        links: [
+          { slug: "get-well-soon-messages-for-serious-illness", label: "Find more wording for serious or uncertain illness." },
+          { slug: "get-well-soon-messages-for-cancer", label: "If they have shared a cancer diagnosis, find messages for that situation." }
         ]
       },
       {
@@ -239,12 +331,12 @@ const pages = [
     ],
     decisionGuide: {
       title: "Choose the right coworker message",
-      intro: "Workplace get well notes should sound kind without pulling the person back into work. Keep the message private, brief, and separate from deadlines.",
+      intro: "Start with the conversation you are actually having: responding to news, checking in, or signing a group card. Use I for a personal message and we only when you speak for the group.",
       items: [
         {
-          label: "Direct message",
-          useWhen: "You are writing in Slack, Teams, or email to one coworker.",
-          try: "No need to reply. Just wanted to say I am thinking of you and hoping you get real rest."
+          label: "Reply to sick-day news",
+          useWhen: "A colleague has just told you they feel unwell.",
+          try: "Thanks for letting me know. I am sorry you are feeling unwell. Hope you feel better soon."
         },
         {
           label: "Team card",
@@ -273,21 +365,30 @@ const pages = [
         answer: "Yes. Use one or two sentences, avoid private medical questions, and add no need to reply if they may be tired."
       },
       {
+        question: "Should I say get well soon or feel better to a sick coworker?",
+        answer: "Both can fit a brief reply when a colleague says they are unwell. Hope you feel better soon sounds conversational; wishing you a good recovery may suit a card after surgery. You do not need to know how many days they will be off. For an ongoing or uncertain condition, you can simply say I am thinking of you."
+      },
+      {
+        question: "What if I have not spoken to a former coworker for a long time?",
+        answer: "Briefly acknowledge the gap and send a kind note without asking for medical details: It has been a while since we worked together, but I wanted to let you know you are in my thoughts. If you are unsure whether a private channel would be welcome, consider a shared card or a channel you have used together before."
+      },
+      {
         question: "What should a team card say?",
         answer: "Use shared support rather than workplace urgency: The team is thinking of you, please take the time you need, and we hope you feel cared for."
       }
     ],
-    dos: ["Keep the note short and kind.", "Say the team is thinking of them.", "Respect privacy around the diagnosis."],
-    donts: ["Do not mention deadlines or workload.", "Do not ask for updates in a group card.", "Do not joke about serious illness."],
-    related: ["funny-get-well-soon-messages", "get-well-soon-messages-after-surgery", "short-get-well-soon-messages"]
+    dos: ["Keep the note short and kind.", "Use I for your own note and we for a shared message.", "Respect privacy around the diagnosis."],
+    donts: ["Do not mention deadlines or workload.", "Do not ask for updates in a group card.", "Do not assume a colleague would welcome a joke about being ill."],
+    related: ["funny-get-well-soon-messages", "get-well-soon-messages-after-surgery", "short-get-well-soon-messages", "how-to-respond-to-get-well-soon"]
   },
   {
     slug: "get-well-soon-messages-for-friend",
     title: "Get Well Soon Messages for a Friend",
+    dateModified: "2026-09-22",
     eyebrow: "Friendship notes",
-    description: "Warm get well soon messages for a friend, with casual texts, supportive notes, and gentle humor when it fits.",
-    summary: "Casual, sincere, funny, and supportive messages.",
-    intro: "A friend message can be warmer and more personal. The trick is to sound like yourself, not like a greeting card aisle.",
+    description: "Get well soon messages for a friend, with replies to health updates, everyday check-ins, practical help, and humor when it fits your friendship.",
+    summary: "Friendly check-ins and replies when a friend shares health news.",
+    intro: "Start with where your conversation is now. A first get well message can be a simple hello; a reply to a health update should acknowledge what your friend has just told you. Use words that sound like your usual conversations.",
     nav: "For a friend",
     sections: [
       {
@@ -298,6 +399,10 @@ const pages = [
           "I hate that you are feeling so rough. Sending you love, rest, and a very gentle hug.",
           "Feel better soon, friend. I miss your face and your chaos.",
           "No need to reply. Just wanted you to know I am thinking of you."
+        ],
+        links: [
+          { slug: "get-well-soon-text-messages", label: "They have just told you they are sick? Find short text replies." },
+          { slug: "how-to-respond-to-get-well-soon", label: "You received the get well wish? Find ways to say thank you." }
         ]
       },
       {
@@ -331,10 +436,15 @@ const pages = [
       {
         id: "long-recovery",
         title: "For a long recovery",
+        intro: "You do not need a new reassurance for every update. Respond to the feeling or detail they shared, and leave room for the everyday things you usually talk about. If they have not answered an offer of help, give them time rather than treating silence as a rejection.",
         messages: [
           "I know this is not over just because the first hard day passed. I am still here.",
           "You do not have to give me a cheerful update. I care about the real version of today.",
-          "If recovery keeps feeling slow or frustrating, I will keep checking in without making you perform okay."
+          "Thinking of you again this week. If you feel like talking, I would love to hear about whatever is on your mind."
+        ],
+        links: [
+          { slug: "what-to-say-instead-of-get-well-soon", label: "When getting well soon does not fit, choose a different kind of support." },
+          { slug: "get-well-soon-messages-for-cancer", label: "Writing to a friend with cancer? Find messages for treatment and everyday contact." }
         ]
       },
       {
@@ -348,28 +458,28 @@ const pages = [
       }
     ],
     decisionGuide: {
-      title: "Choose the right friend message",
-      intro: "Friendship gives you room to sound human. The safest choice is specific care, low pressure, and a tone that matches how you already talk.",
+      title: "Reply to a friend's health update",
+      intro: "These examples continue a conversation your friend has started. Acknowledge what they have already told you instead of asking them to repeat it. Offer a call or help only when you can follow through.",
       items: [
         {
-          label: "Quick check-in",
-          useWhen: "You want them to feel remembered without needing to answer.",
-          try: "No need to reply. Just wanted you to know I am thinking of you and sending love."
+          label: "They have said they are scared",
+          useWhen: "Respond to that fear without promising that everything will be fine or asking again how they feel.",
+          try: "I hear how scared you are. I wish I could make this easier. I can listen if you want to talk."
         },
         {
-          label: "Practical support",
-          useWhen: "You are close enough to offer a real task.",
-          try: "I can bring food, run an errand, or sit quietly with you this week. Pick whatever helps most."
+          label: "They send test results you do not understand",
+          useWhen: "You can care about the person without interpreting the results. Do not guess what the numbers mean or make them explain everything to receive support.",
+          try: "I do not understand all the details, but I am glad you told me. I care about what you are going through."
         },
         {
-          label: "Hard day",
-          useWhen: "They may not be feeling positive, cheerful, or social.",
-          try: "You do not have to be upbeat with me. I am here for the honest version of today."
+          label: "They are tired of talking about their health",
+          useWhen: "Follow their request to change the subject. Choose an interest you really share, and let them decide whether to chat.",
+          try: "We can talk about something else. I have some very unimportant news from my day if you feel like a distraction."
         },
         {
-          label: "Light humor",
-          useWhen: "The illness is minor and joking is normal in your friendship.",
-          try: "Feel better soon. I miss your face and your questionable advice."
+          label: "Another update brings more waiting",
+          useWhen: "They have already described the uncertainty. Acknowledge that it continues without inventing a positive outcome.",
+          try: "I am sorry you are still waiting for answers. You can keep talking to me about it; you do not have to have good news."
         }
       ]
     },
@@ -383,8 +493,12 @@ const pages = [
         answer: "Sound like yourself and offer something real, such as food, errands, a ride, a distraction, or quiet company."
       },
       {
+        question: "What if I keep saying the same thing when my friend shares health updates?",
+        answer: "Reply to one thing they have just told you: fear, frustration, waiting, or wanting a break from the subject. You do not need a new slogan or a solution each time. If they already said they are scared, acknowledge that instead of asking them to explain their feelings again. It is fine to say you do not understand a test result without trying to interpret it."
+      },
+      {
         question: "Can I send a funny get well message to a friend?",
-        answer: "Yes, if the illness is minor and humor is normal between you. Keep the joke affectionate and away from pain or diagnosis."
+        answer: "Yes, if humor is normal between you and your friend would welcome it now. Let them set the tone when they share difficult news. Keep the joke affectionate and away from pain or diagnosis."
       }
     ],
     dos: ["Sound like yourself.", "Offer a specific way to help.", "Let them be honest if the day is hard."],
@@ -393,11 +507,12 @@ const pages = [
   },
   {
     slug: "funny-get-well-soon-messages",
+    dateModified: "2026-09-22",
     title: "Funny Get Well Soon Messages",
     eyebrow: "Light humor",
     description: "Funny get well soon messages that keep the joke light, kind, and appropriate for minor illness or close relationships.",
     summary: "Light humor that still feels kind.",
-    intro: "Funny works when the illness is minor, the relationship is close, and the joke makes them feel remembered rather than minimized.",
+    intro: "A funny message works best when it sounds like your usual conversations and the person wants a laugh. Follow their sense of humor and mood. The diagnosis alone cannot tell you whether a joke will be welcome.",
     nav: "Funny messages",
     sections: [
       {
@@ -414,9 +529,9 @@ const pages = [
         id: "friend",
         title: "For a close friend",
         messages: [
-          "I would say laughter is the best medicine, but please also take the actual medicine. Feel better.",
+          "I've saved you a very important update: the dog still believes every delivery is for him.",
           "Get well soon. I need someone to make bad choices with, and you are clearly my most qualified candidate.",
-          "Feel better soon. I refuse to let you use being sick as an excuse to avoid my stories."
+          "I've been saving my least impressive stories for you. Available whenever you want a distraction."
         ]
       },
       {
@@ -432,7 +547,7 @@ const pages = [
     faqs: [
       {
         question: "When is a funny get well soon message appropriate?",
-        answer: "Use humor when the illness is minor, the relationship is close, and the person usually enjoys that kind of joke."
+        answer: "Use humor when you know the person enjoys it and they seem open to a joke. Some people appreciate ordinary humor during a serious illness; others prefer a quiet note even for a minor illness. If you are unsure, start warmly and follow their lead."
       },
       {
         question: "What makes a funny get well message feel kind?",
@@ -444,10 +559,10 @@ const pages = [
       },
       {
         question: "When should I switch from funny to serious?",
-        answer: "Switch to a warmer message for surgery, hospital stays, serious illness, chronic illness, or any moment where the person seems scared, exhausted, or private."
+        answer: "Switch when they say they do not want jokes, are trying to share something difficult, or you are unsure how your joke will land. Listen to what they are saying before trying to lighten the mood."
       }
     ],
-    dos: ["Use humor when you know their style.", "Keep the joke affectionate.", "Switch to warmth if the illness is serious."],
+    dos: ["Use humor when you know their style.", "Keep the joke affectionate.", "Let them change the tone without having to laugh along."],
     donts: ["Do not joke about pain.", "Do not joke about a diagnosis.", "Do not use sarcasm with a distant coworker."],
     related: ["get-well-soon-messages-for-friend", "get-well-soon-messages-for-coworker", "short-get-well-soon-messages"]
   },
@@ -537,10 +652,11 @@ const pages = [
   {
     slug: "what-to-say-instead-of-get-well-soon",
     title: "Alternative to \"Get Well Soon\"",
-    eyebrow: "Safer wording",
+    eyebrow: "Alternative wording",
+    dateModified: "2026-09-22",
     description: "Alternatives to get well soon for chronic illness, serious illness, cancer, long recovery, mental health, and situations where simple recovery wishes feel wrong.",
-    summary: "Better wording for chronic or serious illness.",
-    intro: "When recovery is uncertain, long, chronic, or emotionally heavy, get well soon can sound too neat. Use language that offers support without pretending the situation is simple.",
+    summary: "Choose words for ongoing illness, a flare, or uncertain recovery.",
+    intro: "Some people welcome get well soon; others prefer a wish for comfort, relief, or company. Consider what they have told you, whether you mean an ongoing condition or a difficult day, and how you normally speak together.",
     nav: "Instead of get well soon",
     sections: [
       {
@@ -556,11 +672,21 @@ const pages = [
       },
       {
         id: "chronic",
-        title: "For chronic illness or long recovery",
+        title: "For everyday support with an ongoing condition",
+        intro: "An ordinary check-in does not need to suggest that a lasting condition will disappear. Ask about their interests or offer company, without expecting a health update.",
         messages: [
-          "I know this is not something that simply goes away. I am here for the good days, the bad days, and the days you do not want to explain.",
+          "I am thinking of you today. We can talk about how you are feeling, or about something else entirely.",
           "I hope today is as gentle as possible. You do not have to be upbeat for me.",
           "You are not a burden. I care about you, and I am here in whatever way helps most."
+        ]
+      },
+      {
+        id: "flare",
+        title: "When symptoms have flared up",
+        intro: "If they have described a flare or a particularly difficult day, you can wish for that part to ease without promising that the condition will go away. Follow their preference: some people use feel better soon for a flare, while others would rather hear a simple thinking of you.",
+        messages: [
+          "I am sorry today has been so rough. I hope you get some relief, and I am here if you want company.",
+          "We can leave our plans open. I would like to see you, but there is no pressure to decide today."
         ]
       },
       {
@@ -573,6 +699,27 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose an alternative that fits the situation",
+      intro: "There is no phrase that everyone prefers. Use what the person has shared instead of choosing words from a diagnosis alone.",
+      items: [
+        {
+          label: "Everyday life with an ongoing condition",
+          useWhen: "You want to stay in touch without making every conversation about health.",
+          try: "I am thinking of you today. We can talk about how you are feeling, or about something else entirely."
+        },
+        {
+          label: "A flare or a difficult day",
+          useWhen: "They have told you their symptoms are worse and you want to acknowledge this moment.",
+          try: "I am sorry today has been so rough. I hope you get some relief, and I am here if you want company."
+        },
+        {
+          label: "You do not know the details",
+          useWhen: "You want to show care without guessing what recovery will look like.",
+          try: "No need to reply. I just wanted you to know you are on my mind."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What is a gentler alternative to \"get well soon\"?",
@@ -580,11 +727,11 @@ const pages = [
       },
       {
         question: "When should I avoid saying get well soon?",
-        answer: "Avoid it when the illness is chronic, serious, uncertain, or emotionally heavy. In those cases, focus on presence, comfort, and low-pressure support."
+        answer: "Choose another phrase if they have said they dislike it, or if it would suggest a recovery timeline they are not expecting. Chronic or serious illness does not give everyone the same preference. If you are unsure, thinking of you offers care without making a prediction."
       },
       {
         question: "What can I say for chronic illness or a long recovery?",
-        answer: "Use wording that does not assume the problem will simply pass: \"I am here for the good days, the hard days, and the days you do not want to explain.\""
+        answer: "Distinguish everyday support from a flare or a separate short-term illness. You might wish them relief from today's symptoms or simply offer company. If they welcome get well soon for a cold or feel better soon for a flare, you do not need to replace their own preferred wording."
       },
       {
         question: "How do I sound supportive without being intense?",
@@ -599,24 +746,27 @@ const pages = [
     slug: "get-well-soon-messages-for-serious-illness",
     title: "Messages for Someone with a Serious Illness",
     eyebrow: "Careful support",
+    dateModified: "2026-09-22",
     description: "Supportive messages for serious illness when recovery is uncertain and ordinary get well wishes feel too simple.",
     summary: "Supportive language when optimism needs restraint.",
-    intro: "For serious illness, the goal is not to fix the feeling or explain the situation. The goal is to show up without pressure, false certainty, or cheerful shortcuts.",
+    intro: "A first response to difficult news can be simple. Later messages can offer company, practical help, or an ordinary conversation. Let the person choose what they want to talk about, without promising an outcome or expecting frequent updates.",
     nav: "Serious illness",
     sections: [
       {
         id: "quick",
-        title: "Short supportive messages",
+        title: "When you first hear the news",
+        intro: "Acknowledge what they have shared. The first note can suit someone you know less well; phrases such as 'you are loved' and 'holding you close' fit a closer relationship.",
         messages: [
-          "I am so sorry you are going through this. I am thinking of you and sending steady support.",
+          "I am sorry to hear this. Thinking of you and wishing you comfort.",
           "No need to reply. I just wanted you to know you are loved and not alone.",
-          "I am here for you, whether you want to talk, vent, rest, or be distracted.",
+          "I would like to keep you company. Would a short call or a few texts suit you? It is fine if neither does today.",
           "I hope today brings some comfort. I am holding you close in my thoughts."
         ]
       },
       {
         id: "card",
         title: "Card messages",
+        intro: "Write with the warmth you normally share. Choose a message that fits how close you are and what you can genuinely offer.",
         messages: [
           "There is no perfect message for something this hard. Please know I care about you deeply and I am here for whatever support looks like right now.",
           "You do not have to be strong for everyone. I hope you feel surrounded by care, patience, and people who will keep showing up.",
@@ -625,7 +775,8 @@ const pages = [
       },
       {
         id: "practical",
-        title: "Messages with practical help",
+        title: "Later check-ins and practical help",
+        intro: "Check what would be useful before making arrangements. They may already have meals or rides covered and prefer company, a familiar topic, or some quiet.",
         messages: [
           "I can bring dinner this week or run errands if that would help. No pressure to answer now.",
           "I am free on Thursday if you need a ride, a grocery run, or someone to sit with you.",
@@ -633,14 +784,35 @@ const pages = [
         ]
       }
     ],
+    decisionGuide: {
+      title: "Choose a first response or a later check-in",
+      intro: "Support can change from one conversation to the next. Offer a choice instead of assuming they always want to discuss their illness.",
+      items: [
+        {
+          label: "They have just told you",
+          useWhen: "You want to acknowledge the news without trying to explain it or predict what happens next.",
+          try: "I am sorry to hear this. Thinking of you and wishing you comfort."
+        },
+        {
+          label: "You are staying in touch",
+          useWhen: "You want to offer a way to connect that they can accept or decline.",
+          try: "I would like to keep you company. Would a short call or a few texts suit you? It is fine if neither does today."
+        },
+        {
+          label: "They would welcome ordinary conversation",
+          useWhen: "They have shown interest in chatting about something outside their illness.",
+          try: "I saw [something connected to a shared interest] and thought of you. I can send it over if you would like."
+        }
+      ]
+    },
     faqs: [
       {
         question: "What can I say when the illness is serious and I do not know the outcome?",
-        answer: "Say what is true without trying to predict anything: \"I am so sorry you are going through this. I am thinking of you and sending steady support.\""
+        answer: "Say what is true without trying to predict anything: \"I am sorry to hear this. Thinking of you and wishing you comfort.\""
       },
       {
         question: "How do I check in without asking for updates?",
-        answer: "Make the check-in one-way: \"No need to reply. I just wanted you to know you are loved and not alone.\" That lets them receive care without managing your concern."
+        answer: "You can send a short thinking-of-you note or mention a shared interest without asking about their health. Make a reply optional, but leave room for conversation if they want it. Some people want to talk about treatment; others would rather talk about ordinary life. Follow their lead."
       },
       {
         question: "Should I use hopeful language for serious illness?",
@@ -672,6 +844,10 @@ const pages = [
           "You are surrounded by family, care, and a lot of love. Wishing you comfort today.",
           "Take your time healing. We are here for whatever you need.",
           "Sending love from all of us and hoping today feels easier."
+        ],
+        links: [
+          { slug: "get-well-soon-messages-for-wife", label: "For your wife: loving notes and specific offers of help." },
+          { slug: "get-well-soon-messages-for-husband", label: "For your husband: texts, cards, and support through a longer recovery." }
         ]
       },
       {
@@ -681,6 +857,9 @@ const pages = [
           "Home feels different when you are not feeling like yourself. We love you and hope each day brings more strength.",
           "You have cared for us so many times. Please let us care for you now.",
           "We are with you through the quiet days, the hard days, and every step of recovery."
+        ],
+        links: [
+          { slug: "get-well-soon-messages-for-grandma", label: "Writing to Grandma? Find cards and notes from grandchildren." }
         ]
       },
       {
@@ -714,17 +893,19 @@ const pages = [
   {
     slug: "get-well-soon-messages-for-mom",
     title: "Get Well Soon Messages for Mom",
+    dateModified: "2026-09-22",
     eyebrow: "For mom",
-    description: "Loving get well soon messages for mom that tell her to rest, feel cared for, and stop worrying about everyone else.",
-    summary: "Loving notes for the person who usually cares for everyone else.",
-    intro: "A message for mom can acknowledge the role she usually plays while making it clear she does not need to care for anyone right now.",
+    description: "Loving get well soon messages for mom, with short notes, heartfelt cards, and support after surgery.",
+    summary: "Loving notes for mom, from a short text to a heartfelt card.",
+    intro: "A message for mom can be as simple as saying you love her and are thinking of her. Choose wording that reflects your relationship, and offer only the help you can give.",
     nav: "For mom",
     sections: [
       {
         id: "quick",
         title: "Quick messages for mom",
+        intro: "Choose a note that sounds like you. Use the message about caring for 'all of us' if your mom has often looked after the family and you can offer care in return.",
         messages: [
-          "Mom, I love you. Please rest and let everyone take care of you for once.",
+          "Mom, I love you. I hope today brings you some comfort and rest.",
           "Thinking of you today and hoping you feel surrounded by comfort and love.",
           "You have cared for all of us so well. Now it is our turn to care for you.",
           "Rest well, Mom. I am sending all my love your way."
@@ -733,6 +914,7 @@ const pages = [
       {
         id: "card",
         title: "Heartfelt card messages",
+        intro: "Use 'we' only if you are writing for others too. The note about worrying about everyone else fits if she has mentioned those concerns.",
         messages: [
           "You are the heart of our family, and we are all holding you close as you recover.",
           "I wish I could make this easier. Until then, I will keep showing up however I can.",
@@ -752,7 +934,7 @@ const pages = [
     faqs: [
       {
         question: "What is a good get well message for mom?",
-        answer: "A good message tells her she is loved and that she does not need to take care of anyone right now: Mom, I love you. Please rest and let us care for you."
+        answer: "A simple message can tell her she is loved and in your thoughts: Mom, I love you. I hope today brings you some comfort and rest."
       },
       {
         question: "What can I write to my mom after surgery?",
@@ -760,10 +942,10 @@ const pages = [
       },
       {
         question: "How do I make a message for mom more personal?",
-        answer: "Mention something she usually does for others, then turn that care back toward her. For example, tell her it is your turn to look after the small things."
+        answer: "Mention a shared memory, a favorite way to spend time together, or one specific thing you can help with. If she often looks after others, you can acknowledge that and offer to handle a task she usually takes on."
       }
     ],
-    dos: ["Make the love explicit.", "Tell her she does not need to manage anyone.", "Offer concrete help."],
+    dos: ["Make the love explicit.", "Match the wording to your relationship.", "Offer concrete help."],
     donts: ["Do not ask her to reassure you.", "Do not minimize her pain.", "Do not rush her back into family duties."],
     related: ["get-well-soon-messages-for-family", "get-well-soon-messages-after-surgery", "short-get-well-soon-messages"]
   },
@@ -826,10 +1008,11 @@ const pages = [
   {
     slug: "get-well-soon-messages-for-boss",
     title: "Get Well Soon Messages for Boss",
+    dateModified: "2026-09-22",
     eyebrow: "Professional support",
-    description: "Professional get well soon messages for a boss or manager that sound respectful and avoid work pressure.",
+    description: "Get well soon messages for a boss or manager, with short replies when they say they are unwell, a brief email, and wishes from the team.",
     summary: "Respectful messages for managers and team leaders.",
-    intro: "A message to a boss should be respectful and calm. It can be warm, but it should not create work pressure or invite private medical details.",
+    intro: "If your boss has told you they are unwell, you can reply with a brief acknowledgment and a kind wish. Use the greeting you normally use together, or choose a separate note for a team card or surgery recovery.",
     nav: "For boss",
     sections: [
       {
@@ -838,13 +1021,28 @@ const pages = [
         messages: [
           "Wishing you a steady recovery and plenty of rest. Please take care of yourself.",
           "I am sorry to hear you have been unwell. Sending best wishes for a steady recovery.",
-          "Hope you are able to rest and feel better soon. The team is thinking of you.",
+          "Hope you are able to rest and feel better soon. I am thinking of you.",
           "Wishing you comfort, rest, and recovery in your own time."
+        ]
+      },
+      {
+        id: "reply-to-sick-notice",
+        title: "Reply to a boss who says they are unwell",
+        nav: "Reply to their message",
+        intro: "These are replies to your manager's own news about being ill. A short response can show care without asking what happened or making promises about work. If you are replying in an email thread, keep its existing subject line.",
+        messages: [
+          "Thank you for letting me know. I am sorry you are feeling unwell, and I hope you feel better soon.",
+          "Sorry to hear that. I hope you can get some rest and feel more comfortable soon.",
+          "Hi [Name],\n\nThank you for letting me know. I am sorry to hear you are unwell and wish you a restful recovery.\n\nBest wishes,\n[Your name]"
+        ],
+        links: [
+          { slug: "how-to-respond-to-get-well-soon", label: "Did your boss send you get well wishes? Find ways to thank them instead." }
         ]
       },
       {
         id: "team",
         title: "From the team",
+        intro: "Use we when the people signing the card share the message. For a note from you alone, use I.",
         messages: [
           "The team is thinking of you and wishing you a restful recovery. Please take the time you need.",
           "We appreciate everything you do and hope you are getting the rest you need to recover well.",
@@ -866,9 +1064,9 @@ const pages = [
       intro: "A note to a manager should remove work pressure. Keep the tone respectful, especially if the team is signing together.",
       items: [
         {
-          label: "One-on-one note",
-          useWhen: "You are sending a brief personal message.",
-          try: "Wishing you rest and comfort. Please take the time you need to take care of yourself."
+          label: "Reply to their sick-day message",
+          useWhen: "Your manager has told you directly that they are unwell.",
+          try: "Thank you for letting me know. I am sorry you are feeling unwell, and I hope you feel better soon."
         },
         {
           label: "From the team",
@@ -893,6 +1091,14 @@ const pages = [
         answer: "Use a respectful tone and keep it brief. Warmth is fine, but avoid private questions, jokes, or anything that mentions work pressure."
       },
       {
+        question: "Is one sentence enough when my boss emails to say they are sick?",
+        answer: "A brief acknowledgment and a kind wish can be enough for a personal reply: Thanks for letting me know. I hope you feel better soon. Match the tone of your usual emails; you do not need a long expression of sympathy. A message sent to the whole team may not need a reply from everyone, so consider how your team normally handles those notices."
+      },
+      {
+        question: "How do I reply if my boss wishes me get well soon?",
+        answer: "That is a thank-you message because you are the one who is unwell. Try: Thank you for checking in. I appreciate your kind wishes. You can keep it brief without adding medical details or promising when you will return."
+      },
+      {
         question: "Can the team sign one get well card for a manager?",
         answer: "Yes. A group note works well if it focuses on care and rest: The team is thinking of you, and we hope you can take the time you need."
       },
@@ -901,91 +1107,154 @@ const pages = [
         answer: "Do not mention urgent decisions, deadlines, coverage gaps, or questions about what happened medically."
       }
     ],
-    dos: ["Keep it professional.", "Say the team is thinking of them.", "Avoid work reminders."],
+    dos: ["Use your usual respectful tone.", "Make it clear whether the note is from you or the team.", "Keep caring wishes separate from work requests."],
     donts: ["Do not mention urgent decisions.", "Do not ask what happened.", "Do not overdo humor."],
-    related: ["get-well-soon-messages-for-coworker", "get-well-soon-messages-after-surgery", "short-get-well-soon-messages"]
+    related: ["get-well-soon-messages-for-coworker", "get-well-soon-messages-after-surgery", "short-get-well-soon-messages", "how-to-respond-to-get-well-soon"]
   },
   {
     slug: "get-well-soon-messages-for-client",
-    title: "Get Well Soon Messages for Client",
+    title: "Get Well Soon Messages for a Client",
+    seoTitle: "Get Well Soon Messages for a Client: Short Replies & Emails",
+    dateModified: "2026-09-22",
     eyebrow: "Client wording",
-    description: "Professional get well soon messages for clients that stay respectful, brief, and free of business pressure.",
-    summary: "Simple, polished messages for clients and business contacts.",
-    intro: "A client message should be brief, polished, and respectful. It should not pry or create an obligation to respond.",
-    nav: "For client",
+    description: "Find short get well replies when a client says they are sick, plus optional emails, team card messages, and support during an ongoing illness.",
+    summary: "Short replies to client illness news, with optional email examples.",
+    intro: "If a client or customer tells you they are unwell, a short, kind reply may be all you need. Start with the replies below, or choose a complete email if you are reaching out separately.",
+    nav: "For a client",
+    personalizationSteps: [
+      "Use the greeting and level of formality from your usual correspondence. Replace every bracketed name, date, role, and company before sending.",
+      "Acknowledge only what the client has shared or has agreed can be shared. Leave diagnoses out of the subject line and avoid asking for medical details.",
+      "Check any promise about dates, cover, or next steps with the people authorized to agree it. If nothing is confirmed, send a support-only note and handle work arrangements separately."
+    ],
     sections: [
       {
         id: "quick",
-        title: "Quick client messages",
+        title: "Short replies when a client says they are sick",
+        nav: "Reply to their news",
+        intro: "Use these in the conversation where the client shared the news, including when they say replies may be slower. You do not need to start a new email or add a long expression of sympathy. Choose the more conversational wording if that matches your usual relationship.",
         messages: [
+          "Thank you for letting me know. I am sorry you are feeling unwell, and I hope you feel better soon.",
+          "Sorry to hear you are feeling so rough. I hope you can get some rest and feel better soon.",
           "I am sorry to hear you have been unwell. Wishing you rest, comfort, and better days ahead.",
-          "Sending warm thoughts and best wishes for your recovery.",
-          "I hope you are able to rest and recover comfortably.",
           "Please accept my best wishes for comfort, rest, and steady healing."
         ]
       },
       {
         id: "email",
-        title: "Email wording",
+        title: "An email for a client you do not know well",
+        nav: "Formal email",
+        intro: "Use a complete email if you are reaching out separately. A formal note can be warm without assuming closeness: keep the greeting you usually use and choose a discreet subject line. The shorter option can also close an existing email.",
         messages: [
-          "I was sorry to hear you are recovering. Please take care of yourself, and there is no rush on our side.",
-          "Wishing you a steady recovery. We can revisit anything outstanding when the timing is better for you.",
+          "Subject: Best wishes\n\nDear [Client's usual title and surname],\n\nI was sorry to hear you have been unwell. Please accept my best wishes for comfort and care. There is no need to reply to this message.\n\nKind regards,\n[Your name]\n[Your role], [Company name]",
           "I hope you are feeling supported and have the space you need to recover."
         ]
       },
       {
+        id: "familiar-client",
+        title: "An email for a client you know well",
+        nav: "Familiar client",
+        intro: "Use a first name only if you normally do. This version suits an established working relationship; adjust the reference to working together so it is true for you.",
+        messages: [
+          "Subject: Thinking of you\n\nHi [First name],\n\nI wanted to send a note to wish you well. I have really enjoyed working with you over the years, and I was sorry to hear you have been unwell.\n\nI hope you have some restful days and good support around you. No need to reply; I just wanted you to know I am thinking of you.\n\nWarm wishes,\n[Your name]\n[Company name]"
+        ]
+      },
+      {
         id: "serious",
-        title: "For serious illness",
+        title: "Support during a serious or ongoing illness",
+        nav: "Ongoing illness",
+        intro: "Use these when a client has shared a difficult or continuing situation. A later note can show care without asking for an update, predicting recovery, or bringing work into the message.",
         messages: [
           "I am very sorry to hear what you are going through. Please accept my warmest thoughts and wishes for comfort and strength.",
           "Sending sincere support during this difficult time. No response needed.",
-          "Wishing you comfort, care, and support in the days ahead."
+          "Wishing you comfort, care, and support in the days ahead.",
+          "Subject: A note of support\n\nDear [Client's usual name],\n\nI wanted to send a quiet note to say I am thinking of you during this difficult time. I hope you have the care and support you need around you.\n\nThere is no need to share an update or reply. Please accept my warmest wishes for comfort in the days ahead.\n\nWith best wishes,\n[Your name]\n[Company name]"
+        ]
+      },
+      {
+        id: "team-card",
+        title: "A card from your company or team",
+        nav: "Team cards",
+        intro: "Use a shared voice only for people who are actually sending the card. Include your team or company name so the recipient knows who it is from.",
+        messages: [
+          "All of us at [Company name] are thinking of you and sending warm wishes for comfort and care. No reply is needed.\n\nWith best wishes,\nThe [Team name] team",
+          "Sending warm wishes from everyone on the [Team name] team. We hope you feel supported during this time.\n\nWith kind regards,\n[Company name]"
+        ]
+      },
+      {
+        id: "confirmed-arrangements",
+        title: "When project arrangements have already been confirmed",
+        nav: "Confirmed plans",
+        intro: "Use these only after the relevant people on both sides have approved the dates, contacts, and responsibilities, and you have confirmed that no action is needed from the client. Replace every bracketed detail. If you cannot make that promise, send a support-only note and coordinate internally or with an existing agreed contact in a separate message. Do not assume you can extend a deadline.",
+        messages: [
+          "I was sorry to hear you have been unwell. Please take care of yourself. [Agreed contact] and I have confirmed the revised arrangements for [specific item]. No reply to this note is needed.",
+          "Wishing you a steady recovery. The next step on [specific item] will be handled by [agreed contact], as already arranged.",
+          "Subject: Best wishes and confirmed arrangements for [project]\n\nDear [Client's usual name],\n\nI was sorry to hear you have been unwell and wanted to send my best wishes.\n\nFollowing our teams' agreement, [specific meeting or deliverable] has moved from [original date] to [agreed date]. [Colleague] will coordinate the next step with [existing client contact], so no action is needed from you on this arrangement.\n\nPlease take care of yourself. No reply to this note is needed.\n\nKind regards,\n[Your name]\n[Your role], [Company name]"
         ]
       }
     ],
     decisionGuide: {
       title: "Choose the right client message",
-      intro: "Client get well notes should sound human without becoming personal. The safest version depends on whether you need to mention business timing.",
+      intro: "Match the note to your existing relationship and what you actually know. A caring message does not need to discuss work.",
       items: [
         {
-          label: "No open work",
-          useWhen: "You simply want to acknowledge the news and send a polished note.",
-          try: "I am sorry to hear you have been unwell. Please accept my warm thoughts and best wishes for comfort."
+          label: "Reply to news they have shared",
+          useWhen: "A client says they are unwell or will be slower to reply.",
+          try: "Thank you for letting me know. I am sorry you are feeling unwell, and I hope you feel better soon."
         },
         {
-          label: "Open project or deadline",
-          useWhen: "There is business context, but the message should remove pressure.",
-          try: "Please take care of yourself. There is no rush on our side, and we can revisit anything outstanding when the timing is better."
+          label: "A familiar client",
+          useWhen: "A warmer tone already feels natural in your correspondence.",
+          try: "I wanted to send a quick note to say I am thinking of you. I hope you have good support around you. No need to reply."
         },
         {
-          label: "More serious situation",
-          useWhen: "The illness sounds serious and casual recovery wishes may feel too light.",
+          label: "Serious or ongoing illness",
+          useWhen: "Recovery language may not fit what the client has shared.",
           try: "Sending sincere support during this difficult time. No response needed."
         },
         {
-          label: "Very formal relationship",
-          useWhen: "You do not know the client well and should keep the note concise.",
-          try: "Please accept my best wishes for comfort and care."
+          label: "Confirmed work arrangements",
+          useWhen: "Authorized contacts have already agreed the arrangement, and no action is needed from the client.",
+          try: "The next step on [specific item] will be handled by [agreed contact], as already arranged. No reply to this note is needed."
         }
       ]
     },
     faqs: [
       {
         question: "How formal should a get well message to a client be?",
-        answer: "Keep it brief, polished, and respectful. Acknowledge that you heard they were unwell, wish them comfort, and avoid asking for details."
+        answer: "Follow the tone of your usual correspondence. Use a title and surname if that is normal, or a first name for an established relationship. A short wish for comfort is enough; you do not need personal questions, jokes, or details about the illness."
       },
       {
-        question: "Can I mention business timing in a client get well email?",
-        answer: "Only to remove pressure. Say there is no rush on your side or that you can revisit outstanding items when the timing is better."
+        question: "What should I reply when a client says they are sick and may respond slowly?",
+        answer: "Acknowledge the message and add a kind wish: Thank you for letting me know. I am sorry you are feeling unwell, and I hope you feel better soon. This can stay in the existing conversation. You do not need to ask about the illness or promise a deadline change to show concern."
+      },
+      {
+        question: "What subject line should I use for a client get well email?",
+        answer: "Use a simple subject such as Best wishes, Thinking of you, or A note of support. Leave diagnoses and other private health details out of the subject line, and send the note only to the intended recipient rather than copying a wider group."
+      },
+      {
+        question: "Can I say there is no rush on our side?",
+        answer: "Only if you have authority to make that commitment and it is accurate. Check dates and responsibilities with the relevant people first. A specific confirmed change is clearer than an open-ended promise. If arrangements are unresolved, send a caring note without promising a delay and handle the coordination separately."
       },
       {
         question: "What should I avoid in a client get well message?",
-        answer: "Avoid casual jokes, private medical questions, urgency around work, and language that sounds too intimate for the relationship."
+        answer: "Avoid private medical questions, unconfirmed deadline promises, sales offers, and requests for decisions. Do not ask when they will be back. For a serious or ongoing illness, offer steady support without predicting an outcome or asking for repeated updates."
       }
     ],
-    dos: ["Be concise.", "Avoid personal questions.", "Make business timing flexible if relevant."],
-    donts: ["Do not ask for details.", "Do not sound casual unless the relationship is casual.", "Do not imply work urgency."],
-    related: ["get-well-soon-messages-for-boss", "short-get-well-soon-messages", "get-well-soon-messages-for-serious-illness"]
+    dos: [
+      "Match the formality of your usual correspondence.",
+      "Keep health details private and make a reply optional.",
+      "Verify any promise about dates, cover, or next steps before sending."
+    ],
+    donts: [
+      "Do not ask for medical details.",
+      "Do not turn a caring note into a sales or work request.",
+      "Do not promise a delay or completed handover that has not been agreed."
+    ],
+    related: [
+      "get-well-soon-messages-for-boss",
+      "short-get-well-soon-messages",
+      "get-well-soon-messages-for-serious-illness"
+    ]
   },
   {
     slug: "get-well-soon-messages-for-boyfriend",
@@ -1265,11 +1534,12 @@ const pages = [
   },
   {
     slug: "get-well-soon-card-messages",
+    dateModified: "2026-09-22",
     title: "Get Well Soon Card Messages",
     eyebrow: "Card wording",
     description: "Get well soon card messages that fit handwritten notes, group cards, flowers, and recovery gifts.",
     summary: "Messages that fit handwritten cards and gift notes.",
-    intro: "A card gives you more room than a text, but it still needs restraint. Write one clear message, then add a personal line.",
+    intro: "Wondering what to write inside a get well card? Start with their name, add a short wish and one real detail, then sign it. Choose a ready-to-use line below or adapt a complete card. A few thoughtful sentences are enough; you do not have to fill the space.",
     nav: "Card messages",
     sections: [
       {
@@ -1289,6 +1559,19 @@ const pages = [
           "I am sorry this season has been so hard. I hope this card brings a little comfort and reminds you that you are not facing it alone.",
           "You have so many people thinking of you and wishing you peace. I am one of them, today and every day.",
           "I hope recovery brings quieter days, gentle progress, and the support you need around you."
+        ],
+        links: [
+          { slug: "get-well-soon-messages-for-teacher", label: "Writing a class card? Find complete get well cards for a teacher." }
+        ]
+      },
+      {
+        id: "complete-card",
+        title: "A complete get well card, from greeting to signature",
+        nav: "Complete card",
+        intro: "Replace the bracketed details before sending. Use a shared interest only if it is real, and choose the name and closing you normally use with this person. A memory can lead into something from today rather than making the whole card a look back.",
+        messages: [
+          "Dear [Name],\n\nThinking of you and hoping you have some comfortable moments today. [A small piece of news or a shared interest] made me think of you, so I wanted to send a note.\n\nWith love,\n[Your name]",
+          "Hi [Name],\n\nJust a note to wish you well and let you know I'm thinking of you. I hope you are able to get some rest.\n\nBest wishes,\n[Your name]"
         ]
       },
       {
@@ -1319,32 +1602,43 @@ const pages = [
         answer: "Keep the card respectful and short. Use comfort, care, and privacy-focused wording instead of jokes, personal questions, or emotional language that assumes closeness."
       }
     ],
-    dos: ["Add one personal detail.", "Write clearly enough to read by hand.", "Match the card tone to the illness."],
-    donts: ["Do not fill the whole card with filler.", "Do not choose a joke card for serious illness.", "Do not ask for a reply."],
+    personalizationSteps: [
+      "Open with their name. Hi suits an everyday note; Dear also works for a more traditional card.",
+      "Choose one message and add a true detail if you want to: a shared interest, a small update, or a specific offer you can carry out.",
+      "Finish with your usual closing and signature. With love suits a close relationship; Best wishes works when you know them less well."
+    ],
+    dos: ["Add one personal detail.", "Write clearly enough to read by hand.", "Choose a closing that fits your relationship."],
+    donts: ["Do not fill the whole card with filler.", "Do not choose a joke card unless you know they would enjoy it.", "Do not ask for a reply."],
     related: ["short-get-well-soon-messages", "get-well-soon-text-messages", "get-well-soon-messages-after-surgery"]
   },
   {
     slug: "get-well-soon-text-messages",
     title: "Get Well Soon Text Messages",
+    dateModified: "2026-09-22",
     eyebrow: "Texts",
-    description: "Get well soon text messages that are short, warm, easy to copy, and low pressure for the person receiving them.",
-    summary: "Ready-to-send texts for quick check-ins.",
-    intro: "A text should be easy to receive. Keep it short, remove pressure to reply, and offer one concrete form of support if you can.",
+    description: "Short get well soon texts for check-ins and replies when someone says they are sick, home after surgery, or having a painful day.",
+    summary: "Short check-ins and replies to someone who says they are unwell.",
+    intro: "Choose a quick check-in or a reply to what someone has just told you. A short acknowledgment and a kind wish can be enough; you do not need to turn every text into a question about their health.",
     nav: "Text messages",
     sections: [
       {
         id: "quick",
         title: "Quick texts",
+        intro: "These start a conversation or send a quiet reminder that you care. For an ongoing conversation, use the reply examples in Choose wording below.",
         messages: [
           "Thinking of you and hoping today is a little easier.",
           "No need to reply. Just sending love and support.",
           "Feel better soon. I am here if you need anything specific.",
           "Rest well and take things one hour at a time."
+        ],
+        links: [
+          { slug: "how-to-respond-to-get-well-soon", label: "Someone wished you well? Choose a thank-you reply instead." }
         ]
       },
       {
         id: "checkin",
         title: "Check-in texts",
+        intro: "Offer only what you can do. If a previous message has gone unanswered, leave room for them to rest; they do not owe an explanation or a health report.",
         messages: [
           "Want company, distraction, food, or total silence today? Any answer is fine.",
           "I can drop off groceries later if that helps. No pressure to respond quickly.",
@@ -1362,28 +1656,28 @@ const pages = [
       }
     ],
     decisionGuide: {
-      title: "Choose the right text message",
-      intro: "A text should be easy to receive on a low-energy day. Keep it short, make any help specific, and do not require an update.",
+      title: "What to text back when someone says they are sick",
+      intro: "These are replies to the person who is unwell. Match the wording to what they actually said; do not assume that surgery went well or that pain will pass quickly.",
       items: [
         {
-          label: "No reply needed",
-          useWhen: "They may be tired or overwhelmed.",
-          try: "No need to reply. Just sending love and support."
+          label: "They say they are sick today",
+          useWhen: "For a brief everyday illness update, acknowledge it and wish them well without asking for symptoms.",
+          try: "Sorry you are feeling rough. I hope you can get some rest and feel better soon."
         },
         {
-          label: "Specific help",
-          useWhen: "You can follow through on one concrete task.",
-          try: "I can drop off groceries later if that helps. No pressure to respond quickly."
+          label: "They say they are home after surgery",
+          useWhen: "Acknowledge the stage they described. Keep questions and plans for a visit out of the reply unless they invite them.",
+          try: "Thank you for letting me know you are home. Wishing you rest and comfort after the surgery. No need to text back."
         },
         {
-          label: "Serious illness",
-          useWhen: "You want support without asking for details.",
-          try: "I am thinking of you. No updates needed, no pressure to answer."
+          label: "They say today is painful",
+          useWhen: "Respond to how today feels without guessing the cause or promising when the pain will end.",
+          try: "I am sorry today is so painful. Thinking of you and hoping you get some relief."
         },
         {
-          label: "Casual check-in",
-          useWhen: "The illness is minor and the relationship is relaxed.",
-          try: "Thinking of you and hoping today is a little easier."
+          label: "They say they are too tired to chat",
+          useWhen: "Accept that boundary and close the exchange without adding another question.",
+          try: "Of course. No need to keep texting; we can catch up another time. Sending you love."
         }
       ]
     },
@@ -1398,12 +1692,16 @@ const pages = [
       },
       {
         question: "How often should I text someone who is sick?",
-        answer: "Check in lightly and avoid asking for updates every day. A low-pressure message every few days can feel supportive without becoming another task."
+        answer: "Follow their preferences and your usual contact with them rather than a fixed schedule. If they say they want company, keep the conversation going; if they need quiet or have not replied, leave space. A later hello can share something ordinary without asking for another health update."
+      },
+      {
+        question: "How do I respond when someone texts that they are sick?",
+        answer: "Acknowledge the news and offer a short wish, such as Sorry you are feeling rough. I hope you can get some rest. If they mention surgery or pain, respond to that detail without guessing the outcome. This is different from thanking someone who has sent you a get well wish."
       }
     ],
     dos: ["Keep it easy to receive.", "Say no need to reply.", "Offer one specific help option."],
     donts: ["Do not send a wall of text.", "Do not ask for medical updates repeatedly.", "Do not use too many cheerful slogans."],
-    related: ["short-get-well-soon-messages", "what-to-say-instead-of-get-well-soon", "get-well-soon-card-messages"]
+    related: ["short-get-well-soon-messages", "get-well-soon-messages-for-friend", "what-to-say-instead-of-get-well-soon"]
   },
   {
     slug: "get-well-soon-messages-for-hospital-stay",
@@ -1528,57 +1826,117 @@ const pages = [
   {
     slug: "get-well-soon-messages-for-grandma",
     title: "Get Well Soon Messages for Grandma",
+    seoTitle: "Get Well Soon Messages for Grandma: Texts & Cards",
+    dateModified: "2026-09-22",
     eyebrow: "For grandma",
-    description: "Gentle get well soon messages for grandma that send love, patience, and comfort while she rests.",
-    summary: "Gentle, loving notes for grandma during recovery.",
-    intro: "A message for grandma should feel warm and steady. Say she is loved, avoid making her worry about everyone else, and offer practical care if you can.",
+    description: "Loving get well messages for Grandma, with short texts, cards, everyday news, and ways to stay close when you cannot visit.",
+    summary: "Loving texts and cards for Grandma, nearby or far away.",
+    intro: "Find a short text, heartfelt card, or gentle check-in for Grandma. Use the name you call her and share something from your day, a familiar interest, or a memory that fits the conversation. There are examples for after surgery, being far apart, and a longer recovery.",
     nav: "For grandma",
+    personalizationSteps: [
+      "Use your usual name for her, such as Grandma, Nana, or Gran, and sign with the family name she knows you by.",
+      "Share one true detail from today, such as something you made, noticed, or watched. A memory can connect to that detail; you do not have to sum up your whole relationship.",
+      "If you offer a visit, call, or errand, make it something you can do and let her choose whether it would help."
+    ],
     sections: [
       {
         id: "quick",
-        title: "Quick messages for grandma",
+        title: "Short get well messages for Grandma",
+        nav: "Short notes",
         messages: [
           "Grandma, I love you and hope today brings you more comfort and rest.",
           "Thinking of you and sending all my love as you recover.",
           "Rest well, Grandma. You are loved more than words can say.",
-          "I hope you feel surrounded by care, peace, and gentle healing today."
+          "Just a little hello, Nana. No need to write back; I wanted to send you some love."
         ]
       },
       {
         id: "card",
         title: "Heartfelt card messages",
+        intro: "If a card full of memories feels too much like a goodbye, start with something happening now. A memory can lead into a small story from your day instead of a summary of her life. In the recipe example, replace the activity and details with something you actually did; only mention a photo or drawing if you include it.",
+        nav: "Heartfelt cards",
         messages: [
           "You have given our family so much love. Now I hope you feel that love coming back to you as you heal.",
-          "Grandma, please take all the time you need to rest. We are thinking of you and holding you close.",
-          "Your kindness has always made people feel cared for. I hope you feel deeply cared for today."
+          "Grandma, I tried your recipe today. Mine did not look quite like yours, but I enjoyed making it. It made me think of our afternoons in the kitchen. Sending you lots of love.",
+          "Dear Grandma,\n\nI wish I could make these days easier. I love you, and I am here for a chat, some quiet company, or whatever feels comfortable for you. There is no need to be the host when I visit.\n\nWith love,\n[Your name]"
         ]
       },
       {
         id: "surgery",
-        title: "After surgery",
+        title: "Messages for Grandma after surgery",
+        nav: "After surgery",
+        intro: "Keep the focus on comfort and company. If you offer practical help, choose a task you can take on and check what she would prefer.",
         messages: [
           "I am grateful the surgery is behind you, Grandma. Wishing you a calm and steady recovery.",
-          "Take recovery slowly and let everyone help. You are loved every step of the way.",
-          "Sending gentle hugs and hopes for more comfort each day after surgery."
+          "Grandma, I can bring your book and glasses over this afternoon if you would like them. You do not need to stay awake for a visit.",
+          "Sending a gentle hug after your surgery. I hope you have a comfortable place to rest and people listening to what you need."
+        ]
+      },
+      {
+        id: "far-away",
+        title: "When you cannot visit Grandma",
+        nav: "Far away",
+        intro: "You can acknowledge the distance without making her feel responsible for your sadness. Offer an easy way to stay connected that does not require an immediate response.",
+        messages: [
+          "Grandma, I wish I could sit beside you today. I am sending a voice message for whenever you feel like listening. No need to send one back.",
+          "We may be far apart, but you are part of my day. I saw your favorite flowers on my walk and thought of you. Sending a photo and lots of love.",
+          "Nana, I can call for a few minutes this weekend if that would be nice. It is also fine to leave it for another day if you need quiet.",
+          "I cannot be there this week, Grandma, but I can arrange a grocery delivery if you would find that useful. I love you and am thinking of you."
+        ]
+      },
+      {
+        id: "young-grandchildren",
+        title: "Simple notes from little grandchildren",
+        nav: "From children",
+        intro: "Let a young child choose the words or tell you what to write. A drawing, a sticker, and one honest sentence are enough; only mention an item if it is included.",
+        messages: [
+          "I love you, Grandma. I drew you a rainbow for your room.",
+          "Nana, I hope you feel better. This is my favorite sticker, and I want you to have it.",
+          "Grandma, I wish I could give you a hug. I am sending you one in this card.",
+          "Get well soon, Grandma. I saw a funny dog today and wanted to tell you about it. I love you!"
+        ]
+      },
+      {
+        id: "ongoing-recovery",
+        title: "Checking in during a longer recovery",
+        nav: "Later check-ins",
+        intro: "A later message does not need a new way to say get well soon. Share a little news from your own day as well as showing interest in hers. You might mention a hobby, a family pet, or a show you both enjoy without requiring an answer. Let her lead if she wants to talk about something more serious.",
+        messages: [
+          "No big update needed, Grandma. I am still thinking of you and sending love this week.",
+          "I know some days are harder than others. You do not have to put on a cheerful face with me, Nana. I love you just as much on a difficult day.",
+          "Grandma, if you feel like a call, we can talk about your favorite show or anything else you choose. We do not have to talk about how you are feeling.",
+          "I can keep picking up your groceries on Fridays this month, if that would be useful. You do not need to host me when I drop them off. Love you, Grandma."
         ]
       }
     ],
     faqs: [
       {
         question: "What should I write to my grandma when she is sick?",
-        answer: "Keep it warm and simple. Tell her she is loved, that you are thinking of her, and that she does not need to worry about anyone else."
+        answer: "Use the name you usually call her, say you love her, and add one personal detail. A short note such as Grandma, I am thinking of you and sending lots of love is enough. If she has a serious or ongoing illness, focus on comfort and being there rather than predicting when she will feel better."
       },
       {
-        question: "How do I make a get well message for grandma feel heartfelt?",
-        answer: "Mention the care she has given your family, then say you hope she feels that same care coming back to her now."
+        question: "What can I say to Grandma when I cannot visit?",
+        answer: "Acknowledge the distance briefly, then offer a way to connect: a short call, a photo, or a voice note she can hear when she wants. Avoid making her console you about being far away, and say that she does not need to reply."
       },
       {
-        question: "What should I avoid in a message for grandma?",
-        answer: "Avoid asking for frequent updates, making her reassure you, or using language that rushes her recovery."
+        question: "What can a young grandchild write in a get well card?",
+        answer: "A simple I love you, Grandma with a drawing is enough. Let the child dictate a sentence in their own words. They do not need to understand or describe the illness, and the card does not need to sound like an adult wrote it."
+      },
+      {
+        question: "How do I keep checking in during a long recovery?",
+        answer: "Send a small everyday detail or a loving hello without asking for a health report each time. If you can help regularly, offer a specific task and time. Follow her preference for calls, messages, visits, or quiet."
+      },
+      {
+        question: "How can I write to Grandma without making the card sound like a goodbye?",
+        answer: "Start with an ordinary hello and something from your day, then add a simple line of love. If you share a memory, connect it to something happening now, such as trying a recipe she taught you. Memories are not automatically a farewell, but you do not need to write a tribute or recap her life. Follow her lead if she wants a more serious conversation."
+      },
+      {
+        question: "What should I avoid in a message for Grandma?",
+        answer: "Avoid asking for frequent updates, making her reassure you, or rushing her recovery. Do not imply that she needs to get better to look after the family again. Use religious wording only if it fits her beliefs."
       }
     ],
-    dos: ["Use warm family language.", "Tell her she does not need to worry about others.", "Offer help with calls, errands, or meals."],
-    donts: ["Do not make her comfort you.", "Do not pressure her around recovery timing.", "Do not ask for too many updates."],
+    dos: ["Use the family name and tone she knows.", "Share a small memory or everyday detail.", "Offer help that fits her preferences and your availability."],
+    donts: ["Do not make her comfort you.", "Do not pressure her around recovery timing.", "Do not ask for a health update in every message."],
     related: ["get-well-soon-messages-for-family", "get-well-soon-messages-for-mom", "get-well-soon-messages-after-surgery"]
   },
   {
@@ -1763,50 +2121,142 @@ const pages = [
   },
   {
     slug: "get-well-soon-messages-for-teacher",
-    title: "Get Well Soon Messages for Teacher",
-    eyebrow: "For teacher",
-    description: "Respectful get well soon messages for a teacher from students, parents, or a whole class.",
-    summary: "Respectful messages for teachers from students or parents.",
-    intro: "A teacher message should be kind and respectful. Keep it simple, avoid private medical questions, and let them know their care is appreciated.",
-    nav: "For teacher",
+    title: "Get Well Soon Messages for a Teacher",
+    printableCards: {
+      id: "teacher-get-well-cards",
+      title: "Free printable get well cards for a teacher",
+      intro: "Each pack has two single-page designs: a coloring card with room for a personal note, and a class card with 24 spaces for names or short wishes. Choose your paper size below. No sign-up needed.",
+      designs: [
+        {
+          preview: "assets/printables/teacher-card-coloring-preview.png",
+          alt: "Preview of the black-and-white teacher card with a picture to color and space for a handwritten note.",
+          caption: "Page 1: Color the picture and add a note.",
+          width: 480,
+          height: 679
+        },
+        {
+          preview: "assets/printables/teacher-card-class-preview.png",
+          alt: "Preview of the class get well card with 24 boxes for names or short wishes.",
+          caption: "Page 2: Collect wishes from the class.",
+          width: 480,
+          height: 679
+        }
+      ],
+      files: [
+        { path: "assets/printables/teacher-get-well-cards-a4-v1.pdf", paper: "a4", label: "Download A4 PDF (2 pages)" },
+        { path: "assets/printables/teacher-get-well-cards-letter-v1.pdf", paper: "letter", label: "Download US Letter PDF (2 pages)" }
+      ],
+      steps: [
+        "Download the pack that matches your printer paper: A4 or US Letter.",
+        "Print page 1 or page 2, single-sided, in portrait at 100% / Actual size. Each page is a complete card; no folding is needed.",
+        "Add your teacher's usual name, then write your own note or collect classmates' names and short wishes. For a larger class, print another copy of page 2.",
+        "Free for personal and classroom use. Please link to this page when sharing the resource."
+      ]
+    },
+    seoTitle: "Get Well Soon Messages for a Teacher: Cards & Notes",
+    dateModified: "2026-09-22",
+    eyebrow: "For a teacher",
+    description: "Get well messages for a teacher from students, a class, or a parent, plus a brief email to a professor or former teacher when you are unsure what to say.",
+    summary: "Student notes, class cards, parent messages, and professor emails.",
+    intro: "Choose a note from one student, the whole class, or a parent, or find a brief email for a professor you do not know well. Add the name and title you normally use. Keep the focus on care, without asking when they will return.",
+    nav: "For a teacher",
+    personalizationSteps: [
+      "Start with the title and name you normally use at school, rather than a first name unless that is usual for your class.",
+      "Add one true detail about something they taught you or a kind thing they did. Keep requests about lessons in a separate school message.",
+      "Sign with your name, your child's name if you are a parent, or the class name if everyone is signing. A reply is not needed."
+    ],
     sections: [
       {
         id: "quick",
-        title: "Quick messages for a teacher",
+        title: "Short get well wishes for a teacher",
+        nav: "Short notes",
         messages: [
           "Wishing you a restful recovery and plenty of care.",
           "We hope you feel better soon. Thank you for everything you do for us.",
           "Sending warm wishes from our class. Please take care of yourself.",
-          "Hope each day brings more comfort and strength."
+          "Thinking of you and hoping you have some comfortable, quiet time to rest."
+        ]
+      },
+      {
+        id: "young-student",
+        title: "From a primary or elementary school student",
+        nav: "Younger students",
+        intro: "A young child's card should sound like them. Let them choose a sentence and add a drawing or one thing they enjoy about their teacher.",
+        messages: [
+          "I hope you feel better soon. Thank you for helping me when I get stuck.",
+          "I made you this picture to say I am thinking of you. Sending you a big get well wish!",
+          "I like the stories you read to us. I hope you have a good book to enjoy while you rest."
+        ]
+      },
+      {
+        id: "older-student",
+        title: "From an older student",
+        nav: "Older students",
+        intro: "One specific thank-you can make a short note personal. Adapt the examples to something your teacher actually helped you with.",
+        messages: [
+          "I wanted to wish you well and thank you for making it easier to ask questions in class. I hope you are getting the rest and support you need.",
+          "Your encouragement helped me feel more confident about my writing. I appreciate it, and I am thinking of you while you are away.",
+          "Dear [Teacher's name],\n\nI am sorry you have been unwell. Thank you for the patience you showed me this term; it meant a lot. Wishing you comfort and rest, with no need to reply.\n\nBest wishes,\n[Your name]"
+        ]
+      },
+      {
+        id: "professor",
+        title: "A brief email to a professor or former teacher",
+        nav: "Professor or former teacher",
+        intro: "If the teacher or department has shared that they are unwell, a brief note through your usual academic channel can be a considerate option. Follow any request for privacy or no messages. A former student can name the class and term so the teacher knows who is writing. Keep grade, reference, and coursework requests separate; you do not need to mention a diagnosis or guess what happened.",
+        messages: [
+          "Dear Professor [Surname],\n\nI took your [Course name] class in [Term/year]. I wanted to send my best wishes while you are away. Thank you for what I learned in your class. There is no need to reply.\n\nBest wishes,\n[Your name]"
         ]
       },
       {
         id: "class",
-        title: "From the class",
+        title: "From the whole class: wishes and complete cards",
+        nav: "Class cards",
+        intro: "Use we for a group card and let each student sign if they would like to. The complete examples include a greeting and a closing; replace the names before sending.",
         messages: [
           "Our class is thinking of you and wishing you a restful recovery.",
           "We miss you and hope you are getting the rest you need to feel better.",
-          "Thank you for being such a caring teacher. We hope you feel supported while you recover."
+          "Thank you for being such a caring teacher. We hope you feel supported while you recover.",
+          "Dear [Teacher's name],\n\nWe are sending you a card full of good wishes from our class. Thank you for helping us learn and for all the little ways you look after us. We hope you have plenty of rest and care while you are away.\n\nWith warm wishes,\nEveryone in [Class name]",
+          "Dear [Teacher's name],\n\nWe wanted to let you know we are thinking of you. We appreciate the encouragement you give us and the way you make room for our questions. Wishing you comfort and support, with no need to send a reply.\n\nBest wishes from all of us,\n[Class name]"
         ]
       },
       {
         id: "parent",
         title: "From a parent",
+        intro: "Use the school's usual communication channel. Keep lesson questions and administrative requests out of the get well note so the teacher does not feel expected to work while away.",
+        nav: "Parents",
         messages: [
           "Wishing you rest and comfort. We appreciate your care and hope you can take the time you need.",
-          "I am sorry to hear you have been unwell. Sending best wishes for comfort and rest.",
-          "Thank you for all you do for the students. Please take good care of yourself."
+          "I am sorry to hear you have been unwell. [Child's name] wanted to send you this drawing and some warm wishes. No reply is needed.",
+          "Thank you for the patience and encouragement you have shown our child. Our family is thinking of you and wishing you comfort while you recover."
+        ]
+      },
+      {
+        id: "long-absence",
+        title: "When a teacher has been away for a while",
+        nav: "Long absence",
+        intro: "A later check-in can show that they are remembered without setting a deadline for their return. Avoid asking for progress reports or describing problems caused by their absence.",
+        messages: [
+          "Just a note to say our class is still thinking of you. Sending warm wishes this week, with no need to reply.",
+          "I thought of your advice while working on my essay and wanted to say thank you again. I hope you feel cared for during this time away.",
+          "We wanted to send another little hello from the class. You are remembered with a lot of affection, and we hope this card brings a kind moment to your day."
         ]
       }
     ],
     decisionGuide: {
       title: "Choose the right teacher message",
-      intro: "The wording changes depending on who is signing. A class card can be warm and collective, while a parent note should be brief and respectful.",
+      intro: "Choose the writer first, then the format. A child's note, a class card, and a brief email from a former student can each show care without asking the teacher to respond.",
       items: [
         {
           label: "From one student",
-          useWhen: "A child or teen is writing a short card.",
-          try: "I hope you feel better soon. Thank you for being such a caring teacher."
+          useWhen: "A child or teen is writing their own note.",
+          try: "I hope you feel better soon. Thank you for helping me when I get stuck."
+        },
+        {
+          label: "Professor or former teacher",
+          useWhen: "They may need a reminder of which class you took. Use their usual title, identify yourself, and keep the note free of academic requests.",
+          try: "I took your [Course name] class in [Term/year] and wanted to send my best wishes. I hope you are getting the rest and support you need. There is no need to reply."
         },
         {
           label: "From the class",
@@ -1816,31 +2266,43 @@ const pages = [
         {
           label: "From a parent",
           useWhen: "A parent is emailing or writing a note to the teacher.",
-          try: "Wishing you rest and comfort. We appreciate your care for the students and hope you can take the time you need."
+          try: "Wishing you rest and comfort. We appreciate your care for our child, and there is no need to reply."
         },
         {
           label: "Long absence",
-          useWhen: "The teacher may be away for a while and you should avoid return pressure.",
-          try: "We miss you and hope you feel cared for while you rest. Please take all the time you need."
+          useWhen: "You want to send another kind note without asking when the teacher will return.",
+          try: "Our class is still thinking of you. Sending warm wishes this week, with no need to reply."
         }
       ]
     },
     faqs: [
       {
         question: "What should students write in a get well card for a teacher?",
-        answer: "Keep it simple and kind: We are thinking of you, we hope you get rest, and thank you for everything you do for our class."
+        answer: "Start with a short wish for comfort or rest, then add a true thank-you. A younger student might write Thank you for helping me when I get stuck. An older student can mention a lesson or some encouragement that mattered to them. Sign with the student's name and avoid asking when the teacher will be back."
       },
       {
-        question: "Should a parent mention missed lessons?",
-        answer: "No. Focus on care and appreciation, not school logistics or pressure to return."
+        question: "Is it okay to email a professor I do not know well with get well wishes?",
+        answer: "A short note can be a considerate option if they or the department have shared the news and have not asked for privacy or no messages. Use your usual academic contact channel, briefly identify yourself, and send a simple good wish. Keep requests about marks, recommendations, and coursework separate. If you know only a rumor, do not repeat it or ask for medical details."
       },
       {
-        question: "Can a class card be cheerful?",
-        answer: "Yes, as long as it stays respectful and avoids private medical questions."
+        question: "How do we write a get well card from the whole class?",
+        answer: "Address the teacher as you normally do at school, use we in the message, and close with the class name or students' signatures. Two or three sentences of appreciation and good wishes are enough. Let students add a drawing or short note without sharing private information about the teacher's health."
+      },
+      {
+        question: "What should a parent say to a teacher who is unwell?",
+        answer: "Send a brief note through the usual school channel. Wish them comfort, thank them for their care, and identify your child if needed. Keep questions about schoolwork or cover arrangements in a separate message to the appropriate school contact."
+      },
+      {
+        question: "What can I write when a teacher has been absent for a long time?",
+        answer: "Say they are still in your thoughts and offer a small, specific thank-you. A later message does not need to ask how recovery is progressing. Avoid comments about falling behind or needing them back, and make clear that a reply is not expected."
+      },
+      {
+        question: "Can a class get well card be cheerful?",
+        answer: "Yes. Drawings, kind memories, and a warm greeting can make a card cheerful. Avoid jokes about the illness, demands to return, or guesses about their condition. Follow any guidance the school has shared about sending cards or messages."
       }
     ],
-    dos: ["Keep it respectful.", "Mention appreciation if appropriate.", "Use a class message for group cards."],
-    donts: ["Do not ask for medical details.", "Do not mention missed lessons or deadlines.", "Do not use overly casual humor."],
+    dos: ["Use the teacher's usual title and name.", "Add a specific, sincere thank-you.", "Make clear who is signing the note."],
+    donts: ["Do not ask for medical details.", "Do not bring up missed lessons or return dates.", "Do not expect a reply or use jokes about the illness."],
     related: ["short-get-well-soon-messages", "get-well-soon-card-messages", "get-well-soon-messages-for-coworker"]
   },
   {
@@ -1929,17 +2391,19 @@ const pages = [
     slug: "get-well-soon-messages-for-cancer",
     title: "Messages for Someone with Cancer",
     eyebrow: "Cancer support",
-    description: "Careful messages for someone with cancer that focus on presence, practical help, and low-pressure support.",
+    dateModified: "2026-09-22",
+    description: "Messages for someone with cancer: first responses, everyday conversation, reconnecting after a silence, and practical offers of support.",
     summary: "Careful support when simple recovery wishes may not fit.",
-    intro: "Cancer messages need extra care. If \"get well soon\" feels too simple, focus on presence, practical help, and support they do not have to manage.",
+    intro: "You can acknowledge the news without making every message about cancer. Choose a first response, a practical offer, or an ordinary conversation that fits your relationship. Let them decide how much they want to share.",
     nav: "Cancer support",
     sections: [
       {
         id: "quick",
         title: "Short cancer support messages",
+        intro: "Choose wording that fits how close you are. If you offer company or help, name something you can actually do.",
         messages: [
           "I am thinking of you today. No need to reply.",
-          "I am here with you through this, in whatever way helps most.",
+          "Would you like a short call this week? I would be glad to listen or chat about something else.",
           "Sending comfort and steady support during appointments, waiting, and hard days.",
           "You are not alone. I care about you and I am here."
         ]
@@ -1956,9 +2420,10 @@ const pages = [
       {
         id: "help",
         title: "Messages with practical help",
+        intro: "Offer one thing you can do and check before making arrangements. Adapt the day or task to what is realistic for you.",
         messages: [
-          "I can bring dinner, drive to an appointment, or run errands this week. No pressure to answer now.",
-          "I am free Thursday if you need company, groceries, or help with anything practical.",
+          "I can bring dinner one evening this week if that would help. No pressure to answer now.",
+          "I am free Thursday and can pick up groceries if that would help.",
           "I do not want to add another task. I will check in again next week, and you never need to reply quickly."
         ]
       },
@@ -1972,12 +2437,22 @@ const pages = [
         ]
       },
       {
+        id: "everyday",
+        title: "Everyday conversation and reconnecting",
+        intro: "A friend may want to talk about treatment, an ordinary interest, or nothing much today. Use a topic you really share and make company an invitation they can decline. If you have been quiet, a brief acknowledgment can reopen contact without asking them to reassure you.",
+        messages: [
+          "I saw [something connected to a shared interest] and thought you might enjoy it. Shall I send it over?",
+          "Would you like to watch an episode of [shared show] together this week, in person or on a call? We can keep it short or leave it for another time.",
+          "I am sorry I have been quiet. I was unsure what to say, but I care about you and wanted to get back in touch. I would love to chat whenever you feel like it."
+        ]
+      },
+      {
         id: "uncertain",
         title: "For hard or uncertain days",
         messages: [
           "I will not try to make this sound simple. I care about you and I am here for the hard parts too.",
           "You do not have to be hopeful for me. I am here with you, whatever today looks like.",
-          "There is no right way to feel right now. I am sending quiet support and practical help whenever you want it."
+          "There is no right way to feel right now. I care about you, and I am happy to listen if you want to talk."
         ]
       },
       {
@@ -1992,7 +2467,7 @@ const pages = [
     ],
     decisionGuide: {
       title: "Choose the right cancer message",
-      intro: "Cancer messages need extra restraint. Choose wording that offers presence and practical help without asking for updates, explanations, or optimism.",
+      intro: "Start with the kind of contact they might welcome today. A practical offer, a health conversation, and a familiar everyday topic meet different needs; none has to be the choice every time.",
       items: [
         {
           label: "Newly shared news",
@@ -2010,6 +2485,11 @@ const pages = [
           try: "You do not have to be hopeful for me. I am here with you, whatever today looks like."
         },
         {
+          label: "An ordinary chat or a gap in contact",
+          useWhen: "You want to reconnect as a friend without asking for a medical update.",
+          try: "I am sorry I have been quiet. I was unsure what to say, but I care about you and wanted to get back in touch. I would love to chat whenever you feel like it."
+        },
+        {
           label: "Not very close",
           useWhen: "A short, respectful card or email is more appropriate.",
           try: "I am sorry to hear what you are going through. Wishing you comfort, privacy, and good support around you."
@@ -2023,11 +2503,15 @@ const pages = [
       },
       {
         question: "Is it okay to say get well soon to someone with cancer?",
-        answer: "Sometimes, but it can feel too rushed. Softer wording like \"I am here with you through this\" often fits better during treatment or uncertain periods."
+        answer: "It depends on their preference and what they have shared. Some welcome the familiar wish; others prefer words that do not suggest a recovery deadline. If you are unsure, thinking of you or a specific offer of company avoids predicting an outcome."
       },
       {
         question: "How can I offer help during cancer treatment?",
-        answer: "Offer concrete help, such as dinner, a ride to an appointment, groceries, childcare, or handling updates for others. Give them permission not to answer right away."
+        answer: "Offer one thing you can do, such as a meal, a ride, or a grocery run, and check before arranging it. They may already have practical help and prefer company or a normal chat. Only share updates with other people if they have asked you to and agreed what can be shared."
+      },
+      {
+        question: "What if I have not contacted my friend for a while?",
+        answer: "Acknowledge the gap briefly, say you care, and offer an easy way to reconnect. Avoid a long explanation that makes them reassure you. You can suggest a shared interest or a short chat without asking for a health update; let them decide whether and when to respond."
       },
       {
         question: "What should I avoid in a cancer card?",
@@ -2264,119 +2748,362 @@ const pages = [
   },
   {
     slug: "get-well-soon-messages-for-wife",
-    title: "Get Well Soon Messages for Wife",
+    title: "Get Well Soon Messages for Your Wife",
     eyebrow: "For wife",
-    description: "Loving get well soon messages for your wife that pair affection with real help and permission to rest.",
-    summary: "Loving messages that combine affection and care.",
-    intro: "A message for your wife should make care feel practical, not performative. Say you love her, remove pressure, and offer real help.",
+    description: "Loving get well messages for your wife, with short texts, a heartfelt card, and practical words for hospital stays, recovery at home, or time apart.",
+    summary: "Affectionate notes, thoughtful offers of help, and room for hard days.",
+    intro: "Send your wife a loving text, a complete card, or a specific offer of help. Find words for hospital stays, time apart, and harder days during recovery. Let her choose company, distraction, or quiet.",
     nav: "For wife",
     sections: [
       {
         id: "quick",
-        title: "Quick messages for your wife",
+        title: "Short get well texts for your wife",
         messages: [
-          "I love you. Rest as much as you need and let me handle the little things.",
+          "I love you. I hope there is something gentle and comforting in your day today.",
           "No need to reply. I am thinking of you and sending all my love.",
-          "I wish I could make this easier. I am here for anything you need.",
-          "Feel better, love. Your only job right now is to rest."
-        ]
+          "I wish I could make this easier. Would you like company, a distraction, or some quiet?",
+          "Feel better, love. You do not need to put on a brave face for me."
+        ],
+        nav: "Short texts"
       },
       {
         id: "heartfelt",
-        title: "Heartfelt messages for your wife",
+        title: "Heartfelt messages and a complete card",
         messages: [
           "You do not have to be strong every second. I love you on the hard days too.",
           "Let yourself be cared for. I am here for the quiet days, the frustrating days, and everything in between.",
-          "I love you more than this message can say, and I am not going anywhere."
-        ]
+          "My love,\n\nI wish I could take away what you are going through. I cannot, but I can listen and be beside you in the ways that help. You are loved just as much when you are tired, frustrated, or not feeling like yourself.\n\nAll my love,\n[Your name]"
+        ],
+        nav: "Heartfelt cards"
       },
       {
         id: "surgery",
-        title: "After surgery",
+        title: "In hospital and after surgery",
+        intro: "Focus on comfort and her preferences. Offer only visits or tasks you can manage, and follow the visiting arrangements she and the hospital have agreed.",
         messages: [
-          "I am grateful the surgery is behind you. Now let your body heal and let me take care of you.",
+          "I am grateful the surgery is behind you. I love you, and I want to make this time easier in whatever small ways I can.",
           "Recovery may take patience, but you do not have to do it alone. I love you.",
-          "Take this one day at a time. I will handle food, errands, and reminders to rest."
-        ]
+          "If you want a visit this afternoon, I can bring your headphones and the book by your bed. We can just sit together; you do not have to make conversation.",
+          "Love, if answering messages feels like too much, I can send an update to the people you choose. I will only share what you want me to."
+        ],
+        nav: "Hospital & surgery"
+      },
+      {
+        id: "help-at-home",
+        title: "Offering specific help at home",
+        intro: "Adapt these offers to your household and availability. Be specific enough that she does not have to plan or delegate a whole list of jobs.",
+        messages: [
+          "I can take care of school pickup and dinner today. If there is something you would especially like to eat, tell me whenever you feel up to it.",
+          "I can handle the laundry this weekend. You do not need to sort it first or keep me company while I do it.",
+          "If you would prefer no visitors today, I can let the family know. I will check with you before arranging another time.",
+          "Would it help if I stayed with you for a while, or would you rather have the room to yourself? Either is okay, love."
+        ],
+        nav: "Help at home"
+      },
+      {
+        id: "far-away",
+        title: "When you cannot be there in person",
+        intro: "Make an offer that works from where you are. A missed call or an unanswered text does not need a follow-up asking her to explain.",
+        messages: [
+          "I wish I could be beside you tonight. I have sent a little voice note for whenever you want to hear a familiar voice. No need to answer.",
+          "I can arrange a grocery delivery from here if that would help. We can keep it to the things you already know you want.",
+          "If you feel like company later, we could put the same film on and stay on the phone for a while. If you would rather sleep, I am sending a kiss for when you wake up."
+        ],
+        nav: "When apart"
+      },
+      {
+        id: "harder-days",
+        title: "When recovery feels uneven",
+        intro: "A harder day does not need a pep talk. Acknowledge how she feels without interpreting symptoms or measuring her progress for her.",
+        messages: [
+          "I am sorry today feels harder. You do not have to find a positive side for my sake. I love you, and I am listening.",
+          "We do not have to make today match yesterday. Would you like to talk about it, or would a little distraction feel better?",
+          "You are more than how this recovery is going. I want to hear about whatever is on your mind, even if it has nothing to do with being unwell."
+        ],
+        nav: "Harder days"
       }
     ],
     faqs: [
       {
         question: "What should I write to my wife when she is sick?",
-        answer: "Say you love her, remove pressure, and name the help you will take on. A good line is: Rest as much as you need and let me handle the little things."
+        answer: "Say you love her in your usual words, then offer one kind of support you can provide. A short message can be enough: I love you. Would you like company or some quiet? Avoid turning the note into a list of instructions."
       },
       {
-        question: "How do I support my wife after surgery in a message?",
-        answer: "Make the message practical. Tell her you will handle food, errands, reminders, visitors, or anything that protects her rest."
+        question: "How can I support my wife after surgery in a message?",
+        answer: "Ask what would make the day more comfortable and offer a specific task, such as bringing a familiar item or handling a meal. Let her choose how much company she wants. Leave medical instructions to her care team, and do not share health updates without her agreement."
+      },
+      {
+        question: "What can I say if my wife is having a harder day during recovery?",
+        answer: "Acknowledge the day without telling her she should be more positive. Try I am sorry today feels harder. Would you like me to listen, or would a distraction help? Avoid comparing her progress with yesterday or with someone else."
+      },
+      {
+        question: "How do I offer help without making my wife organize everything?",
+        answer: "Name one task and a time you can manage instead of asking for a full list. For example, offer to handle dinner tonight or the laundry this weekend. Check her preferences where needed, and do not promise arrangements that depend on someone else agreeing."
       },
       {
         question: "What should I avoid in a get well message for my wife?",
-        answer: "Avoid making her reassure you, treating care like a favor, or calling her dramatic when she is tired, scared, or in pain."
+        answer: "Avoid making her reassure you, treating care like a favor, or calling her dramatic when she is tired, scared, or in pain. Do not promise a recovery date or imply that her usual responsibilities are waiting for her."
       }
     ],
-    dos: ["Be specific about help.", "Say love plainly.", "Make rest feel allowed."],
-    donts: ["Do not make her reassure you.", "Do not call her dramatic.", "Do not treat care as a favor."],
-    related: ["get-well-soon-messages-for-girlfriend", "get-well-soon-messages-after-surgery", "what-to-say-instead-of-get-well-soon"]
+    dos: [
+      "Say love plainly.",
+      "Offer specific help you can provide.",
+      "Respect her choice of company or quiet."
+    ],
+    donts: [
+      "Do not make her reassure you.",
+      "Do not compare good days and bad days.",
+      "Do not treat care as a favor."
+    ],
+    related: [
+      "get-well-soon-messages-for-girlfriend",
+      "get-well-soon-messages-after-surgery",
+      "what-to-say-instead-of-get-well-soon"
+    ],
+    seoTitle: "Get Well Soon Messages for Your Wife: Texts & Cards",
+    dateModified: "2026-09-22",
+    personalizationSteps: [
+      "Use your usual name for her and a level of affection that feels natural in your relationship.",
+      "Choose one real task you can take on, such as a meal or school pickup, and be clear about when you are available.",
+      "Let her choose company, distraction, or quiet. Remove any request for reassurance or a reply if she is tired."
+    ]
   },
   {
     slug: "get-well-soon-messages-for-husband",
-    title: "Get Well Soon Messages for Husband",
+    title: "Get Well Soon Messages for Your Husband",
     eyebrow: "For husband",
-    description: "Supportive get well soon messages for your husband that make rest, care, and help feel normal.",
-    summary: "Warm messages that make rest and care feel natural.",
-    intro: "A message for your husband can be warm, practical, and gently reassuring. Let him know he does not need to power through recovery.",
+    description: "Find get well messages for your husband: loving texts, a complete card, gentle humor, and practical support during hospital stays or a longer recovery.",
+    summary: "Loving texts, gentle humor, and support through hospital stays and recovery.",
+    intro: "Find a loving text, a complete card, or a little everyday conversation for your husband. There are messages for hospital stays, time apart, and a longer recovery. Choose help you can offer and humor he would welcome.",
     nav: "For husband",
     sections: [
       {
         id: "quick",
-        title: "Quick messages for your husband",
+        title: "Short get well texts for your husband",
         messages: [
-          "I love you. Rest up and let me take care of things for a while.",
+          "I love you. I hope you feel cared for while you rest.",
           "No need to reply. I am thinking of you and hoping today feels easier.",
-          "Feel better soon, love. Your only job is to heal.",
-          "I am here for anything you need, including making sure you actually rest."
-        ]
+          "Feel better soon, love. You do not need to put anyone else first right now.",
+          "Sending a kiss and a little reminder that you are loved, even when the day is difficult."
+        ],
+        nav: "Short texts"
       },
       {
         id: "heartfelt",
-        title: "Heartfelt messages for your husband",
+        title: "Heartfelt messages and a complete card",
         messages: [
           "You do not have to be strong every minute. I love you exactly where you are today.",
           "Recovery can be frustrating, but you are not doing it alone. I am with you.",
-          "I wish I could take the hard part away. Since I cannot, I will keep showing up with love and care."
-        ]
+          "My love,\n\nI wish I could take the hard part away. Since I cannot, I want you to know you do not have to hide it from me. I love you, and I am here to listen, share a quiet moment, or help with the next small thing.\n\nWith all my love,\n[Your name]"
+        ],
+        nav: "Heartfelt cards"
+      },
+      {
+        id: "hospital-surgery",
+        title: "In hospital or after surgery",
+        intro: "A hospital message can be brief and familiar. Only offer visits you can make, check visiting arrangements, and avoid predicting how an operation or recovery will go.",
+        messages: [
+          "Thinking of you before your surgery, love. If talking would help, I am free for a call this morning; if you need quiet, there is no need to answer.",
+          "I can bring your charger and clean clothes when visiting is possible. Let me know if you would like anything else familiar from home.",
+          "I am glad I can send you this little note after surgery. I love you. There is no need to give me a full update; we can talk whenever you feel like it."
+        ],
+        nav: "Hospital & surgery"
+      },
+      {
+        id: "practical-help",
+        title: "Loving messages with practical help",
+        intro: "Choose an offer that is true for your household. Taking on one clear task can be more useful than promising to handle everything.",
+        messages: [
+          "I can sort dinner tonight and take the dog out. Would a bit of quiet afterward feel good, or would you like some company?",
+          "If people keep asking for news, I can reply to the messages you choose. You can tell me what you are comfortable sharing.",
+          "I can pick up the shopping on my way home. Send a short list if there is anything you want; otherwise I can get our usual things."
+        ],
+        nav: "Practical help"
+      },
+      {
+        id: "far-away",
+        title: "When you are apart",
+        intro: "Send something he can enjoy without needing to respond. If you offer a call, give a time you can actually be available.",
+        messages: [
+          "I wish I were there to hold your hand. For now, I am sending all my love in this message, with no reply needed.",
+          "I saw something today that would have made you laugh. I have sent the photo for whenever you want a little distraction. Missing you, love.",
+          "I am free to talk after dinner if you want a familiar voice. We can talk about the match, the dog, or absolutely nothing important."
+        ],
+        nav: "When apart"
+      },
+      {
+        id: "longer-recovery",
+        title: "Through a longer or uneven recovery",
+        intro: "Leave room for boredom, frustration, and difficult days. A message can offer companionship without asking him to prove he is improving.",
+        messages: [
+          "I hear how frustrating this is. You do not need to turn it into a cheerful story for me. I am here to listen.",
+          "A difficult day does not change how I feel about you. I love you, and we can keep today as simple as it needs to be.",
+          "If you are tired of talking about recovery, I would love to hear what else is on your mind. You get to choose the subject."
+        ],
+        nav: "Longer recovery"
       },
       {
         id: "funny",
         title: "Light funny messages",
+        intro: "Use these only for a minor illness when he wants a joke. Skip humor if he is scared or in pain, and never make symptoms, weakness, or needing care the punchline.",
         messages: [
-          "Get well soon. I am temporarily accepting your dramatic patient era.",
-          "Please rest properly, even if you start feeling better.",
-          "I love you, even when rest is not your favorite skill."
-        ]
+          "I love you. I am prepared to watch your favorite film again, which is a very serious declaration.",
+          "If you want company, I can bring tea and my exceptionally average conversation.",
+          "Sending a kiss and a solemn promise not to reveal the ending of our show."
+        ],
+        nav: "Gentle humor"
       }
     ],
     faqs: [
       {
         question: "What should I text my husband when he is sick?",
-        answer: "Use a warm, practical line: I love you. Rest up and let me take care of things for a while."
+        answer: "A loving sentence and a small, realistic offer are enough. Try I love you. I can sort dinner tonight if that would help. If he is tired or in hospital, add that no reply is needed rather than asking for a detailed update."
       },
       {
         question: "Can I send a funny get well message to my husband?",
-        answer: "Yes, if he enjoys that tone and the situation is not serious. Keep humor gentle and never make pain or fear the joke."
+        answer: "Yes, when the illness is minor and he welcomes that tone. Make the joke about something ordinary you share, such as a favorite film. Avoid joking about pain, fear, or being a difficult patient, and choose a straightforward loving message on a hard day."
       },
       {
-        question: "How do I write a more heartfelt message for my husband?",
-        answer: "Tell him he does not need to be strong every minute, then say exactly how you will show up while he recovers."
+        question: "What can I say to my husband before or after surgery?",
+        answer: "Keep it familiar and calm: say you love him, explain when you can be available, or offer to bring something from home. Avoid promising that everything will go well or setting a timeline for recovery. Follow his preferences about calls and visits."
       },
       {
-        question: "How can I make the message useful, not just sweet?",
-        answer: "Name what you will handle, such as meals, errands, visitors, reminders, or quiet company. Practical care makes the message easier to believe."
+        question: "How do I support my husband when recovery is taking a long time?",
+        answer: "Make room for frustration without asking him to stay strong or positive. Offer conversation about everyday interests as well as the illness. Ask whether he wants listening, distraction, or practical help, and keep offers within what you can do."
+      },
+      {
+        question: "How can I make a message useful as well as loving?",
+        answer: "Name one task and a time, such as shopping on your way home or dinner tonight. If you offer to update relatives or coordinate visits, ask what he wants shared and who should be contacted first. Do not promise that other people will change their plans."
       }
     ],
-    dos: ["Offer practical care.", "Give permission to rest.", "Use humor only if he enjoys it."],
-    donts: ["Do not pressure him to be tough.", "Do not make recovery a performance.", "Do not joke if he is scared or in pain."],
-    related: ["get-well-soon-messages-for-boyfriend", "funny-get-well-soon-messages", "get-well-soon-messages-after-surgery"]
+    dos: [
+      "Offer one concrete form of support.",
+      "Let him be honest about difficult days.",
+      "Use humor only if he welcomes it."
+    ],
+    donts: [
+      "Do not pressure him to be tough.",
+      "Do not promise a recovery timeline.",
+      "Do not make pain or needing care the joke."
+    ],
+    related: [
+      "get-well-soon-messages-for-boyfriend",
+      "funny-get-well-soon-messages",
+      "get-well-soon-messages-after-surgery"
+    ],
+    seoTitle: "Get Well Soon Messages for Your Husband",
+    dateModified: "2026-09-22",
+    personalizationSteps: [
+      "Use the nickname or greeting you normally use with him so the message sounds like your own voice.",
+      "Name one thing you can do today, or mention an ordinary interest you share if he would welcome a distraction.",
+      "Match the tone to how he is feeling now. Skip teasing on a painful or frightening day, even if you usually joke together."
+    ]
+  },
+  {
+    slug: "how-to-respond-to-get-well-soon",
+    title: "How to Respond to Get Well Soon",
+    seoTitle: "How to Respond to Get Well Soon: Simple Thank-You Replies",
+    datePublished: "2026-09-22",
+    dateModified: "2026-09-22",
+    eyebrow: "Replying to well wishes",
+    description: "Reply to get well soon wishes with a simple thank-you. Find texts for friends, replies to a boss or team, and wording when you are still unwell.",
+    summary: "Thank someone who has wished you well, with or without a health update.",
+    intro: "A simple thank-you is enough when someone says get well soon. You can acknowledge their kindness without explaining your symptoms or promising when you will be better. Start with a short reply below, then add an update only if you want to share one. These examples are for the person receiving the well wishes.",
+    nav: "Reply to well wishes",
+    sections: [
+      {
+        id: "quick",
+        title: "Short replies to get well soon",
+        nav: "Short replies",
+        intro: "These work in a text, chat, or spoken conversation. A longer reply is optional; you do not need a different phrase every time someone wishes you well.",
+        messages: [
+          "Thank you for thinking of me.",
+          "Thanks, that's really kind of you.",
+          "I appreciate your good wishes."
+        ]
+      },
+      {
+        id: "friends",
+        title: "Warm replies to friends and family",
+        nav: "Friends and family",
+        intro: "Use your usual voice. You can mention that their message was welcome without giving a detailed update or reassuring them that everything is fine.",
+        messages: [
+          "Thanks for checking in. It was lovely to hear from you.",
+          "Thank you. I'm glad to have you in my corner."
+        ]
+      },
+      {
+        id: "work",
+        title: "Replying to a boss or coworker",
+        nav: "Boss or coworker",
+        intro: "For an existing email thread, a brief thank-you can be the whole reply. Add your usual greeting and sign-off if that fits the conversation. If the email also asks a work question, handle any necessary arrangements separately from thanking them for their wishes.",
+        messages: [
+          "Thank you for your kind wishes. I appreciate you checking in.",
+          "Thank you for thinking of me. I'm still resting and appreciate your message."
+        ],
+        links: [
+          { slug: "get-well-soon-messages-for-boss", label: "Your boss is the one who is unwell? Find messages to send them." },
+          { slug: "get-well-soon-messages-for-coworker", label: "A coworker told you they are ill? Find a reply wishing them well." }
+        ]
+      },
+      {
+        id: "group",
+        title: "Thanking a group for a card or messages",
+        nav: "Group thanks",
+        intro: "One message can acknowledge the whole group. Mention a card, flowers, or another gift only if you actually received it; otherwise thank them for their messages.",
+        messages: [
+          "Thank you all for your kind messages. I appreciate you thinking of me.",
+          "Thank you for the card and all your lovely notes. It meant a lot to hear from everyone."
+        ]
+      },
+      {
+        id: "health-update",
+        title: "With or without an update on how you feel",
+        nav: "Optional update",
+        intro: "Choose the version that is true today. Being grateful does not require saying you feel better. You can also keep the reply to a thank-you and leave out health details entirely.",
+        messages: [
+          "Thank you for asking. I'm still feeling unwell, but I appreciate you checking in.",
+          "Thanks for thinking of me. I'm feeling a little better today.",
+          "Thank you for your kind message. I'd rather keep the details private, but I appreciate your concern."
+        ]
+      },
+      {
+        id: "later",
+        title: "If you are replying later or need some quiet",
+        nav: "Replying later",
+        intro: "If you want to acknowledge a delay, a short explanation is enough. You can thank someone now and leave the conversation there until you feel like talking.",
+        messages: [
+          "I've only just had the energy to reply, but I wanted to thank you for your message.",
+          "Thank you for checking in. I'm keeping messages brief while I rest, but I appreciate hearing from you."
+        ]
+      }
+    ],
+    personalizationSteps: [
+      "Thank them for what they actually sent: a message, a card, a gift, or an offer of help.",
+      "Decide whether you want to share an update. Keep it accurate and as brief as you like; a thank-you can stand on its own.",
+      "Match your normal relationship. A friendly text can be casual; a work reply can stay short and courteous."
+    ],
+    faqs: [
+      {
+        question: "Is thank you enough when someone says get well soon?",
+        answer: "Yes. Thank you, or Thanks for thinking of me, acknowledges their kindness. You do not need to explain your condition or find a more elaborate response."
+      },
+      {
+        question: "How do I reply to get well soon from my boss?",
+        answer: "Try: Thank you for your kind wishes. I appreciate you checking in. If you also need to discuss work arrangements, address those separately and use only information you can confirm. A thank-you does not need to include a return date."
+      },
+      {
+        question: "What can I say if I am not getting better yet?",
+        answer: "You can simply thank them, or say: I'm still feeling unwell, but I appreciate you checking in. You can acknowledge the care behind the message without saying that recovery is going well."
+      },
+      {
+        question: "Do I have to reply to every get well message individually?",
+        answer: "If you do not have the energy for individual replies, you can wait or send a shared thank-you to a group that contacted you together. Keep private messages private; there is no need to copy everyone's details into a group response."
+      }
+    ],
+    dos: ["Keep the thank-you as short as you need.", "Share only the update you want to give.", "Mention a specific gift or help only when it was actually offered or received."],
+    donts: ["Do not feel you have to report that you are improving.", "Do not promise a recovery or return-to-work date just to be reassuring.", "Do not include health details you would rather keep private."],
+    related: ["get-well-soon-messages", "get-well-soon-text-messages", "get-well-soon-messages-for-boss", "get-well-soon-messages-for-coworker"]
   }
 ];
 

@@ -457,6 +457,9 @@ function renderHomePage() {
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
 ${renderIconLinks()}
     <link rel="stylesheet" href="${assetHref("styles.css")}">
+    <!-- Home resource styles: start -->
+    <link rel="stylesheet" href="${assetHref("assets/experiments/home-resources-v1.css")}">
+    <!-- Home resource styles: end -->
 ${renderAnalytics()}
     <script type="application/ld+json">
       ${renderHomeSchema()}
@@ -655,6 +658,18 @@ ${renderTopicGrid()}
           </details>
         </div>
       </section>
+      <!-- Home resource entry: start -->
+      <section id="free-resources" class="home-resources" aria-labelledby="free-resources-heading">
+        <div class="home-resources-inner">
+          <h2 id="free-resources-heading">Free get-well resources</h2>
+          <p>Print a card, or practice finding the right words at work.</p>
+          <ul class="home-resources-links">
+            <li><a href="./resources/teacher-care-pack/">Printable get-well cards for teachers <span aria-hidden="true">→</span></a><p>A free PDF pack with class cards and an organizer guide.</p></li>
+            <li><a href="./practice/workplace-english/">Practice get-well replies at work <span aria-hidden="true">→</span></a><p>A short guide and five exercises for thoughtful workplace messages.</p></li>
+          </ul>
+        </div>
+      </section>
+      <!-- Home resource entry: end -->
     </main>
 
 ${renderFooter()}

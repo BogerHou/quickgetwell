@@ -316,7 +316,7 @@
       "reviewedAt": null,
       "reviewRecord": null,
       "reviewedSha256": null,
-      "snapshotSha256": "29e8b7489a8199505a6f324017142e1442a7318b64ec2f972e85000523b3edbb"
+      "snapshotSha256": "7aa2589c9d35351fc164c11ba9eaa04cb6afc13a4ed8d34ffd7e54065c7229d8"
     },
     {
       "id": "printable:get-well-soon-messages-for-teacher:a4",
@@ -335,6 +335,87 @@
       "reviewRecord": null,
       "reviewedSha256": null,
       "snapshotSha256": "b8f76b1f563ab9c7e8e8ed30ec02e3ba4d6fdd656928187383ee9dc91795a102"
+    },
+    {
+      "id": "practice:client-sick-reply",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "ef19d9015d0f990b40adb8ebf7226942dda71321af42972c68f68affd5703743"
+    },
+    {
+      "id": "practice:boss-sick-notice",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "48ae9eb305ed66d7721c909fc9c89812333f6925f6cb870888d98364ce066397"
+    },
+    {
+      "id": "practice:coworker-you-barely-know",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "76e95884fc8beb0e6f3a887736d364b888bbf109ac1f6b349faa9f126922ee3b"
+    },
+    {
+      "id": "practice:signing-a-team-card",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "65a4c248df4526e8107a2325d88118af173dfb0c86aa11f14382d5dc732c4d8b"
+    },
+    {
+      "id": "practice:thanking-work-well-wishers",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "86d2aadfe93c54fa0e436df0794e7cb86912c2259ad60dceb35fe411e5e3a395"
+    },
+    {
+      "id": "shared-pilot-copy",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "08adff622924a4c29d7b214055c6ef27563f25af76921b85bc87218454df6736"
+    },
+    {
+      "id": "printable:teacher-care-pack:a4",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "589ac1853f511442a0205621d936de98cc827bfed151bfdb946754679c160a2e"
+    },
+    {
+      "id": "printable:teacher-care-pack:letter",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "e557e2ec11ae07e02fc7ef67913652f82fbb49116e4eedd89bba9d250ca3802b"
+    },
+    {
+      "id": "guide:workplace-get-well-replies",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "61cb0bde14faa2d6639ac8096a96dc41983aa6ea347c77c254fde3b1413824c7"
     }
   ]
 }

@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const { pages } = require("../content/pages");
+const { lessons } = require("../content/workplace-practice");
+const { guide } = require("../content/workplace-guide");
 
 const root = path.resolve(__dirname, "..");
 const registerFile = path.join(root, "docs/内容研究/review-register.json");
@@ -24,7 +26,23 @@ function currentItems() {
     ...pages.flatMap((page) => (page.printableCards?.files || []).map((file) => ({
       id: `printable:${page.slug}:${file.paper}`,
       sha256: hashFiles([file.path])
-    })))
+    }))),
+    ...lessons.map((lesson) => ({
+      id: `practice:${lesson.id}`,
+      sha256: hash(JSON.stringify(lesson))
+    })),
+    {
+      id: "guide:workplace-get-well-replies",
+      sha256: hash(JSON.stringify(guide))
+    },
+    {
+      id: "shared-pilot-copy",
+      sha256: hashFiles(["generate-experiments.js", "assets/experiments/pilot-v1.js"])
+    },
+    ...["a4", "letter"].map((paper) => ({
+      id: `printable:teacher-care-pack:${paper}`,
+      sha256: hashFiles([`assets/printables/teacher-care-pack-${paper}-v1.pdf`])
+    }))
   ];
 }
 

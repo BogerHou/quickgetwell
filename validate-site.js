@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { pages } = require("./content/pages");
 const { siteName, siteUrl } = require("./site.config");
+const { indexedResources } = require("./content/resource-indexing");
 
 const root = __dirname;
 const dist = path.join(root, "dist");
@@ -342,7 +343,7 @@ function validateSitemap() {
 
   const xml = fs.readFileSync(file, "utf8");
   const urlCount = (xml.match(/<url>/g) || []).length;
-  const expected = pages.length + infoPages.length + 1;
+  const expected = pages.length + infoPages.length + 1 + indexedResources.length;
   if (urlCount !== expected) {
     errors.push(`sitemap.xml has ${urlCount} URLs, expected ${expected}`);
   }

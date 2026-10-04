@@ -1,0 +1,53 @@
+/* Loaded on the homepage only. Every selector stays inside the new section. */
+section.home-resources {
+  padding: 0 clamp(18px, 5vw, 72px) 48px;
+}
+
+.home-resources .home-resources-inner {
+  padding: 28px 32px;
+  border-left: 3px solid var(--gold);
+  background: var(--soft);
+}
+
+.home-resources h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.home-resources p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: .94rem;
+}
+
+.home-resources .home-resources-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 36px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-resources .home-resources-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--forest);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.home-resources .home-resources-links p {
+  margin-top: 2px;
+  font-size: .88rem;
+}
+
+@media (max-width: 680px) {
+  .home-resources .home-resources-inner { padding: 24px 20px; }
+  .home-resources .home-resources-links { grid-template-columns: 1fr; gap: 20px; }
+}

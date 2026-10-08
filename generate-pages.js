@@ -722,7 +722,10 @@ function renderPrintableCards(cards) {
             </div>
             <ol class="print-instructions">
               ${cards.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("\n              ")}
-            </ol>
+            </ol>${cards.id === "teacher-get-well-cards" ? `
+            <!-- Teacher organizer resource: start -->
+            <p>Organizing a class card? The <a href="../resources/teacher-care-pack/" style="text-decoration: underline; text-underline-offset: 3px;">four-page teacher card pack</a> includes these two cards, an organizer guide, and an extra signature sheet.</p>
+            <!-- Teacher organizer resource: end -->` : ""}
           </div>`;
 }
 

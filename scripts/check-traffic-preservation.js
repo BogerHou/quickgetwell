@@ -1,5 +1,6 @@
 // The baseline is generated from production commit 76d95d9 in a clean export.
-// Approved additions: homepage resource section + its CSS link, and two sitemap URLs.
+// Approved additions: homepage resource section + its CSS link, two sitemap URLs,
+// and the exact teacher organizer link approved in the October 8 GSC follow-up.
 // Strip only those bounded additions before hashing; never replace the old baseline.
 const fs = require("fs");
 const path = require("path");
@@ -16,6 +17,19 @@ for (const [file, expected] of Object.entries(baseline.files)) {
     continue;
   }
   let content = fs.readFileSync(target);
+  if (file === "get-well-soon-messages-for-teacher/index.html") {
+    const html = content.toString("utf8");
+    const addition = `
+            <!-- Teacher organizer resource: start -->
+            <p>Organizing a class card? The <a href="../resources/teacher-care-pack/" style="text-decoration: underline; text-underline-offset: 3px;">four-page teacher card pack</a> includes these two cards, an organizer guide, and an extra signature sheet.</p>
+            <!-- Teacher organizer resource: end -->`;
+    const index = html.indexOf(addition);
+    if (html.split(addition).length !== 2 || !html.slice(0, index).endsWith("</ol>")
+        || !html.slice(index + addition.length).startsWith("\n          </div>")) {
+      failures.push("Teacher page must contain exactly the approved organizer link after its print instructions.");
+    }
+    content = Buffer.from(html.replace(addition, ""));
+  }
   if (file === "index.html") {
     const html = content.toString("utf8");
     const entryPattern = /\n      <!-- Home resource entry: start -->[\s\S]*?\n      <!-- Home resource entry: end -->/g;
@@ -60,5 +74,5 @@ if (failures.length) {
   console.error(failures.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log(`Preserved ${Object.keys(baseline.files).length - 2} production files byte-for-byte; homepage and sitemap match baseline ${baseline.commit.slice(0, 7)} after removing only approved additions.`);
+  console.log(`Preserved ${Object.keys(baseline.files).length - 3} production files byte-for-byte; homepage, teacher page and sitemap match baseline ${baseline.commit.slice(0, 7)} after removing only approved additions.`);
 }

@@ -99,6 +99,65 @@
 .care-field :is(input, textarea, select):hover { border-color: var(--forest); }
 .care-field :is(input, textarea, select):focus { border-color: var(--forest); }
 .care-field-hint { margin-top: 7px; color: var(--muted); font-size: .72rem; line-height: 1.6; }
+.care-message-picker {
+  margin: 0 0 19px;
+  border-top: 1px solid var(--care-border);
+  border-bottom: 1px solid var(--care-border);
+}
+.care-message-picker > summary {
+  padding: 13px 0;
+  color: var(--forest);
+  font-size: .8rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.care-message-picker-caption {
+  display: block;
+  margin: 4px 0 0 15px;
+  color: var(--muted);
+  font-size: .71rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.care-message-picker-body { padding: 5px 0 0; }
+.care-message-picker-body > .care-field { margin-bottom: 4px; }
+.care-message-options { display: grid; }
+.care-message-option { padding: 15px 0 10px; border-bottom: 1px solid var(--care-border); }
+.care-message-option p { color: var(--ink); font-size: .84rem; line-height: 1.7; overflow-wrap: anywhere; }
+.care-message-use,
+.care-message-pagination button,
+.care-message-undo {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--forest);
+  font-size: .74rem !important;
+  font-weight: 650 !important;
+  cursor: pointer;
+  min-height: 44px;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color .18s, background .18s;
+}
+.care-message-use { margin-top: 1px; }
+.care-message-use:hover,
+.care-message-pagination button:hover,
+.care-message-undo:hover { color: #10221e; text-decoration-thickness: 2px; }
+.care-message-use[aria-pressed="true"] { text-decoration: none; color: var(--muted); }
+.care-message-use[aria-pressed="true"]::before { content: "✓ "; }
+.care-message-pagination { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 4px 0; }
+.care-message-pagination p { color: var(--muted); font-size: .68rem; line-height: 1.5; }
+.care-message-pagination button { flex-shrink: 0; text-decoration: none; }
+.care-message-pagination button:disabled { opacity: .55; cursor: default; }
+.care-message-label { display: flex; justify-content: space-between; align-items: center; gap: 15px; min-height: 30px; margin-bottom: 7px; }
+.care-message-label label { margin: 0; }
+.care-message-undo { min-height: 30px; padding: 4px 0; font-weight: 500 !important; font-size: .7rem !important; }
+.care-message-import-status { margin: 0 0 8px; color: var(--forest); font-size: .73rem; line-height: 1.6; }
+.care-message-import-status:empty { display: none; }
+.care-message-meta { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 18px; }
+#card-message-count { max-width: 100%; font-variant-numeric: tabular-nums; }
+#card-message-count[data-over-limit="true"] { color: #984126; font-weight: 650; }
 .care-name-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
 .care-design-picker { margin-bottom: 25px; }
 .care-design-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 11px; }
@@ -274,6 +333,11 @@
   .care-design-picker { margin-bottom: 25px; }
   .care-field label { font-size: .83rem; }
   .care-field-hint { font-size: .74rem; }
+  .care-message-picker > summary { font-size: .84rem; padding: 15px 0; }
+  .care-message-picker-caption { font-size: .73rem; }
+  .care-message-option p { font-size: .87rem; }
+  .care-message-use { font-size: .78rem !important; }
+  .care-message-pagination { gap: 10px; }
   .care-feedback { grid-template-columns: 1fr; gap: 21px; padding-top: 25px; }
   .care-feedback-intro > p:last-child { max-width: 100%; }
   .care-related p span { display: none; }

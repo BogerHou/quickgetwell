@@ -21,7 +21,7 @@ function currentItems() {
     })),
     {
       id: "shared-site-copy",
-      sha256: hashFiles(["generate-pages.js", "script.js"])
+      sha256: hashFiles(["generate-pages.js", "script.js", "assets/experiments/card-entry-v1.js"])
     },
     ...pages.flatMap((page) => (page.printableCards?.files || []).map((file) => ({
       id: `printable:${page.slug}:${file.paper}`,
@@ -42,7 +42,7 @@ function currentItems() {
     {
       id: "tool:care-studio",
       sha256: hashFiles([
-        "content/care-studio.js", "assets/experiments/care-studio-v1.js",
+        "content/care-studio.js", "content/card-message-catalog.js", "assets/experiments/care-studio-v1.js",
         "assets/experiments/care-art/garden-v2.webp",
         "assets/experiments/care-art/comfort-v2.webp",
         "assets/experiments/care-art/window-v2.webp"

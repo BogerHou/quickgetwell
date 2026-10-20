@@ -1,6 +1,7 @@
 // The baseline is generated from production commit 76d95d9 in a clean export.
-// Approved additions: homepage resource section + its CSS link, two sitemap URLs,
-// and the exact teacher organizer link approved in the October 8 GSC follow-up.
+// Approved additions: homepage resource section + its CSS link, explicit sitemap URLs,
+// the exact teacher organizer link approved in the October 8 GSC follow-up, and
+// the October 20 card-maker navigation and message actions approved by the owner.
 // Strip only those bounded additions before hashing; never replace the old baseline.
 const fs = require("fs");
 const path = require("path");
@@ -9,7 +10,84 @@ const root = path.resolve(__dirname, "..");
 const baseline = require("../tests/fixtures/production-baseline.json");
 const { siteUrl } = require("../site.config");
 const { indexedResources } = require("../content/resource-indexing");
+const { getMessageId, getEntries } = require("../content/card-message-catalog");
 const failures = [];
+const catalog = new Map(getEntries().map(entry => [entry.id, entry]));
+const decodeHtml = value => value.replace(/&(amp|quot|#39|lt|gt);/g, (_, entity) => ({
+  amp: "&", quot: '"', "#39": "'", lt: "<", gt: ">"
+}[entity]));
+const assetVersion = file => crypto.createHash("sha256").update(fs.readFileSync(path.join(root, file))).digest("hex").slice(0, 10);
+
+function stripCardAdditions(html, file) {
+  const navigation = '<!-- Card maker navigation: start --><a class="card-maker-nav" href="/resources/care-studio/">Make a card</a><!-- Card maker navigation: end -->';
+  const navigations = [...html.matchAll(/<!-- Card maker navigation: start -->[\s\S]*?<!-- Card maker navigation: end -->/g)];
+  if (navigations.length !== 1 || navigations[0][0] !== navigation
+      || !/<a href="[^"]+">(?:Finder|New message)<\/a>$/.test(html.slice(0, navigations[0]?.index))) {
+    failures.push(`${file}: card navigation must be the exact approved link immediately after Finder.`);
+  }
+
+  const actions = [...html.matchAll(/<!-- Card maker action: start -->[\s\S]*?<!-- Card maker action: end -->/g)];
+  for (const action of actions) {
+    const precedingButton = html.slice(0, action.index).match(/<button class="copy-line(?: compact-copy)?" data-copy="([^"]+)" aria-label="[^"]+">([^<]+)<\/button>$/);
+    const text = precedingButton && decodeHtml(precedingButton[2]);
+    const id = text && getMessageId(text);
+    const expected = `<!-- Card maker action: start --><a class="card-message-action" href="/resources/care-studio/#message=${id}" aria-label="Make a card with this message">Make a card<span aria-hidden="true"> ↗</span></a><!-- Card maker action: end -->`;
+    if (!precedingButton || decodeHtml(precedingButton[1]) !== text || !catalog.has(id)
+        || catalog.get(id).text !== text || action[0] !== expected) {
+      failures.push(`${file}: a card action must follow the unchanged copy button and identify its exact public message.`);
+    }
+  }
+  const eligibleButtons = [...html.matchAll(/<button class="copy-line(?: compact-copy)?" data-copy="([^"]+)" aria-label="[^"]+">([^<]+)<\/button>/g)]
+    .filter(button => catalog.has(getMessageId(decodeHtml(button[2]))));
+  if (eligibleButtons.length !== actions.length) {
+    failures.push(`${file}: every eligible public message must have exactly one card action.`);
+  }
+  for (const button of eligibleButtons) {
+    if (!html.slice(button.index + button[0].length).startsWith("<!-- Card maker action: start -->")) {
+      failures.push(`${file}: a public message is missing its adjacent card action.`);
+    }
+  }
+
+  const stylesFile = "assets/experiments/card-entry-v1.css";
+  const expectedStyles = `<!-- Card maker styles: start --><link rel="stylesheet" href="/${stylesFile}?v=${assetVersion(stylesFile)}"><!-- Card maker styles: end -->`;
+  const styles = [...html.matchAll(/<!-- Card maker styles: start -->[\s\S]*?<!-- Card maker styles: end -->/g)];
+  if (styles.length !== 1 || styles[0][0] !== expectedStyles
+      || !/<link rel="stylesheet" href="(?:\.\.\/)?styles\.css\?v=[a-f0-9]+">$/.test(html.slice(0, styles[0]?.index))) {
+    failures.push(`${file}: card entry styles must be the single versioned stylesheet after the existing stylesheet.`);
+  }
+
+  const scriptFile = "assets/experiments/card-entry-v1.js";
+  const expectedScript = `<!-- Card maker script: start --><script src="/${scriptFile}?v=${assetVersion(scriptFile)}"></script><!-- Card maker script: end -->`;
+  const scripts = [...html.matchAll(/<!-- Card maker script: start -->[\s\S]*?<!-- Card maker script: end -->/g)];
+  if (file === "index.html") {
+    if (scripts.length !== 1 || scripts[0][0] !== expectedScript
+        || !/<script src="script\.js\?v=[a-f0-9]+"><\/script>$/.test(html.slice(0, scripts[0]?.index))) {
+      failures.push("Homepage: card entry script must follow the unchanged Finder script exactly once.");
+    }
+  } else if (scripts.length) failures.push(`${file}: the dynamic Finder handoff script belongs only on the homepage.`);
+
+  let preserved = html.replace(navigation, "").replace(expectedStyles, "").replace(expectedScript, "")
+    .replace(/<!-- Card maker action: start -->[\s\S]*?<!-- Card maker action: end -->/g, "");
+  const privacyCopies = {
+    "index.html": {
+      previous: "Runs in your browser. Names and help offers are not submitted or stored. We measure category selections and copy actions to improve the tool. Do not enter private medical details.",
+      current: "Runs in your browser. Names and help offers are not uploaded. Choosing Make a card briefly keeps the message in this tab, then removes it when the editor opens. We measure category selections and copy actions to improve the tool. Do not enter private medical details."
+    },
+    "privacy/index.html": {
+      previous: "The message finder runs in your browser. The optional name and help-offer fields are used only to generate the message on the page; they are not submitted through a form and are not stored by Quick Get Well.",
+      current: "The message finder runs in your browser. The optional name and help-offer fields are used to generate the message on the page and are not uploaded. Choosing Make a card temporarily keeps that message in this tab using session storage. The transfer is removed when the editor opens or the tab is closed; card drafts otherwise remain in page memory."
+    }
+  };
+  const privacy = privacyCopies[file];
+  if (privacy) {
+    if (preserved.split(privacy.current).length !== 2) {
+      failures.push(`${file}: the Finder handoff must have the exact updated privacy explanation.`);
+    }
+    preserved = preserved.replace(privacy.current, privacy.previous);
+  }
+  return preserved;
+}
+
 for (const [file, expected] of Object.entries(baseline.files)) {
   const target = path.join(root, "dist", file);
   if (!fs.existsSync(target)) {
@@ -17,6 +95,7 @@ for (const [file, expected] of Object.entries(baseline.files)) {
     continue;
   }
   let content = fs.readFileSync(target);
+  if (file.endsWith(".html")) content = Buffer.from(stripCardAdditions(content.toString("utf8"), file));
   if (file === "get-well-soon-messages-for-teacher/index.html") {
     const html = content.toString("utf8");
     const addition = `
@@ -74,5 +153,5 @@ if (failures.length) {
   console.error(failures.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log(`Preserved ${Object.keys(baseline.files).length - 3} production files byte-for-byte; homepage, teacher page and sitemap match baseline ${baseline.commit.slice(0, 7)} after removing only approved additions.`);
+  console.log(`All ${Object.keys(baseline.files).length} established production files match baseline ${baseline.commit.slice(0, 7)} byte-for-byte after removing only exact, validated additions. Existing messages, metadata, Copy controls and legacy CSS/JS remain unchanged.`);
 }

@@ -316,7 +316,7 @@
       "reviewedAt": null,
       "reviewRecord": null,
       "reviewedSha256": null,
-      "snapshotSha256": "9818e01345fe2487dc33549dc3ca7ac7a379ee9ce7c98d1bdc3d8a7ae56a979e"
+      "snapshotSha256": "0cd2c0aa41413f1e15ff27c6178c8aa5b5680356f52f270a30b49b128ffaed7d"
     },
     {
       "id": "printable:get-well-soon-messages-for-teacher:a4",
@@ -388,7 +388,7 @@
       "reviewedAt": null,
       "reviewRecord": null,
       "reviewedSha256": null,
-      "snapshotSha256": "08adff622924a4c29d7b214055c6ef27563f25af76921b85bc87218454df6736"
+      "snapshotSha256": "e96e075cb9a84448d4ef798bfbf901cec75eea968fa70e8a992b4bff6465da4d"
     },
     {
       "id": "printable:teacher-care-pack:a4",
@@ -424,7 +424,7 @@
       "reviewedAt": null,
       "reviewRecord": null,
       "reviewedSha256": null,
-      "snapshotSha256": "514df4ccca47ef0aaafa93ef988cb099f90b5376a9d82bc8826c0abde95b14c6"
+      "snapshotSha256": "41d5e38c82ea6f6ed0e49bd779826210ffb1acc0692f939ff851f26ebd2e22b9"
     }
   ]
 }

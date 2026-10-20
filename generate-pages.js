@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const { pages } = require("./content/pages");
+const { getMessageId } = require("./content/card-message-catalog");
 const { siteName, siteUrl, gaMeasurementId } = require("./site.config");
 const { keyFile: indexNowKeyFile } = require("./indexnow.config.json");
 
@@ -188,7 +189,7 @@ const infoPages = [
       },
       {
         title: "Message finder inputs",
-        body: "The message finder runs in your browser. The optional name and help-offer fields are used only to generate the message on the page; they are not submitted through a form and are not stored by Quick Get Well."
+        body: "The message finder runs in your browser. The optional name and help-offer fields are used to generate the message on the page and are not uploaded. Choosing Make a card temporarily keeps that message in this tab using session storage. The transfer is removed when the editor opens or the tab is closed; card drafts otherwise remain in page memory."
       },
       {
         title: "Private information",
@@ -269,7 +270,7 @@ function renderHeader(page) {
     <header class="site-header">
       <a class="brand" href="../"><span class="brand-mark" aria-hidden="true"></span><span>${escapeHtml(siteName)}</span></a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a href="${escapeHtml(finderHref)}">${finderLabel}</a>
+        <a href="${escapeHtml(finderHref)}">${finderLabel}</a><!-- Card maker navigation: start --><a class="card-maker-nav" href="/resources/care-studio/">Make a card</a><!-- Card maker navigation: end -->
         <a href="../#situations">Situations</a>
         <a href="../#guidance">Guidance</a>
         <a href="../#faq">FAQ</a>
@@ -288,7 +289,7 @@ function renderRootHeader(options = {}) {
         <span>${escapeHtml(siteName)}</span>
       </a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a href="${sectionBase}#message-finder">Finder</a>
+        <a href="${sectionBase}#message-finder">Finder</a><!-- Card maker navigation: start --><a class="card-maker-nav" href="/resources/care-studio/">Make a card</a><!-- Card maker navigation: end -->
         <a href="${sectionBase}#situations">Situations</a>
         <a href="${sectionBase}#guidance">Guidance</a>
         <a href="${sectionBase}#faq">FAQ</a>
@@ -298,7 +299,20 @@ function renderRootHeader(options = {}) {
 
 function renderMessageButton(message) {
   const escaped = escapeHtml(message);
-  return `<button class="copy-line" data-copy="${escaped}" aria-label="Copy message: ${escaped}">${escaped}</button>`;
+  return `<button class="copy-line" data-copy="${escaped}" aria-label="Copy message: ${escaped}">${escaped}</button>${renderCardAction(message)}`;
+}
+
+function renderCardAction(message) {
+  if (Array.from(message).length > 320) return "";
+  return `<!-- Card maker action: start --><a class="card-message-action" href="/resources/care-studio/#message=${getMessageId(message)}" aria-label="Make a card with this message">Make a card<span aria-hidden="true"> ↗</span></a><!-- Card maker action: end -->`;
+}
+
+function renderCardEntryStyles() {
+  return `<!-- Card maker styles: start --><link rel="stylesheet" href="/${assetHref("assets/experiments/card-entry-v1.css")}"><!-- Card maker styles: end -->`;
+}
+
+function renderCardEntryScript() {
+  return `<!-- Card maker script: start --><script src="/${assetHref("assets/experiments/card-entry-v1.js")}"></script><!-- Card maker script: end -->`;
 }
 
 const topicGroups = [
@@ -457,7 +471,7 @@ function renderHomePage() {
     <meta property="og:url" content="${baseUrl}/">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
 ${renderIconLinks()}
-    <link rel="stylesheet" href="${assetHref("styles.css")}">
+    <link rel="stylesheet" href="${assetHref("styles.css")}">${renderCardEntryStyles()}
     <!-- Home resource styles: start -->
     <link rel="stylesheet" href="${assetHref("assets/experiments/home-resources-v1.css")}">
     <!-- Home resource styles: end -->
@@ -550,7 +564,7 @@ ${renderRootHeader()}
               <input id="helpOffer" type="text" placeholder="drop off dinner this week">
             </label>
 
-            <p class="finder-privacy-note">Runs in your browser. Names and help offers are not submitted or stored. We measure category selections and copy actions to improve the tool. Do not enter private medical details.</p>
+            <p class="finder-privacy-note">Runs in your browser. Names and help offers are not uploaded. Choosing Make a card briefly keeps the message in this tab, then removes it when the editor opens. We measure category selections and copy actions to improve the tool. Do not enter private medical details.</p>
 
             <p class="finder-control-note" id="tone-shortcut-help">Switch tone: choose one. These shortcuts change the Tone selection above.</p>
             <div class="quick-tune" role="group" aria-label="Switch tone" aria-describedby="tone-shortcut-help">
@@ -676,7 +690,7 @@ ${renderTopicGrid()}
 ${renderFooter()}
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true">Copied</div>
-    <script src="${assetHref("script.js")}"></script>
+    <script src="${assetHref("script.js")}"></script>${renderCardEntryScript()}
   </body>
 </html>
 `;
@@ -742,7 +756,7 @@ function renderDecisionGuide(page) {
               .map((item) => `<div>
               <h3>${escapeHtml(item.label)}</h3>
               <p>${escapeHtml(item.useWhen)}</p>
-              <button class="copy-line compact-copy" data-copy="${escapeHtml(item.try)}" aria-label="Copy suggested wording: ${escapeHtml(item.try)}">${escapeHtml(item.try)}</button>
+              <button class="copy-line compact-copy" data-copy="${escapeHtml(item.try)}" aria-label="Copy suggested wording: ${escapeHtml(item.try)}">${escapeHtml(item.try)}</button>${renderCardAction(item.try)}
             </div>`)
               .join("\n            ")}
           </div>`;
@@ -1046,7 +1060,7 @@ function renderPage(page) {
     <meta property="og:url" content="${pageUrl(page.slug)}">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
 ${renderIconLinks("../")}
-    <link rel="stylesheet" href="../${assetHref("styles.css")}">
+    <link rel="stylesheet" href="../${assetHref("styles.css")}">${renderCardEntryStyles()}
 ${renderAnalytics()}
     <script type="application/ld+json">
     ${renderSchema(page)}
@@ -1185,7 +1199,7 @@ function renderInfoPage(page) {
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="${infoPageUrl(page.slug)}">
 ${renderIconLinks("../")}
-    <link rel="stylesheet" href="../${assetHref("styles.css")}">
+    <link rel="stylesheet" href="../${assetHref("styles.css")}">${renderCardEntryStyles()}
 ${renderAnalytics()}
   </head>
   <body>
@@ -1225,7 +1239,7 @@ function renderNotFoundPage() {
     <title>Page Not Found | ${escapeHtml(siteName)}</title>
     <meta name="robots" content="noindex,follow">
 ${renderIconLinks()}
-    <link rel="stylesheet" href="${assetHref("styles.css")}">
+    <link rel="stylesheet" href="${assetHref("styles.css")}">${renderCardEntryStyles()}
 ${renderAnalytics()}
   </head>
   <body>

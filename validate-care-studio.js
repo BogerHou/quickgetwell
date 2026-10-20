@@ -1,8 +1,9 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const { buildModel, wrapText, makeEvent, toolNames, artwork, draw, mount } = require("./assets/experiments/care-studio-v1");
+const { buildModel, wrapText, makeEvent, toolNames, artwork, draw, consumeTransfer, mount } = require("./assets/experiments/care-studio-v1");
 const { siteUrl } = require("./site.config");
+const { getEntries } = require("./content/card-message-catalog");
 
 const route = "/resources/care-studio/";
 const tools = ["card", "help", "preferences"];
@@ -39,10 +40,19 @@ function validateModels() {
   assert.equal(card.heading, "Thank you");
   assert.equal(card.theme, "ink");
   const longCard = buildModel("card", { message: "🌷".repeat(400), to: "🌷".repeat(100), from: "🌷".repeat(100) });
-  assert.equal(count(longCard.lines[0]), 320);
+  assert.equal(count(longCard.lines[0]), 400);
   assert.equal(count(longCard.to), 40);
   assert.equal(count(longCard.from), 50);
-  assert.equal(longCard.lines[0], "🌷".repeat(320), "Length limits must not split surrogate pairs");
+  assert.equal(longCard.lines[0], "🌷".repeat(400), "An imported message must never be silently truncated");
+  assert.equal(longCard.valid, false, "An overlong imported message must block export until its author shortens it");
+  assert.equal(longCard.tooLong, true);
+  const unicodeAtLimit = buildModel("card", { message: "🌷".repeat(320) });
+  assert.equal(unicodeAtLimit.valid, true, "The 320-character limit must count Unicode code points, not UTF-16 units");
+  assert.equal(unicodeAtLimit.lines[0], "🌷".repeat(320));
+  const unicodeOverLimit = buildModel("card", { message: "🌷".repeat(321) });
+  assert.equal(unicodeOverLimit.valid, false);
+  assert.equal(unicodeOverLimit.tooLong, true);
+  assert.equal(unicodeOverLimit.lines[0], "🌷".repeat(321), "Over-limit Unicode input must remain intact for revision");
   assert.equal(buildModel("card", { heading: privateText, theme: privateText, message: "Hello" }).theme, "botanical");
   assert(!buildModel("card", { heading: privateText, message: "Hello" }).heading.includes(privateText));
 
@@ -90,6 +100,13 @@ function validateWrapping() {
   assert.equal(tooManyLines.valid, true);
   assert.equal(draw(context(), tooManyLines, image), false, "An image that cannot fit must be refused, not silently clipped");
   assert.equal(tooManyLines.lines[0], "x\n".repeat(150).trim(), "Overflow refusal must leave the full text available to copy");
+  const overLimitContext = context();
+  const rendered = [];
+  overLimitContext.fillText = text => rendered.push(text);
+  overLimitContext.measureText = () => { throw new Error("Over-limit body text must not be measured"); };
+  assert.equal(draw(overLimitContext, buildModel("card", { message: "🌷".repeat(321), from: "Private signature" }), image), false);
+  assert(!rendered.includes("Private signature"), "An over-limit image must not appear to be a completed signed card");
+  assert(!rendered.some(text => text.includes("🌷")), "Over-limit input must not be clipped into the preview image");
 }
 
 function validateEventContract() {
@@ -118,7 +135,8 @@ function validateEventContract() {
   assert.equal(makeEvent("care_feedback", "card", { rating: privateText }), null);
   assert.equal(makeEvent("other_event", "card", injected), null);
   assert.equal(makeEvent("care_export", privateHelper, injected), null);
-  assert.doesNotMatch(source, /\b(?:fetch|XMLHttpRequest|FormData|localStorage|sessionStorage|indexedDB)\b|\.innerHTML\s*=/, "Private editor content must not be uploaded, persisted or interpolated into HTML");
+  assert.doesNotMatch(source, /\b(?:fetch|XMLHttpRequest|FormData|localStorage|indexedDB)\b|\.innerHTML\s*=/, "Private editor content must not be uploaded or interpolated into HTML");
+  assert.doesNotMatch(source, /sessionStorage\s*\.\s*setItem/, "The editor must only consume the explicit one-time handoff; normal draft edits must never be persisted");
 }
 
 function node(properties = {}) {
@@ -126,10 +144,13 @@ function node(properties = {}) {
   const classes = new Set();
   const attributes = new Map();
   return {
-    value: "", textContent: "", dataset: {}, hidden: false, disabled: false, focused: 0, style: {},
+    value: "", textContent: "", dataset: {}, hidden: false, disabled: false, focused: 0, style: {}, children: [],
     classList: { add: (name) => classes.add(name), remove: (name) => classes.delete(name), contains: (name) => classes.has(name) },
     setAttribute(name, value) { attributes.set(name, value); }, getAttribute: (name) => attributes.get(name),
-    appendChild() {}, remove() {}, select() {}, click() {}, focus() { this.focused++; },
+    appendChild(child) { this.children.push(child); return child; },
+    append(...children) { this.children.push(...children); },
+    replaceChildren(...children) { this.children = [...children]; },
+    remove() {}, select() {}, click() {}, focus() { this.focused++; },
     addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, []); listeners.get(type).push(fn); },
     async dispatch(type, extra = {}) {
       const event = { target: this, preventDefault() {}, ...extra };
@@ -142,8 +163,13 @@ function node(properties = {}) {
 function fixture(options = {}) {
   const nodes = new Map(), events = [], copied = [], urls = new Set(), revoked = [], downloads = [], timers = [], images = [];
   const get = (id) => { if (!nodes.has(id)) nodes.set(id, node()); return nodes.get(id); };
+  const catalogEntries = options.catalog ?? getEntries().slice(0, 16);
+  get("care-message-catalog").textContent = JSON.stringify(catalogEntries);
+  get("card-message-category").value = "all";
+  const stored = new Map(options.transfer === undefined ? [] : [["qgw:card-transfer:v1", options.transfer]]);
+  const storageReads = [], storageDeletes = [], storageWrites = [];
   const fields = {
-    card: { "card-heading": "thinking", "card-to": "", "card-message": "", "card-from": "", "card-theme": "botanical" },
+    card: { "card-heading": "thinking", "card-to": "", "card-message": "", "card-from": "", "card-theme": "botanical", "card-message-category": "all" },
     help: { "help-task-1": "", "help-time-1": "", "help-task-2": "", "help-time-2": "", "help-task-3": "", "help-time-3": "", "help-from": "" },
     preferences: { "preferences-contact": "text", "preferences-visits": "ask-first", "preferences-updates": "self", "preferences-helper": "", "preferences-note": "" }
   };
@@ -189,6 +215,7 @@ function fixture(options = {}) {
       if (selector === "[data-reset]") return resetButtons;
       if (selector === "[data-reset-yes]") return resetYes;
       if (selector === "[data-reset-no]") return resetNo;
+      if (selector === "[data-message-id]") return get("card-message-options").children.flatMap(item => item.children).filter(child => child.dataset.messageId);
       const match = selector.match(/^\[data-export\]\[data-for="([^"]+)"\]$/);
       if (match) return exports.filter((button) => button.dataset.for === match[1]);
       throw new Error(`Unexpected selector: ${selector}`);
@@ -210,7 +237,13 @@ function fixture(options = {}) {
   };
   const win = node({
     document: doc, isSecureContext: true,
-    location: { hostname: options.hostname || "quickgetwell.com", pathname: route, search: "?name=Private+Person", hash: "#private@example.com" },
+    location: { hostname: options.hostname || "quickgetwell.com", pathname: route, search: options.search ?? "?name=Private+Person", hash: options.hash ?? "#private@example.com" },
+    sessionStorage: {
+      getItem(key) { storageReads.push(key); if (options.storageFailure) throw new Error("Storage unavailable"); return stored.get(key) ?? null; },
+      removeItem(key) { storageDeletes.push(key); if (options.storageFailure) throw new Error("Storage unavailable"); stored.delete(key); },
+      setItem(key, value) { storageWrites.push([key, value]); throw new Error("The editor must not write drafts"); }
+    },
+    URLSearchParams,
     qgwCareAnalyticsReady: options.analyticsReady ?? true,
     navigator: { onLine: options.online ?? true, clipboard: { writeText: async (text) => { if (options.copyFails) throw new Error("Unavailable"); copied.push(text); } } },
     gtag: (...args) => events.push(args),
@@ -244,7 +277,7 @@ function fixture(options = {}) {
   if (options.noImageApi) delete win.Image;
   mount(win);
   return {
-    nodes, events, copied, exports, urls, revoked, downloads, timers, feedback, feedbackSubmit, helperField, win, resetConfirmations, images, themeButtons,
+    nodes, events, copied, exports, urls, revoked, downloads, timers, feedback, feedbackSubmit, helperField, win, resetConfirmations, images, themeButtons, catalogEntries, stored, storageReads, storageDeletes, storageWrites,
     flush: () => new Promise((resolve) => setImmediate(resolve)),
     async input(id, value, tool = "card") { get(id).value = value; await get(`care-${tool}-form`).dispatch("input"); },
     select: (tool) => toolButtons.find((button) => button.dataset.tool === tool).dispatch("click"),
@@ -370,6 +403,142 @@ async function validateBehavior() {
   assert(!app.nodes.get("care-preferences-text").textContent.includes(privateHelper));
 }
 
+function validateOneTimeTransfer() {
+  const key = "qgw:card-transfer:v1";
+  const now = Date.now();
+  const payloads = [
+    [JSON.stringify({ text: privateText, createdAt: now }), privateText],
+    [JSON.stringify({ text: "x".repeat(4000), createdAt: now }), "x".repeat(4000)],
+    [JSON.stringify({ text: privateText, createdAt: now - 301000 }), null],
+    [JSON.stringify({ text: privateText, createdAt: now + 60000 }), null],
+    [JSON.stringify({ text: privateText, createdAt: "now" }), null],
+    [JSON.stringify({ text: "x".repeat(4001), createdAt: now }), null],
+    [JSON.stringify({ text: " \n ", createdAt: now }), null],
+    [JSON.stringify({ text: 42, createdAt: now }), null],
+    ["{bad json", null], ["null", null], ["[]", null], [null, null]
+  ];
+  for (const [stored, expected] of payloads) {
+    const calls = [];
+    const result = consumeTransfer({ sessionStorage: {
+      getItem(name) { calls.push(["read", name]); return stored; },
+      removeItem(name) { calls.push(["delete", name]); }
+    } });
+    assert.equal(result, expected);
+    assert.deepEqual(calls, [["read", key], ["delete", key]], "Every handoff, even malformed/expired data, must be consumed before parsing");
+  }
+  assert.equal(consumeTransfer({ get sessionStorage() { throw new Error("Blocked storage"); } }), null);
+  assert.equal(consumeTransfer({ sessionStorage: { getItem: () => "{}", removeItem() { throw new Error("Read-only storage"); } } }), null,
+    "Do not load private transferred text if it cannot be removed");
+}
+
+async function validateMessageSelection() {
+  const entries = getEntries();
+  const publicEntry = entries[0];
+  const imported = fixture({ hash: `#message=${publicEntry.id}`, transfer: JSON.stringify({ text: privateText, createdAt: Date.now() }) });
+  await imported.flush();
+  assert.equal(imported.nodes.get("card-message").value, publicEntry.text);
+  assert.equal(imported.nodes.get("card-message-category").value, publicEntry.category);
+  assert.equal(imported.stored.size, 0, "Even a public-message arrival must discard an unrelated pending private handoff");
+  assert.equal(imported.storageWrites.length, 0);
+
+  const finder = fixture({ hash: "#from=finder", transfer: JSON.stringify({ text: privateText, createdAt: Date.now() }) });
+  await finder.flush();
+  assert.equal(finder.nodes.get("card-message").value, privateText);
+  assert.equal(finder.stored.size, 0);
+  assert(finder.nodes.get("care-card-text").textContent.includes(privateText));
+  assert.doesNotMatch(JSON.stringify(finder.events), /private note|Private Person|<script>/);
+  await finder.input("card-message", "An edited private note");
+  assert.equal(finder.storageWrites.length, 0, "Editing must not turn the one-time handoff into draft storage");
+
+  const longText = "🌷".repeat(340);
+  const longImport = fixture({ hash: "#from=finder", transfer: JSON.stringify({ text: longText, createdAt: Date.now() }) });
+  await longImport.flush();
+  assert.equal(longImport.nodes.get("card-message").value, longText, "The entire incoming message must remain available for editing");
+  assert(longImport.exports.filter(button => button.dataset.for === "card").every(button => button.disabled));
+  assert.match(longImport.nodes.get("care-card-status").textContent, /full message|shorten/i);
+  assert.match(longImport.nodes.get("card-message-count").textContent, /340 \/ 320/);
+  await longImport.export("card", "png");
+  assert.equal(longImport.downloads.length, 0);
+  await longImport.input("card-message", "A short revised message.");
+  assert(longImport.exports.filter(button => button.dataset.for === "card").every(button => !button.disabled));
+
+  const unicodeInput = fixture();
+  await unicodeInput.flush();
+  await unicodeInput.input("card-message", "🌷".repeat(320));
+  assert.equal(unicodeInput.nodes.get("card-message").value, "🌷".repeat(320));
+  assert.equal(unicodeInput.nodes.get("card-message").getAttribute("aria-invalid"), "false");
+  assert.match(unicodeInput.nodes.get("card-message-count").textContent, /^320 \/ 320 characters$/);
+  assert.equal(unicodeInput.exports.find(button => button.dataset.for === "card" && button.dataset.export === "copy").disabled, false);
+  await unicodeInput.input("card-message", "🌷".repeat(321));
+  assert.equal(unicodeInput.nodes.get("card-message").value, "🌷".repeat(321));
+  assert.equal(unicodeInput.nodes.get("card-message").getAttribute("aria-invalid"), "true");
+  assert(unicodeInput.nodes.get("care-card-text").textContent.includes("🌷".repeat(321)));
+  assert(unicodeInput.exports.filter(button => button.dataset.for === "card").every(button => button.disabled));
+
+  for (const options of [
+    { hash: "#message=0000000000000000" },
+    { hash: "#from=finder" },
+    { hash: "#from=finder", storageFailure: true },
+    { hash: "#from=finder", transfer: JSON.stringify({ text: privateText, createdAt: Date.now() - 301000 }) }
+  ]) {
+    const missing = fixture(options);
+    assert.equal(missing.nodes.get("card-message").value, "");
+    assert.match(missing.nodes.get("card-message-import-status").textContent, /could not be loaded/i);
+    assert.equal(missing.nodes.get("card-message-picker").open, true);
+  }
+  const rawUrl = fixture({ search: `?message=${encodeURIComponent(privateText)}`, hash: `#message=${encodeURIComponent(privateText)}` });
+  assert.equal(rawUrl.nodes.get("card-message").value, "", "Arbitrary URL message text must never populate the editor");
+
+  const selection = fixture();
+  await selection.flush();
+  await selection.input("card-message", privateText);
+  await selection.input("card-to", privateHelper);
+  await selection.input("card-from", "Private Sender");
+  await selection.theme("ink");
+  const choices = () => selection.nodes.get("card-message-options").children.flatMap(item => item.children).filter(child => child.dataset.messageId);
+  assert.equal(choices().length, 6, "Show a manageable six examples at a time");
+  const firstButton = choices()[0];
+  await firstButton.dispatch("click");
+  const selectedText = entries.find(entry => entry.id === firstButton.dataset.messageId).text;
+  assert.equal(selection.nodes.get("card-message").value, selectedText);
+  assert.equal(selection.nodes.get("card-to").value, privateHelper);
+  assert.equal(selection.nodes.get("card-from").value, "Private Sender");
+  assert.equal(selection.nodes.get("card-theme").value, "ink", "Choosing words must retain the design and signatures");
+  assert.equal(selection.nodes.get("card-message-undo").hidden, false);
+  await selection.nodes.get("card-message-undo").dispatch("click");
+  assert.equal(selection.nodes.get("card-message").value, privateText, "Undo restores the previous message exactly");
+  assert.equal(selection.nodes.get("card-message-undo").hidden, true);
+  assert.equal(selection.nodes.get("card-theme").value, "ink");
+  await selection.nodes.get("card-message-more").dispatch("click");
+  assert.notEqual(choices()[0].dataset.messageId, firstButton.dataset.messageId);
+  await choices()[0].dispatch("click");
+  await selection.win.dispatch("pageshow", { persisted: true });
+  assert.equal(selection.nodes.get("card-message").value, "");
+  assert.equal(selection.nodes.get("card-message-undo").hidden, true, "A discarded draft must not remain recoverable through Undo");
+  assert.equal(selection.storageWrites.length, 0);
+
+  const resetPicker = fixture();
+  const pickerButtons = () => resetPicker.nodes.get("card-message-options").children
+    .flatMap(item => item.children).filter(child => child.dataset.messageId);
+  const category = resetPicker.catalogEntries.find(entry => entry.category !== resetPicker.catalogEntries[0].category).category;
+  const categoryEntries = resetPicker.catalogEntries.filter(entry => entry.category === category);
+  assert(categoryEntries.length > 6, "Reset regression needs a category with a second page of examples");
+  resetPicker.nodes.get("card-message-category").value = category;
+  await resetPicker.nodes.get("card-message-category").dispatch("change");
+  await resetPicker.nodes.get("card-message-more").dispatch("click");
+  assert.equal(pickerButtons()[0].dataset.messageId, categoryEntries[6].id);
+  await resetPicker.reset("card", "open");
+  await resetPicker.reset("card", "cancel");
+  assert.equal(resetPicker.nodes.get("card-message-category").value, category);
+  assert.equal(pickerButtons()[0].dataset.messageId, categoryEntries[6].id, "Cancelling Clear must preserve the current picker category and page");
+  await resetPicker.reset("card", "open");
+  await resetPicker.reset("card", "confirm");
+  assert.equal(resetPicker.nodes.get("card-message-category").value, "all");
+  assert.deepEqual(pickerButtons().map(button => button.dataset.messageId), resetPicker.catalogEntries.slice(0, 6).map(entry => entry.id),
+    "Confirmed Clear must rebuild the first page of all examples to match the reset category control");
+  assert.match(resetPicker.nodes.get("card-message-picker-status").textContent, /^Messages 1–6 of /);
+}
+
 async function validateIllustrationReadiness() {
   const imagesFor = (app, theme) => app.images.filter((image) => image.src === artwork[theme]);
   const imageButtons = (app, tool = "card") => app.exports.filter((button) => button.dataset.for === tool && button.dataset.export !== "copy");
@@ -474,6 +643,10 @@ function validateArtworkAssets() {
 function validateGeneratedPage() {
   const dist = path.join(__dirname, "dist");
   const html = fs.readFileSync(path.join(dist, route, "index.html"), "utf8");
+  const messageInput = html.match(/<textarea\b[^>]*\bid="card-message"[^>]*>/)?.[0];
+  assert(messageInput, "The card editor needs its message textarea");
+  assert.doesNotMatch(messageInput, /\bmaxlength\s*=/i,
+    "Native maxlength counts UTF-16 units and would reject emoji before the advertised code-point limit");
   const base = siteUrl.replace(/\/$/, "");
   assert.equal([...html.matchAll(/<h1(?:\s|>)/g)].length, 1);
   assert.match(html, /<title>[^<]*(?:Card Maker|card maker)[^<]*<\/title>/);
@@ -503,7 +676,8 @@ function validateGeneratedPage() {
     assert(html.includes(`src="${url}"`), `${theme}: missing visible design thumbnail`);
   }
   assert.match(html, /Your words stay (?:on this page|in this browser tab)/);
-  assert.match(html, /don.t upload or save/i);
+  assert.match(html, /don.t upload|not uploaded/i);
+  assert.match(html, /one.time|removed when|removes it|cleared when/i, "Privacy copy must explain the explicit one-use Finder handoff");
   assert.match(html, /no name or message text is sent/i);
   assert.match(html, /completed human editorial review is not recorded/);
   assert.doesNotMatch(html, /<input\b[^>]*\btype="(?:file|email)"/i, "The first experiment must not collect uploads or email addresses");
@@ -522,7 +696,9 @@ async function main() {
   validateModels();
   validateWrapping();
   validateEventContract();
+  validateOneTimeTransfer();
   await validateBehavior();
+  await validateMessageSelection();
   await validateIllustrationReadiness();
   validateArtworkAssets();
   validateGeneratedPage();

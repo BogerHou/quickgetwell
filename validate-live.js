@@ -64,7 +64,9 @@ function localAssetRefs() {
   return {
     css: html.match(/href="(styles\.css\?v=[^"]+)"/)?.[1],
     js: html.match(/src="(script\.js\?v=[^"]+)"/)?.[1],
-    resourceCss: html.match(/href="(assets\/experiments\/home-resources-v1\.css\?v=[a-f0-9]+)"/)?.[1]
+    resourceCss: html.match(/href="(assets\/experiments\/home-resources-v1\.css\?v=[a-f0-9]+)"/)?.[1],
+    cardEntryCss: html.match(/href="(\/assets\/experiments\/card-entry-v1\.css\?v=[a-f0-9]+)"/)?.[1],
+    cardEntryJs: html.match(/src="(\/assets\/experiments\/card-entry-v1\.js\?v=[a-f0-9]+)"/)?.[1]
   };
 }
 
@@ -169,6 +171,34 @@ function checkCareStudioEntry(route, response) {
   }
 }
 
+async function checkCardNavigation(home, refs) {
+  const nav = home.body.match(/<nav class="top-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1] || "";
+  const entries = tagAttributes(nav, "a").filter(attributes => attributes.href === "/resources/care-studio/");
+  if (entries.length !== 1) errors.push("Homepage needs exactly one Make a card link in its primary navigation.");
+  const expectedLinks = tagAttributes(fs.readFileSync(path.join(dist, "index.html"), "utf8"), "a")
+    .filter(attributes => attributes.class === "card-message-action").map(attributes => attributes.href);
+  const actualLinks = tagAttributes(home.body, "a")
+    .filter(attributes => attributes.class === "card-message-action").map(attributes => attributes.href);
+  if (JSON.stringify(actualLinks) !== JSON.stringify(expectedLinks)) {
+    errors.push("Homepage public-message card actions do not match the local build.");
+  }
+  for (const [ref, file, tag, attribute] of [
+    [refs.cardEntryCss, "assets/experiments/card-entry-v1.css", "link", "href"],
+    [refs.cardEntryJs, "assets/experiments/card-entry-v1.js", "script", "src"]
+  ]) {
+    if (!ref || !/\?v=[a-f0-9]{10}$/.test(ref)) {
+      errors.push(`Missing local versioned card entry asset: ${file}`);
+      continue;
+    }
+    const liveTags = tagAttributes(home.body, tag).filter(attributes => attributes[attribute] === ref);
+    if (liveTags.length !== 1) errors.push(`Homepage must reference its current card entry asset exactly once: ${ref}`);
+    const response = await request(`${baseUrl}${ref}`);
+    if (response.statusCode !== 200 || response.body !== fs.readFileSync(path.join(dist, file), "utf8")) {
+      errors.push(`Live card entry asset does not match the local build: ${file}`);
+    }
+  }
+}
+
 async function main() {
   const refs = localAssetRefs();
   if (!refs.css || !refs.js) {
@@ -181,6 +211,7 @@ async function main() {
   const home = await request(`${baseUrl}/?${cacheBust}`);
   if (home.statusCode !== 200) errors.push(`Homepage returned ${home.statusCode}`);
   checkForbidden("Homepage", home.body);
+  await checkCardNavigation(home, refs);
 
   if (refs.css && !home.body.includes(refs.css)) {
     errors.push(`Homepage does not reference current CSS asset ${refs.css}`);

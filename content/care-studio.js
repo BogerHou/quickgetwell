@@ -1,5 +1,22 @@
 const title = "Free Get-Well Card Maker and Care Notes";
 const description = "Make a personal get-well card, offer specific help, or write a contact-preference note. Preview, save an image, copy the text, or print for free.";
+const { getEntries } = require("./card-message-catalog");
+const escape = value => String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+function messagePicker(entries) {
+  const categories = new Map(entries.map(entry => [entry.category, entry.categoryLabel]));
+  return `<details id="card-message-picker" class="care-message-picker">
+            <summary><span>Choose a message</span><span class="care-message-picker-caption">Find a starting point to make your own</span></summary>
+            <div class="care-message-picker-body">
+              <div class="care-field">
+                <label for="card-message-category">Who or what is it for?</label>
+                <select id="card-message-category"><option value="all">All messages</option>${[...categories].map(([value, label]) => `<option value="${escape(value)}">${escape(label)}</option>`).join("")}</select>
+              </div>
+              <div id="card-message-options" class="care-message-options" aria-label="Message suggestions"></div>
+              <div class="care-message-pagination"><p id="card-message-picker-status" role="status" aria-live="polite"></p><button id="card-message-more" type="button">Next messages <span aria-hidden="true">→</span></button></div>
+            </div>
+          </details>`;
+}
 
 function preview(tool, label, emptyText) {
   return `
@@ -45,6 +62,8 @@ function clearConfirmation(tool) {
 }
 
 function render() {
+  const entries = getEntries();
+  const catalog = JSON.stringify(entries).replaceAll("<", "\\u003c").replaceAll("\u2028", "\\u2028").replaceAll("\u2029", "\\u2029");
   return `
   <div class="care-studio">
     <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -55,7 +74,7 @@ function render() {
       <p class="eyebrow">The care studio · Free, no account needed</p>
       <h1>Get-well cards, made personal.</h1>
       <p class="lede">Choose an illustrated design. Add words that are yours. Send a little something they can keep.</p>
-      <p class="care-privacy-note">Your words stay in this browser tab. We don’t upload or save them. Download your finished card before leaving.</p>
+      <p class="care-privacy-note">Your words stay in this browser tab and aren’t uploaded. Download your finished card before leaving.</p>
     </header>
 
     <noscript>
@@ -84,10 +103,12 @@ function render() {
             <label for="card-heading">The occasion</label>
             <select id="card-heading"><option value="thinking">Thinking of you</option><option value="get-well">Get well soon</option><option value="thank-you">Thank you</option></select>
           </div>
-          <div class="care-field">
-            <label for="card-message">Your message</label>
-            <textarea id="card-message" rows="4" maxlength="320" aria-describedby="card-message-hint" placeholder="Write a wish, a thank-you, or a memory you share." required></textarea>
-            <p id="card-message-hint" class="care-field-hint">Up to 320 characters. Need a starting point? <a href="/#situations">Browse message examples.</a></p>
+          ${messagePicker(entries)}
+          <div class="care-field care-message-field">
+            <div class="care-message-label"><label for="card-message">Your message</label><button id="card-message-undo" class="care-message-undo" type="button" hidden>Undo replacement</button></div>
+            <p id="card-message-import-status" class="care-message-import-status" role="status" aria-live="polite"></p>
+            <textarea id="card-message" rows="4" aria-describedby="card-message-hint card-message-count" placeholder="Write a wish, a thank-you, or a memory you share." required></textarea>
+            <div class="care-message-meta"><p id="card-message-hint" class="care-field-hint">Edit it until it sounds like you.</p><p id="card-message-count" class="care-field-hint">0 / 320</p></div>
           </div>
           <div class="care-name-fields">
             <div class="care-field">
@@ -179,7 +200,8 @@ function render() {
     </section>
 
     <aside class="care-related"><h2>Prefer something ready to use?</h2><p><a href="/resources/teacher-care-pack/">Printable teacher cards</a><span aria-hidden="true"> · </span><a href="/#situations">Get-well message examples</a><span aria-hidden="true"> · </span><a href="/how-to-respond-to-get-well-soon/">Replying to someone’s kind wishes</a></p></aside>
-  </div>`;
+  </div>
+  <script type="application/json" id="care-message-catalog">${catalog}</script>`;
 }
 
 module.exports = { title, description, render };

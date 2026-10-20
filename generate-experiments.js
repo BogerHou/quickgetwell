@@ -59,6 +59,7 @@ function documentFor({ route, title, description, content, lessonId = "", studio
     <a class="resource-brand" href="/"><img src="/assets/logo-icon-96.png" width="32" height="32" alt="">Quick Get Well</a>
     <nav aria-label="Primary navigation">
       <a href="/#message-finder">Finder</a>
+      <a href="/resources/care-studio/"${studio ? ' aria-current="page"' : ""}>Make a card</a>
       <a href="/#situations">Situations</a>
       <a href="/#guidance">Guidance</a>
       <a href="/#faq">FAQ</a>
@@ -68,7 +69,7 @@ function documentFor({ route, title, description, content, lessonId = "", studio
   <footer class="resource-footer">
     <p>${studio ? "Illustrations and starter wording are AI-assisted; completed human editorial review is not recorded. Adapt the words to your own relationships. Not medical advice." : "Wording to adapt to your own relationships. These examples are AI-assisted; completed human editorial review is not recorded. Not medical advice."}</p>
     ${studio
-      ? '<p>Your words stay in this browser page and are not uploaded or saved by Quick Get Well. Downloads and copied text contain what you enter; share them only with people you choose. Reloading clears your draft. We may count tool use, export actions and optional feedback using fixed categories. We do not send your names, words, tasks or contact preferences with those events. Standard site analytics also applies; see our Privacy page.</p>'
+      ? '<p>Words you type here stay in this page’s memory and are not uploaded. If you bring a message from the Finder, it is briefly held in this browser tab’s session storage and cleared when the editor opens. Your words are never included in the card link. Downloads and copied text contain what you enter; share them only with people you choose. Reloading clears your draft. We may count tool use, export actions and optional feedback using fixed categories. We do not send your names, words, tasks or contact preferences with those events. Standard site analytics also applies; see our Privacy page.</p>'
       : '<p>We may count the option chosen and whether it fits the scenario, plus download and copy actions, using fixed categories and the page path. No names, message text, or health details are requested. There is no saved progress to resume on your next visit.</p>'}
     <nav aria-label="Footer navigation"><a href="/resources/">Resources</a><a href="/editorial-policy/">Editorial policy</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a></nav>
   </footer>

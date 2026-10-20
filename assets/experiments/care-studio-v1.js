@@ -14,16 +14,34 @@
   });
   const clean = (value, limit) => Array.from(String(value || "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim()).slice(0, limit).join("");
   const choice = (value, options, fallback) => options.includes(value) ? value : fallback;
+  const transferKey = "qgw:card-transfer:v1";
+
+  // Only the explicit Finder → card action writes this one-use handoff. The editor
+  // consumes it before parsing, never saves drafts, and never puts words in a URL.
+  function consumeTransfer(win) {
+    try {
+      const stored = win.sessionStorage.getItem(transferKey);
+      win.sessionStorage.removeItem(transferKey);
+      if (!stored) return null;
+      const data = JSON.parse(stored);
+      const age = Date.now() - data.createdAt;
+      if (typeof data.text !== "string" || !data.text.trim() ||
+          Array.from(data.text).length > 4000 ||
+          !Number.isFinite(data.createdAt) || age < 0 || age > 5 * 60 * 1000) return null;
+      return data.text;
+    } catch { return null; }
+  }
 
   function buildModel(tool, values = {}) {
     const model = { tool, valid: false, heading: "", to: "", lines: [], from: "", theme: "botanical", text: "" };
     if (tool === "card") {
       model.heading = { thinking: "Thinking of you", "get-well": "Get well soon", "thank-you": "Thank you" }[choice(values.heading, ["thinking", "get-well", "thank-you"], "thinking")];
       model.to = clean(values.to, 40);
-      model.lines = [clean(values.message, 320)];
+      model.lines = [clean(values.message, Infinity)];
       model.from = clean(values.from, 50);
       model.theme = choice(values.theme, ["botanical", "ink", "sunrise"], "botanical");
-      model.valid = !!model.lines[0];
+      model.tooLong = Array.from(model.lines[0]).length > 320;
+      model.valid = !!model.lines[0] && !model.tooLong;
     } else if (tool === "help") {
       model.heading = "An offer of help";
       for (let i = 1; i <= 3; i++) {
@@ -127,7 +145,9 @@
     }
     // Leave the illustration intact: fit the entire note into its clear paper area.
     let size = personal ? 36 : 32, lines;
-    const content = model.lines.filter(Boolean).join("\n\n");
+    // Keep overlong words in the editor/text preview without laying them out or
+    // presenting a clipped image as an exportable card.
+    const content = model.tooLong ? "" : model.lines.filter(Boolean).join("\n\n");
     const bottom = personal ? 622 : 682;
     const room = bottom - y;
     const family = personal ? "Georgia, serif" : "Arial, sans-serif";
@@ -137,7 +157,7 @@
       if (lines.length * size * 1.35 <= room || size <= 26) break;
       size--;
     } while (size >= 26);
-    const fits = lines.length * size * 1.35 <= room;
+    const fits = !model.tooLong && lines.length * size * 1.35 <= room;
     for (const line of lines) {
       if (y + size * 1.35 > bottom) break;
       context.fillText(line, 600, y);
@@ -158,6 +178,66 @@
     const feedback = doc.getElementById("care-feedback-form");
     const feedbackStatus = doc.getElementById("care-feedback-status");
     let printRoot, printUrl, exportBusy = false, feedbackBusy = false;
+    const messageField = doc.getElementById("card-message");
+    const picker = doc.getElementById("card-message-picker");
+    const categoryField = doc.getElementById("card-message-category");
+    const messageOptions = doc.getElementById("card-message-options");
+    const pickerStatus = doc.getElementById("card-message-picker-status");
+    const importStatus = doc.getElementById("card-message-import-status");
+    const undoButton = doc.getElementById("card-message-undo");
+    const moreButton = doc.getElementById("card-message-more");
+    let previousMessage = null, messageOffset = 0, messageEntries = [];
+    try {
+      const parsed = JSON.parse(doc.getElementById("care-message-catalog")?.textContent || "[]");
+      if (Array.isArray(parsed)) messageEntries = parsed.filter(entry =>
+        entry && typeof entry.id === "string" && /^[a-f0-9]{16}$/.test(entry.id) &&
+        typeof entry.text === "string" && entry.text.trim() && Array.from(entry.text).length <= 320 &&
+        typeof entry.category === "string");
+    } catch { /* The editor remains usable if the optional message library fails. */ }
+
+    function refreshMessageChoices() {
+      doc.querySelectorAll("[data-message-id]").forEach(button => {
+        const selected = messageEntries.some(entry => entry.id === button.dataset.messageId && entry.text === messageField.value);
+        button.setAttribute("aria-pressed", String(selected));
+        button.textContent = selected ? "In your card" : "Use message";
+      });
+    }
+    function renderMessageChoices() {
+      if (!messageOptions || !categoryField) return;
+      const choices = messageEntries.filter(entry => categoryField.value === "all" || entry.category === categoryField.value);
+      messageOptions.replaceChildren();
+      choices.slice(messageOffset, messageOffset + 6).forEach(entry => {
+        const item = doc.createElement("div"), text = doc.createElement("p"), button = doc.createElement("button");
+        item.className = "care-message-option";
+        text.textContent = entry.text;
+        button.type = "button"; button.className = "care-message-use";
+        button.dataset.messageId = entry.id;
+        button.addEventListener("click", () => {
+          if (messageField.value !== entry.text) {
+            previousMessage = messageField.value;
+            messageField.value = entry.text;
+            if (undoButton) undoButton.hidden = false;
+          }
+          update("card", true);
+          if (picker) picker.open = false;
+          if (importStatus) importStatus.textContent = "Added to your card. You can edit it below.";
+          // Keep the selected words in view without opening the mobile keyboard.
+          if (undoButton && !undoButton.hidden) undoButton.focus({ preventScroll: true });
+          else picker?.querySelector("summary")?.focus();
+        });
+        item.appendChild(text); item.appendChild(button); messageOptions.appendChild(item);
+      });
+      if (pickerStatus) pickerStatus.textContent = choices.length
+        ? `Messages ${messageOffset + 1}–${Math.min(messageOffset + 6, choices.length)} of ${choices.length}`
+        : "Message examples are unavailable. You can still write your own.";
+      if (moreButton) moreButton.hidden = choices.length <= 6;
+      refreshMessageChoices();
+    }
+    function clearMessageHistory() {
+      previousMessage = null;
+      if (undoButton) undoButton.hidden = true;
+      if (importStatus) importStatus.textContent = "";
+    }
 
     function track(name, tool, parameters) {
       const event = makeEvent(name, tool, parameters);
@@ -220,9 +300,17 @@
         doc.querySelectorAll("[data-theme-choice]").forEach(button => {
           button.setAttribute("aria-pressed", String(button.dataset.themeChoice === model.theme));
         });
+        const counter = doc.getElementById("card-message-count");
+        if (counter) {
+          counter.textContent = `${Array.from(values.message).length} / 320 characters${model.tooLong ? " — shorten your message before downloading" : ""}`;
+          counter.setAttribute("data-over-limit", String(model.tooLong));
+        }
+        messageField.setAttribute("aria-invalid", String(model.tooLong));
+        refreshMessageChoices();
       }
       let notice = "";
-      if (!context || drawFailed) notice = "Image preview is unavailable. You can still copy your text.";
+      if (model.tooLong) notice = "Your full message is kept in the editor. Shorten it to 320 characters before using this card.";
+      else if (!context || drawFailed) notice = "Image preview is unavailable. You can still copy your text.";
       else if (art.state === "loading") notice = "Loading your illustration…";
       else if (art.state === "error") notice = "The illustration could not load. Reload to try again, or use Copy text.";
       else if (!model.valid) notice = tool === "card" ? "Add your own note to make this card." : tool === "help" ? "Add at least one thing you can offer." : "Add the name or role of the person who has agreed to help with contact.";
@@ -319,6 +407,36 @@
       form.addEventListener("change", () => update(tool, true));
       update(tool);
     }
+    categoryField?.addEventListener("change", () => { messageOffset = 0; renderMessageChoices(); });
+    moreButton?.addEventListener("click", () => {
+      const total = messageEntries.filter(entry => categoryField.value === "all" || entry.category === categoryField.value).length;
+      messageOffset = messageOffset + 6 >= total ? 0 : messageOffset + 6;
+      renderMessageChoices();
+    });
+    undoButton?.addEventListener("click", () => {
+      if (previousMessage === null) return;
+      messageField.value = previousMessage;
+      clearMessageHistory();
+      update("card", true);
+      if (importStatus) importStatus.textContent = "Your previous message is restored.";
+      messageField.focus();
+    });
+    const transferredText = consumeTransfer(win);
+    // Fragment IDs refer only to public examples; search engines see one URL.
+    const incoming = new URLSearchParams((win.location.hash || "").slice(1));
+    const publicMessage = messageEntries.find(entry => entry.id === incoming.get("message"));
+    if (publicMessage) {
+      messageField.value = publicMessage.text;
+      if (categoryField) categoryField.value = publicMessage.category;
+      if (importStatus) importStatus.textContent = "Your selected message is here. Make it your own.";
+    } else if (incoming.get("from") === "finder" && transferredText) {
+      messageField.value = transferredText;
+      if (importStatus) importStatus.textContent = "Your Finder message is here. Make it your own.";
+    } else if (incoming.has("message") || incoming.get("from") === "finder") {
+      if (importStatus) importStatus.textContent = "That message could not be loaded. Choose an example below or paste your words.";
+      if (picker) picker.open = true;
+    }
+    renderMessageChoices();
     doc.querySelectorAll("[data-tool]").forEach(button => { button.addEventListener("click", () => select(button.dataset.tool)); });
     doc.querySelectorAll("[data-theme-choice]").forEach(button => {
       button.addEventListener("click", () => {
@@ -338,7 +456,9 @@
     doc.querySelectorAll("[data-reset-yes]").forEach(button => {
       button.addEventListener("click", () => {
         const tool = button.dataset.resetYes;
+        if (tool === "card") clearMessageHistory();
         doc.getElementById(`care-${tool}-form`).reset(); update(tool);
+        if (tool === "card") { messageOffset = 0; renderMessageChoices(); }
         doc.querySelector(`[data-reset-confirm="${tool}"]`).hidden = true;
         doc.querySelector(`[data-reset="${tool}"]`).focus();
       });
@@ -378,10 +498,12 @@
     // Browsers may restore form fields on a back navigation; explicitly start a new visit.
     win.addEventListener("pageshow", event => {
       if (event.persisted) {
+        clearMessageHistory();
         for (const tool of Object.keys(toolNames)) { doc.getElementById(`care-${tool}-form`).reset(); update(tool); }
+        messageOffset = 0; renderMessageChoices();
       }
     });
     select("card");
   }
-  return { buildModel, wrapText, makeEvent, toolNames, artwork, draw, mount };
+  return { buildModel, wrapText, makeEvent, toolNames, artwork, draw, consumeTransfer, mount };
 });

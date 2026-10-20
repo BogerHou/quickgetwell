@@ -1,0 +1,120 @@
+/* Secondary card actions sit beside the existing copy affordance. */
+.top-nav .card-maker-nav {
+  color: #fff5cf;
+}
+
+.copy-line:has(+ .card-message-action) {
+  padding-bottom: 60px;
+}
+
+.copy-line:has(+ .card-message-action)::after {
+  right: auto;
+  left: 12px;
+  bottom: 17px;
+}
+
+.card-message-action {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  height: 44px;
+  min-height: 44px;
+  align-items: center;
+  align-self: start;
+  justify-self: end;
+  gap: 8px;
+  margin: -64px 10px 0;
+  padding: 0 12px;
+  border: 1px solid rgba(36, 70, 63, 0.19);
+  border-radius: 6px;
+  background: #fffdf8;
+  color: var(--forest, #24463f);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.example-columns > div:has(> .card-message-action) {
+  align-content: start;
+}
+
+.decision-list div:has(> .card-message-action) > .copy-line,
+.decision-list div > .card-message-action {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.decision-list div:has(> .card-message-action) > .copy-line {
+  align-self: stretch;
+}
+
+.decision-list div > .card-message-action {
+  align-self: end;
+  margin: 0 10px 8px;
+}
+
+.card-message-action:hover,
+.card-finder-action:hover {
+  background: #edf4ef;
+  border-color: #5b786e;
+}
+
+.card-message-action:focus-visible,
+.card-finder-action:focus-visible {
+  outline: 3px solid #24463f;
+  outline-offset: 3px;
+}
+
+.card-finder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  align-self: end;
+}
+
+.card-finder-action {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(36, 70, 63, 0.25);
+  border-radius: 6px;
+  background: #fffdf8;
+  color: var(--forest, #24463f);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.card-transfer-note {
+  margin: 0 0 16px;
+  color: var(--muted, #5f6c67);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.message-card .card-transfer-status {
+  color: #7a4432;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 1200px) {
+  .decision-list div:has(> .card-message-action) {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-list div:has(> .card-message-action) > .copy-line,
+  .decision-list div > .card-message-action {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 420px) {
+  .card-message-action {
+    gap: 5px;
+    padding-inline: 9px;
+    font-size: 0.75rem;
+  }
+}

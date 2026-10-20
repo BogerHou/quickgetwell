@@ -3,10 +3,12 @@ const path = require("path");
 const { pages } = require("./content/pages");
 const { siteName, siteUrl } = require("./site.config");
 const { indexedResources } = require("./content/resource-indexing");
+const { getEntries } = require("./content/card-message-catalog");
 
 const root = __dirname;
 const dist = path.join(root, "dist");
 const errors = [];
+const publicCardMessageIds = new Set(getEntries().map(entry => entry.id));
 const infoPages = ["about", "editorial-policy", "contact", "privacy"];
 const expectedFaqSchemaSlugs = new Set([
   "get-well-soon-messages",
@@ -105,6 +107,12 @@ function validateLinks() {
       if (local.fragment) {
         const htmlTarget = targetHtmlFile(resolved);
         if (!fs.existsSync(htmlTarget)) continue;
+
+        // These fragments select public editor state rather than an HTML anchor.
+        // Accept only the exact card route and a known immutable message ID.
+        const cardMessageId = /^message=([a-f0-9]{16})$/.exec(local.fragment)?.[1];
+        if (htmlTarget === path.join(dist, "resources/care-studio/index.html")
+            && publicCardMessageIds.has(cardMessageId)) continue;
 
         const targetHtml = fs.readFileSync(htmlTarget, "utf8");
         if (!targetHtml.includes(`id="${local.fragment}"`)) {

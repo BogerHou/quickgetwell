@@ -416,6 +416,15 @@
       "reviewRecord": null,
       "reviewedSha256": null,
       "snapshotSha256": "61cb0bde14faa2d6639ac8096a96dc41983aa6ea347c77c254fde3b1413824c7"
+    },
+    {
+      "id": "tool:care-studio",
+      "status": "human_review_pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "reviewRecord": null,
+      "reviewedSha256": null,
+      "snapshotSha256": "a1c1cd4b17e16ff6af8b5472e2927634b259b95e5bf414c8a083e981a216f8ff"
     }
   ]
 }

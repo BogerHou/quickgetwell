@@ -7,7 +7,7 @@
     "generate": "npm run build",
     "check:editorial": "node scripts/check-editorial-review.js",
     "build:release": "npm run check:editorial && npm run check",
-    "check": "node --check script.js && node --check content/pages.js && node --check generate-pages.js && node --check generate-experiments.js && node --check content/workplace-practice.js && node --check content/workplace-guide.js && node --check content/resource-indexing.js && node --check assets/experiments/pilot-v1.js && node --check validate-site.js && node --check validate-finder.js && node --check validate-live.js && node validate-finder.js && node validate-experiments-behavior.js && npm run build && node validate-site.js && node validate-experiments.js && npm run check:preservation",
+    "check": "node --check script.js && node --check content/pages.js && node --check generate-pages.js && node --check generate-experiments.js && node --check content/workplace-practice.js && node --check content/workplace-guide.js && node --check content/resource-indexing.js && node --check assets/experiments/pilot-v1.js && node --check assets/experiments/care-studio-v1.js && node --check content/care-studio.js && node --check validate-site.js && node --check validate-finder.js && node --check validate-live.js && node validate-finder.js && node validate-experiments-behavior.js && npm run build && node validate-site.js && node validate-experiments.js && node validate-care-studio.js && npm run check:preservation",
     "check:preservation": "node scripts/check-traffic-preservation.js",
     "validate": "node validate-site.js",
     "validate:live": "node validate-live.js",

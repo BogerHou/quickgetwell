@@ -11,12 +11,12 @@ const read = file => fs.readFileSync(path.join(dist, file), "utf8");
 const escape = value => String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 const expectedIds = ["client-sick-reply", "boss-sick-notice", "coworker-you-barely-know", "signing-a-team-card", "thanking-work-well-wishers"];
 assert.deepEqual(lessons.map(lesson => lesson.id), expectedIds);
-const routes = ["resources/", "resources/teacher-care-pack/", "practice/workplace-english/", ...expectedIds.map(id => `practice/workplace-english/${id}/`)];
+const routes = ["resources/", "resources/teacher-care-pack/", "practice/workplace-english/", "resources/care-studio/", ...expectedIds.map(id => `practice/workplace-english/${id}/`)];
 const sitemap = read("sitemap.xml");
 const searchIndex = read("search-index.json");
 const base = siteUrl.replace(/\/$/, "");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
-assert.deepEqual(indexedResources.map(resource => resource.route), ["/resources/teacher-care-pack/", "/practice/workplace-english/"]);
+assert.deepEqual(indexedResources.map(resource => resource.route), ["/resources/teacher-care-pack/", "/practice/workplace-english/", "/resources/care-studio/"]);
 assert.equal(new Set(sitemapUrls).size, sitemapUrls.length, "Sitemap must not duplicate URLs");
 const indexableRoutes = new Set(indexedResources.map(resource => resource.route.slice(1)));
 
@@ -80,4 +80,4 @@ for (const paper of ["a4", "letter"]) {
 }
 assert(read("_headers").includes("/assets/printables/*.pdf\n  X-Robots-Tag: noindex"));
 assert(pack.includes('id="class-invitation"') && pack.includes('data-copy-target="class-invitation"'));
-console.log(`Validated ${routes.length} resource pages: two indexable topics, six unindexed navigation/exercise pages, guide content, copy text, images, and PDFs.`);
+console.log(`Validated ${routes.length} resource pages: three indexable resources, six unindexed navigation/exercise pages, guide content, copy text, images, and PDFs.`);

@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const { lessons } = require("./content/workplace-practice");
 const { guide } = require("./content/workplace-guide");
 const { indexedResources } = require("./content/resource-indexing");
+const careStudio = require("./content/care-studio");
 const { siteUrl, siteName, gaMeasurementId } = require("./site.config");
 
 const root = __dirname;
@@ -14,23 +15,24 @@ const escape = value => String(value).replaceAll("&", "&amp;").replaceAll('"', "
 const asset = file => `/${file}?v=${crypto.createHash("sha256").update(fs.readFileSync(path.join(root, file))).digest("hex").slice(0, 10)}`;
 const invitation = "We're putting together a card for [Teacher's name]. If you'd like to take part, please add a short note, your name, or a drawing by [day]. You do not need to write about their health. Taking part is optional. Please give your note to [organizer].";
 
-function analytics() {
+function analytics(studio = false) {
   if (!gaMeasurementId) return "";
   return `<script>
     if (window.location.hostname === ${JSON.stringify(new URL(base).hostname)}) {
       window.dataLayer = window.dataLayer || [];
       window.gtag = function () { window.dataLayer.push(arguments); };
       window.gtag("js", new Date());
-      window.gtag("config", ${JSON.stringify(gaMeasurementId)});
+      window.gtag("config", ${JSON.stringify(gaMeasurementId)}${studio ? `, { page_location: ${JSON.stringify(base + "/resources/care-studio/")} }` : ""});
       const tag = document.createElement("script");
       tag.async = true;
       tag.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(${JSON.stringify(gaMeasurementId)});
+      ${studio ? 'tag.addEventListener("load", () => { window.qgwCareAnalyticsReady = true; });' : ""}
       document.head.appendChild(tag);
     }
   </script>`;
 }
 
-function documentFor({ route, title, description, content, lessonId = "" }) {
+function documentFor({ route, title, description, content, lessonId = "", studio = false }) {
   const indexable = indexedResources.some(resource => resource.route === route);
   return `<!doctype html>
 <html lang="en">
@@ -43,7 +45,13 @@ function documentFor({ route, title, description, content, lessonId = "" }) {
   <link rel="canonical" href="${base}${route}">
   <link rel="icon" href="/assets/favicon-32.png" type="image/png">
   <link rel="stylesheet" href="${asset("assets/experiments/pilot-v1.css")}">
-  ${analytics()}
+  ${studio ? `<link rel="stylesheet" href="${asset("assets/experiments/care-studio-v1.css")}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${escape(title)}">
+  <meta property="og:description" content="${escape(description)}">
+  <meta property="og:url" content="${base}${route}">
+  <meta property="og:image" content="${base}/assets/hero-flowers-card.jpg">` : ""}
+  ${analytics(studio)}
 </head>
 <body data-lesson-id="${escape(lessonId)}">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -59,11 +67,13 @@ function documentFor({ route, title, description, content, lessonId = "" }) {
   <main id="main" class="resource-main">${content}</main>
   <footer class="resource-footer">
     <p>Wording to adapt to your own relationships. These examples are AI-assisted; completed human editorial review is not recorded. Not medical advice.</p>
-    <p>We may count the option chosen and whether it fits the scenario, plus download and copy actions, using fixed categories and the page path. No names, message text, or health details are requested. There is no saved progress to resume on your next visit.</p>
+    ${studio
+      ? '<p>Your words stay in this browser page and are not uploaded or saved by Quick Get Well. Downloads and copied text contain what you enter; share them only with people you choose. Reloading clears your draft. We may count tool use, export actions and optional feedback using fixed categories. We do not send your names, words, tasks or contact preferences with those events. Standard site analytics also applies; see our Privacy page.</p>'
+      : '<p>We may count the option chosen and whether it fits the scenario, plus download and copy actions, using fixed categories and the page path. No names, message text, or health details are requested. There is no saved progress to resume on your next visit.</p>'}
     <nav aria-label="Footer navigation"><a href="/resources/">Resources</a><a href="/editorial-policy/">Editorial policy</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a></nav>
   </footer>
   <div class="copy-status" role="status" aria-live="polite"></div>
-  <script src="${asset("assets/experiments/pilot-v1.js")}" defer></script>
+  <script src="${asset(studio ? "assets/experiments/care-studio-v1.js" : "assets/experiments/pilot-v1.js")}" defer></script>
 </body>
 </html>
 `;
@@ -95,9 +105,10 @@ function downloads() {
 }
 
 function renderResources() {
-  return documentFor({ route: "/resources/", title: "Get-Well Cards and Reply Practice", description: "Choose free printable get-well cards for a teacher or a guide and exercises for kind workplace replies when someone is unwell.", content: `
+  return documentFor({ route: "/resources/", title: "Get-Well Cards, Care Notes and Reply Practice", description: "Make a get-well card or care note, print a teacher card, or explore kind workplace replies when someone is unwell.", content: `
     ${breadcrumbs([{ label: "Resources" }])}
-    <div class="page-intro"><p class="eyebrow">Free get-well resources</p><h1>Get-well cards<br>and reply practice.</h1><p class="lede">Put a card together for a teacher who is unwell, or practice a caring reply at work. Choose what would help today.</p></div>
+    <div class="page-intro"><p class="eyebrow">Free get-well resources</p><h1>A few ways<br>to show you care.</h1><p class="lede">Make something personal, organize a class card, or find a caring way to reply. Choose what would help today.</p></div>
+    <section class="resource-section"><h2>Make a card or care note</h2><p>Add your own words to a card, put together an offer of help, or write down how you'd like people to keep in touch. Preview, download an image, or print one sheet.</p><p><a class="button" href="/resources/care-studio/">Try the card and care-note tools</a></p></section>
     <div class="resource-choices">
       <a class="resource-choice teacher-choice" href="/resources/teacher-care-pack/"><div><p class="eyebrow">For class organizers · Free</p><h2>Get-well cards<br>for teachers</h2><p>A four-page pack with a simple organizer guide, a coloring card, a class card, and extra space for signatures.</p><span class="link-arrow">See the printable cards <span aria-hidden="true">↗</span></span></div><img src="/assets/printables/teacher-card-coloring-preview.png" width="480" height="679" alt="Preview of a sunshine and flower coloring card for a teacher"></a>
       <a class="resource-choice practice-choice" href="/practice/workplace-english/"><p class="eyebrow">For English learners · Free</p><h2>Practice get-well<br>replies at work</h2><p>A short guide and five situations about illness, care, and work. Choose a reply, understand its tone, and find wording to adapt.</p><div class="sample-note" aria-hidden="true">“Thanks for letting me know.<br>I hope you feel better soon.”</div><span class="link-arrow">Explore the guide and exercises <span aria-hidden="true">↗</span></span></a>
@@ -109,6 +120,7 @@ function renderTeacherPack() {
   return documentFor({ route: "/resources/teacher-care-pack/", title: "Free Printable Get-Well Cards for Teachers", description: "Download free get-well cards for a teacher in A4 or US Letter. The four-page PDF includes an organizer guide, coloring card, class card, and extra signatures.", content: `
     ${breadcrumbs([{ label: "Resources", href: "/resources/" }, { label: "Get-well cards for teachers" }])}
     <div class="pack-hero"><div><p class="eyebrow">A little kindness from the class</p><h1>Printable get-well cards for teachers</h1><p class="lede">When a teacher is unwell, a card can let them know the class is thinking of them. This free PDF pack includes cards to write or draw on, plus simple instructions for the person organizing them.</p>${downloads()}<p class="small-note">No account or email needed. Print only the pages you want.</p><a class="text-link" href="#inside">See what's inside ↓</a></div><img class="hero-card" src="/assets/printables/teacher-card-coloring-preview.png" width="480" height="679" alt="Teacher card with a sunshine and flower outline to color"></div>
+    <aside class="quiet-note"><h2>Prefer to type your own card?</h2><p>Add a name, your note and a signature, then download an image or print. The class-card PDFs above are still ready to use.</p><a class="text-link" href="/resources/care-studio/">Make a personal get-well card</a></aside>
     <section id="inside" class="resource-section"><p class="eyebrow">Four pages, one simple project</p><h2>Choose the pages your class needs.</h2><p>The two card designs are also available in our <a class="text-link" href="/get-well-soon-messages-for-teacher/#printable-cards">teacher message guide</a>. This pack adds an organizer page and a repeatable signature sheet.</p>
       <div class="pack-previews">
         ${preview("assets/printables/teacher-care-pack-organizer-preview.png", "Organizer guide with steps and an invitation to join the class card", "1. Organizer guide and invitation wording")}
@@ -173,6 +185,10 @@ if (!fs.existsSync(path.join(dist, "index.html"))) throw new Error("Build the es
 write("/resources/", renderResources());
 write("/resources/teacher-care-pack/", renderTeacherPack());
 write("/practice/workplace-english/", renderPracticeIndex());
+write("/resources/care-studio/", documentFor({
+  route: "/resources/care-studio/", title: careStudio.title, description: careStudio.description,
+  studio: true, content: careStudio.render()
+}));
 lessons.forEach((lesson, index) => write(`/practice/workplace-english/${lesson.id}/`, renderLesson(lesson, index)));
 appendResourceSitemap();
-console.log(`Built ${lessons.length + 3} resource/practice pages; ${indexedResources.length} indexable resources added to the sitemap, with established entries preserved.`);
+console.log(`Built ${lessons.length + 4} resource/practice pages; ${indexedResources.length} indexable resources added to the sitemap, with established entries preserved.`);

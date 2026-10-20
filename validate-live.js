@@ -107,6 +107,56 @@ function checkForbidden(name, html) {
   }
 }
 
+async function checkCareStudio(response) {
+  const route = "/resources/care-studio/";
+  const localPage = path.join(dist, route, "index.html");
+  if (!fs.existsSync(localPage)) {
+    errors.push(`Missing local ${route} build. Run npm run build first.`);
+    return;
+  }
+  const html = fs.readFileSync(localPage, "utf8");
+  const mainContent = (source) => source.match(/<main\b[^>]*\bid="main"[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+  const expectedContent = mainContent(html);
+  if (!expectedContent || mainContent(response.body) !== expectedContent) {
+    errors.push("Care Studio editor content does not match the local build.");
+  }
+  const assets = [
+    { file: "assets/experiments/pilot-v1.css", tag: "link", attribute: "href" },
+    { file: "assets/experiments/care-studio-v1.css", tag: "link", attribute: "href" },
+    { file: "assets/experiments/care-studio-v1.js", tag: "script", attribute: "src" }
+  ];
+  for (const asset of assets) {
+    const localTags = tagAttributes(html, asset.tag).filter(attributes =>
+      String(attributes[asset.attribute] || "").startsWith(`/${asset.file}?v=`));
+    const ref = localTags[0]?.[asset.attribute];
+    if (localTags.length !== 1 || !/\?v=[a-f0-9]{10}$/.test(ref || "")) {
+      errors.push(`Care Studio needs exactly one versioned local asset: ${asset.file}`);
+      continue;
+    }
+    const liveTags = tagAttributes(response.body, asset.tag).filter(attributes =>
+      String(attributes[asset.attribute] || "").split("?")[0] === `/${asset.file}`);
+    if (liveTags.length !== 1 || liveTags[0][asset.attribute] !== ref
+        || (asset.tag === "link" && !hasRel(liveTags[0], "stylesheet"))) {
+      errors.push(`Care Studio must reference the current asset exactly once: ${ref}`);
+    }
+    const liveAsset = await request(`${baseUrl}${ref}`);
+    if (liveAsset.statusCode !== 200) {
+      errors.push(`Care Studio asset ${ref} returned ${liveAsset.statusCode}`);
+    }
+    if (liveAsset.body !== fs.readFileSync(path.join(dist, asset.file), "utf8")) {
+      errors.push(`Care Studio asset does not match the local build: ${asset.file}`);
+    }
+  }
+}
+
+function checkCareStudioEntry(route, response) {
+  if (response.statusCode !== 200) errors.push(`${route} returned ${response.statusCode}`);
+  const links = tagAttributes(response.body, "a");
+  if (!links.some(attributes => attributes.href === "/resources/care-studio/")) {
+    errors.push(`${route} is missing its link to Care Studio.`);
+  }
+}
+
 async function main() {
   const refs = localAssetRefs();
   if (!refs.css || !refs.js) {
@@ -153,10 +203,20 @@ async function main() {
     errors.push("search-index.json is missing X-Robots-Tag: noindex.");
   }
 
+  const resourceResponses = new Map();
   for (const { route } of indexedResources) {
     const response = await request(`${baseUrl}${route}?${cacheBust}`);
+    resourceResponses.set(route, response);
     checkResourceIndexing(route, response);
   }
+  const careStudio = resourceResponses.get("/resources/care-studio/");
+  if (careStudio) await checkCareStudio(careStudio);
+  else errors.push("Care Studio is missing from the explicit indexable resource list.");
+  const resourceHub = await request(`${baseUrl}/resources/?${cacheBust}`);
+  checkCareStudioEntry("/resources/", resourceHub);
+  const teacherPack = resourceResponses.get("/resources/teacher-care-pack/");
+  if (teacherPack) checkCareStudioEntry("/resources/teacher-care-pack/", teacherPack);
+  else errors.push("Teacher card pack is missing from the explicit indexable resource list.");
 
   const sitemap = await request(`${baseUrl}/sitemap.xml?${cacheBust}`);
   if (sitemap.statusCode !== 200) errors.push(`sitemap.xml returned ${sitemap.statusCode}`);

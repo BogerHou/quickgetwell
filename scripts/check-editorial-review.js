@@ -39,6 +39,10 @@ function currentItems() {
       id: "shared-pilot-copy",
       sha256: hashFiles(["generate-experiments.js", "assets/experiments/pilot-v1.js"])
     },
+    {
+      id: "tool:care-studio",
+      sha256: hashFiles(["content/care-studio.js", "assets/experiments/care-studio-v1.js"])
+    },
     ...["a4", "letter"].map((paper) => ({
       id: `printable:teacher-care-pack:${paper}`,
       sha256: hashFiles([`assets/printables/teacher-care-pack-${paper}-v1.pdf`])

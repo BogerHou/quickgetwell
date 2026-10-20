@@ -3,12 +3,13 @@ const path = require("path");
 const crypto = require("crypto");
 const { pages } = require("./content/pages");
 const { siteName, siteUrl, gaMeasurementId } = require("./site.config");
+const { keyFile: indexNowKeyFile } = require("./indexnow.config.json");
 
 const root = __dirname;
 const dist = path.join(root, "dist");
 const baseUrl = siteUrl.replace(/\/$/, "");
 const pageBySlug = new Map(pages.map((page) => [page.slug, page]));
-const staticFiles = ["styles.css", "script.js"];
+const staticFiles = ["styles.css", "script.js", indexNowKeyFile];
 const staticDirectories = ["assets"];
 const contentDate = "2026-04-25";
 const homeModifiedDate = "2026-09-22";

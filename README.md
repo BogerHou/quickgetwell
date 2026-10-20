@@ -156,6 +156,22 @@ Cloudflare Pages settings:
 
 Full Cloudflare Pages deployment notes, including the first-launch issues we hit, are in `docs/cloudflare-pages-deployment-guide.md`.
 
+### IndexNow release notifications
+
+`indexnow.config.json` references this site's independent root verification text. The static generator explicitly copies that file into `dist` on every build. `npm run indexnow` uses a dependency-free script; builds and page visits do not submit requests, and this integration adds no scheduled job or runtime endpoint.
+
+After each production deployment, finish the normal live checks and run `npm run indexnow -- --check` to verify the deployed key. Then notify only canonical URLs added, substantively updated, or removed in that release. Do not resend an unchanged sitemap every day. The initial integration test submits the homepage once.
+
+```bash
+npm run indexnow -- /changed-page/
+npm run indexnow -- --submit /changed-page/
+npm run indexnow -- --submit --removed /removed-page/
+```
+
+The first command is a dry run with no network request. Replace example paths with actual release changes, or use `--file changed-urls.txt` for one URL per line. The script restricts requests to the production HTTPS host, rejects queries, fragments and internal/API paths, and checks live HTML, noindex and canonical directives before submission. Removal mode also permits real 404, 410 or redirect responses. Keep noindex practice lessons, PDFs and preview hosts out of submissions. HTTP 200 means received; 202 means received with key validation pending. Neither proves crawling, indexing or ranking gains. There is no automatic retry; do not notify the same URL again within five minutes.
+
+This technical integration does not change published wording or any human editorial-review status. Existing content-review requirements continue to apply to content releases.
+
 ## Editorial rules
 
 - Do not make medical claims.

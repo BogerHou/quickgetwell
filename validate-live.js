@@ -3,6 +3,7 @@ const https = require("https");
 const path = require("path");
 const { siteUrl } = require("./site.config");
 const { indexedResources } = require("./content/resource-indexing");
+const { artwork } = require("./assets/experiments/care-studio-v1");
 
 const root = __dirname;
 const dist = path.join(root, "dist");
@@ -25,7 +26,7 @@ const forbiddenLivePatterns = [
   /terrible patient/i
 ];
 
-function request(url, method = "GET") {
+function request(url, method = "GET", binary = false) {
   const target = new URL(url);
   if (target.protocol !== "https:" || target.origin !== new URL(baseUrl).origin) {
     throw new Error(`Live checks only request HTTPS URLs on the configured origin: ${url}`);
@@ -33,12 +34,14 @@ function request(url, method = "GET") {
   return new Promise((resolve, reject) => {
     const req = https.request(target, { method, headers: { "Cache-Control": "no-cache" } }, (res) => {
       let body = "";
-      res.setEncoding("utf8");
+      const chunks = [];
+      if (!binary) res.setEncoding("utf8");
       res.on("data", (chunk) => {
-        body += chunk;
+        if (binary) chunks.push(chunk);
+        else body += chunk;
       });
       res.on("end", () => {
-        resolve({ statusCode: res.statusCode, headers: res.headers, body });
+        resolve({ statusCode: res.statusCode, headers: res.headers, body: binary ? Buffer.concat(chunks) : body });
       });
     });
 
@@ -145,6 +148,15 @@ async function checkCareStudio(response) {
     }
     if (liveAsset.body !== fs.readFileSync(path.join(dist, asset.file), "utf8")) {
       errors.push(`Care Studio asset does not match the local build: ${asset.file}`);
+    }
+  }
+  for (const ref of Object.values(artwork)) {
+    const image = await request(`${baseUrl}${ref}`, "GET", true);
+    if (image.statusCode !== 200 || !/^image\/webp(?:;|$)/i.test(image.headers["content-type"] || "")) {
+      errors.push(`Care Studio illustration must return a WebP image: ${ref}`);
+    }
+    if (!image.body.equals(fs.readFileSync(path.join(dist, ref)))) {
+      errors.push(`Care Studio illustration differs from the local build: ${ref}`);
     }
   }
 }

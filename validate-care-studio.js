@@ -1,7 +1,7 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const { buildModel, wrapText, makeEvent, toolNames, draw, mount } = require("./assets/experiments/care-studio-v1");
+const { buildModel, wrapText, makeEvent, toolNames, artwork, draw, mount } = require("./assets/experiments/care-studio-v1");
 const { siteUrl } = require("./site.config");
 
 const route = "/resources/care-studio/";
@@ -11,11 +11,16 @@ const privateHelper = "Private Person";
 const source = fs.readFileSync(path.join(__dirname, "assets/experiments/care-studio-v1.js"), "utf8");
 const count = (text) => Array.from(text).length;
 
-function context() {
+function context(options = {}) {
   return {
     font: "35px Arial", fillText() {}, clearRect() {}, fillRect() {}, strokeRect() {},
     beginPath() {}, arc() {}, fill() {}, save() {}, translate() {}, rotate() {},
     moveTo() {}, quadraticCurveTo() {}, stroke() {}, ellipse() {}, restore() {}, lineTo() {},
+    drawImage(image, ...dimensions) {
+      if (options.drawFails) throw new Error("Canvas image decoding failed");
+      this.lastImage = image;
+      this.lastImageDimensions = dimensions;
+    },
     measureText(text) { return { width: count(text) * Number.parseInt(this.font, 10) * 0.6 }; }
   };
 }
@@ -76,10 +81,14 @@ function validateWrapping() {
     assert.equal(lines.join(""), text, "Wrapping must preserve every character of an unbroken token");
     assert(lines.every((line) => fixedWidth.measureText(line).width <= 40), "A long token must wrap within the canvas");
   }
-  assert.equal(draw(context(), buildModel("card", { message: "Thinking of you today." })), true);
+  const image = { naturalWidth: 1122, naturalHeight: 1402 };
+  const illustratedContext = context();
+  assert.equal(draw(illustratedContext, buildModel("card", { message: "Thinking of you today." }), image), true);
+  assert.equal(illustratedContext.lastImage, image);
+  assert.deepEqual(illustratedContext.lastImageDimensions, [0, 0, 1200, 1500], "Every export must draw the illustration across the full 1200 × 1500 image");
   const tooManyLines = buildModel("card", { message: "x\n".repeat(150) });
   assert.equal(tooManyLines.valid, true);
-  assert.equal(draw(context(), tooManyLines), false, "An image that cannot fit must be refused, not silently clipped");
+  assert.equal(draw(context(), tooManyLines, image), false, "An image that cannot fit must be refused, not silently clipped");
   assert.equal(tooManyLines.lines[0], "x\n".repeat(150).trim(), "Overflow refusal must leave the full text available to copy");
 }
 
@@ -115,10 +124,12 @@ function validateEventContract() {
 function node(properties = {}) {
   const listeners = new Map();
   const classes = new Set();
+  const attributes = new Map();
   return {
     value: "", textContent: "", dataset: {}, hidden: false, disabled: false, focused: 0, style: {},
     classList: { add: (name) => classes.add(name), remove: (name) => classes.delete(name), contains: (name) => classes.has(name) },
-    setAttribute() {}, appendChild() {}, remove() {}, select() {}, click() {}, focus() { this.focused++; },
+    setAttribute(name, value) { attributes.set(name, value); }, getAttribute: (name) => attributes.get(name),
+    appendChild() {}, remove() {}, select() {}, click() {}, focus() { this.focused++; },
     addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, []); listeners.get(type).push(fn); },
     async dispatch(type, extra = {}) {
       const event = { target: this, preventDefault() {}, ...extra };
@@ -129,7 +140,7 @@ function node(properties = {}) {
 }
 
 function fixture(options = {}) {
-  const nodes = new Map(), events = [], copied = [], urls = new Set(), revoked = [], downloads = [], timers = [];
+  const nodes = new Map(), events = [], copied = [], urls = new Set(), revoked = [], downloads = [], timers = [], images = [];
   const get = (id) => { if (!nodes.has(id)) nodes.set(id, node()); return nodes.get(id); };
   const fields = {
     card: { "card-heading": "thinking", "card-to": "", "card-message": "", "card-from": "", "card-theme": "botanical" },
@@ -138,6 +149,7 @@ function fixture(options = {}) {
   };
   const exports = tools.flatMap((tool) => ["png", "print", "copy"].map((action) => node({ dataset: { for: tool, export: action } })));
   const toolButtons = tools.map((tool) => node({ dataset: { tool } }));
+  const themeButtons = Object.keys(artwork).map((theme) => node({ dataset: { themeChoice: theme } }));
   const panels = tools.map((tool) => node({ dataset: { toolPanel: tool } }));
   const resetButtons = tools.map((tool) => node({ dataset: { reset: tool } }));
   const resetYes = tools.map((tool) => node({ dataset: { resetYes: tool } }));
@@ -155,9 +167,10 @@ function fixture(options = {}) {
     form.querySelector = () => get(Object.keys(fields[tool])[0]);
     form.reset();
     const canvas = get(`care-${tool}-canvas`);
+    canvas.context = context(options);
     canvas.getContext = () => {
       if (options.canvasThrows) throw new Error("Canvas disabled by browser");
-      return options.noCanvas ? null : context();
+      return options.noCanvas ? null : canvas.context;
     };
     canvas.toBlob = (callback) => callback(options.blobFailure ? null : { type: "image/png" });
   }
@@ -169,6 +182,7 @@ function fixture(options = {}) {
     querySelectorAll(selector) {
       if (selector === "[data-export]") return exports;
       if (selector === "[data-tool]") return toolButtons;
+      if (selector === "[data-theme-choice]") return themeButtons;
       if (selector === "[data-tool-panel]") return panels;
       if (selector === "[data-helper-field]") return [helperField];
       if (selector === "[data-feedback-tool]") return [node()];
@@ -204,11 +218,37 @@ function fixture(options = {}) {
     setTimeout: (callback) => timers.push(callback),
     print: () => { win.prints = (win.prints || 0) + 1; }
   });
+  win.Image = class {
+    constructor() {
+      this.naturalWidth = options.emptyImage ? 0 : 1122;
+      this.naturalHeight = options.emptyImage ? 0 : 1402;
+      images.push(this);
+    }
+    set src(value) {
+      this._src = value;
+      if (!options.manualImages) queueMicrotask(() => {
+        if (options.imageFailure) this.onerror();
+        else this.onload();
+      });
+    }
+    get src() { return this._src; }
+    decode() {
+      if (options.decodeFailure) return Promise.reject(new Error("Invalid WebP"));
+      if (options.manualDecode) return new Promise((resolve, reject) => {
+        this.finishDecode = resolve;
+        this.failDecode = reject;
+      });
+      return Promise.resolve();
+    }
+  };
+  if (options.noImageApi) delete win.Image;
   mount(win);
   return {
-    nodes, events, copied, exports, urls, revoked, downloads, timers, feedback, feedbackSubmit, helperField, win, resetConfirmations,
+    nodes, events, copied, exports, urls, revoked, downloads, timers, feedback, feedbackSubmit, helperField, win, resetConfirmations, images, themeButtons,
+    flush: () => new Promise((resolve) => setImmediate(resolve)),
     async input(id, value, tool = "card") { get(id).value = value; await get(`care-${tool}-form`).dispatch("input"); },
     select: (tool) => toolButtons.find((button) => button.dataset.tool === tool).dispatch("click"),
+    theme: (theme) => themeButtons.find((button) => button.dataset.themeChoice === theme).dispatch("click"),
     reset: (tool, action) => ({ open: resetButtons, confirm: resetYes, cancel: resetNo }[action][tools.indexOf(tool)]).dispatch("click"),
     export: (tool, action) => exports.find((button) => button.dataset.for === tool && button.dataset.export === action).dispatch("click")
   };
@@ -216,6 +256,7 @@ function fixture(options = {}) {
 
 async function validateBehavior() {
   const app = fixture();
+  await app.flush();
   assert.equal(app.events.filter((event) => event[1] === "care_tool_view").length, 1);
   assert(app.exports.filter((button) => button.dataset.for === "card").every((button) => button.disabled));
   await app.input("card-message", privateText);
@@ -329,6 +370,107 @@ async function validateBehavior() {
   assert(!app.nodes.get("care-preferences-text").textContent.includes(privateHelper));
 }
 
+async function validateIllustrationReadiness() {
+  const imagesFor = (app, theme) => app.images.filter((image) => image.src === artwork[theme]);
+  const imageButtons = (app, tool = "card") => app.exports.filter((button) => button.dataset.for === tool && button.dataset.export !== "copy");
+  const copyButton = (app, tool = "card") => app.exports.find((button) => button.dataset.for === tool && button.dataset.export === "copy");
+  const waiting = fixture({ manualImages: true, manualDecode: true });
+  await waiting.input("card-message", privateText);
+  assert(imageButtons(waiting).every((button) => button.disabled), "An image cannot be exported before its illustration is loaded");
+  assert.equal(copyButton(waiting).disabled, false, "Text copying remains available while the artwork is loading");
+  assert.match(waiting.nodes.get("care-card-status").textContent, /loading your illustration/i);
+  await waiting.export("card", "png");
+  await waiting.export("card", "print");
+  assert.equal(waiting.downloads.length, 0);
+  assert.equal(waiting.win.prints || 0, 0);
+  assert.equal(waiting.events.filter((event) => event[1] === "care_export").length, 0, "An attempted export before readiness must not count as an export");
+  const garden = imagesFor(waiting, "botanical")[0];
+  const loaded = garden.onload();
+  assert(imageButtons(waiting).every((button) => button.disabled), "A load event is insufficient until image decoding completes");
+  garden.finishDecode();
+  await loaded;
+  assert(imageButtons(waiting).every((button) => !button.disabled), "A valid note becomes exportable only after artwork decoding succeeds");
+  await waiting.export("card", "png");
+  assert.deepEqual(waiting.downloads, ["quickgetwell-card.png"]);
+  await waiting.win.dispatch("pagehide");
+  assert.equal(waiting.urls.size, 0);
+
+  for (const options of [{ imageFailure: true }, { decodeFailure: true }, { emptyImage: true }, { noImageApi: true }]) {
+    const failed = fixture(options);
+    await failed.flush();
+    await failed.input("card-message", privateText);
+    assert.match(failed.nodes.get("care-card-status").textContent, /illustration could not load/i);
+    assert(imageButtons(failed).every((button) => button.disabled), "Missing/broken artwork must not silently produce a text-only PNG");
+    assert.equal(copyButton(failed).disabled, false);
+    await failed.export("card", "png");
+    await failed.export("card", "print");
+    assert.equal(failed.downloads.length, 0);
+    assert.equal(failed.win.prints || 0, 0);
+    assert.equal(failed.events.filter((event) => event[1] === "care_export").length, 0);
+    await failed.export("card", "copy");
+    assert(failed.copied[0].includes(privateText), "All author text must remain available despite failed artwork");
+  }
+  const drawFailure = fixture({ drawFails: true });
+  await drawFailure.flush();
+  await drawFailure.input("card-message", privateText);
+  assert.match(drawFailure.nodes.get("care-card-status").textContent, /preview is unavailable/i);
+  assert(imageButtons(drawFailure).every((button) => button.disabled));
+  assert.equal(copyButton(drawFailure).disabled, false);
+
+  const race = fixture({ manualImages: true });
+  await race.input("card-message", "First draft.");
+  await race.theme("ink");
+  await race.input("card-message", "The latest draft must remain.");
+  await imagesFor(race, "ink")[0].onload();
+  assert.equal(race.nodes.get("card-theme").value, "ink");
+  assert.equal(race.nodes.get("care-card-canvas").context.lastImage.src, artwork.ink);
+  assert.equal(race.themeButtons.find((button) => button.dataset.themeChoice === "ink").getAttribute("aria-pressed"), "true");
+  await imagesFor(race, "botanical")[0].onload();
+  assert.equal(race.nodes.get("care-card-canvas").context.lastImage.src, artwork.ink, "A late old-theme image must never replace the current illustration");
+  assert(race.nodes.get("care-card-text").textContent.includes("The latest draft must remain."));
+  assert(!race.nodes.get("care-card-text").textContent.includes("First draft."));
+  await race.theme("sunrise");
+  assert(imageButtons(race).every((button) => button.disabled), "Switching to an unready design must immediately revoke image-export readiness");
+  await race.select("help");
+  await race.input("help-task-1", "Walk the dog", "help");
+  await imagesFor(race, "sunrise")[0].onload();
+  assert.equal(race.nodes.get("care-card-canvas").context.lastImage.src, artwork.sunrise);
+  assert.equal(race.nodes.get("care-help-canvas").context.lastImage.src, artwork.ink, "A delayed card design must not overwrite another tool's artwork");
+  assert(race.nodes.get("care-help-text").textContent.includes("Walk the dog"));
+  for (const theme of Object.keys(artwork)) assert.equal(imagesFor(race, theme).length, 1, "Repeated edits and tool switches must reuse the decoded artwork");
+  assert.doesNotMatch(JSON.stringify(race.images.map((image) => image.src)), /draft|Walk|Private|@|\?/, "Artwork requests must not encode user input or URL parameters");
+  assert.doesNotMatch(JSON.stringify(race.events), /latest draft|First draft|Walk the dog/);
+}
+
+function validateArtworkAssets() {
+  assert.deepEqual(artwork, {
+    botanical: "/assets/experiments/care-art/garden-v2.webp",
+    ink: "/assets/experiments/care-art/comfort-v2.webp",
+    sunrise: "/assets/experiments/care-art/window-v2.webp"
+  }, "Illustration URLs must be the three fixed same-origin public assets");
+  for (const url of Object.values(artwork)) {
+    const relative = url.slice(1);
+    const bytes = fs.readFileSync(path.join(__dirname, relative));
+    assert.equal(bytes.toString("ascii", 0, 4), "RIFF", `${url}: missing WebP RIFF header`);
+    assert.equal(bytes.toString("ascii", 8, 12), "WEBP", `${url}: incorrect image format`);
+    assert.equal(bytes.readUInt32LE(4) + 8, bytes.length, `${url}: incomplete RIFF image`);
+    assert(bytes.length < 300 * 1024, `${url}: illustration exceeds the 300 KiB static-asset budget`);
+    let dimensions;
+    for (let offset = 12; offset + 8 <= bytes.length;) {
+      const chunk = bytes.toString("ascii", offset, offset + 4);
+      const length = bytes.readUInt32LE(offset + 4);
+      const data = offset + 8;
+      if (chunk === "VP8 ") dimensions = [bytes.readUInt16LE(data + 6) & 0x3fff, bytes.readUInt16LE(data + 8) & 0x3fff];
+      if (chunk === "VP8L") dimensions = [1 + ((bytes[data + 2] & 0x3f) << 8 | bytes[data + 1]), 1 + ((bytes[data + 4] & 0x0f) << 10 | bytes[data + 3] << 2 | bytes[data + 2] >> 6)];
+      if (chunk === "VP8X") dimensions = [bytes.readUIntLE(data + 4, 3) + 1, bytes.readUIntLE(data + 7, 3) + 1];
+      if (dimensions) break;
+      offset = data + length + (length % 2);
+    }
+    assert.deepEqual(dimensions, [1122, 1402], `${url}: source dimensions must remain the reviewed portrait artwork`);
+    assert.deepEqual(fs.readFileSync(path.join(__dirname, "dist", relative)), bytes, `${url}: build must copy the reviewed illustration without conversion`);
+  }
+}
+
 function validateGeneratedPage() {
   const dist = path.join(__dirname, "dist");
   const html = fs.readFileSync(path.join(dist, route, "index.html"), "utf8");
@@ -354,8 +496,13 @@ function validateGeneratedPage() {
     assert(html.includes(`data-tool="${tool}"`) && html.includes(`data-tool-panel="${tool}"`));
     for (const action of ["png", "print", "copy"]) assert(new RegExp(`data-export="${action}"\\s+data-for="${tool}"`).test(html));
     for (const attribute of ["data-reset-confirm", "data-reset-yes", "data-reset-no"]) assert(html.includes(`${attribute}="${tool}"`), `${tool}: clearing must offer a working confirmation/cancel path`);
+    assert.match(html, new RegExp(`<canvas\\s+id="care-${tool}-canvas"\\s+width="1200"\\s+height="1500"`), `${tool}: backing canvas must export a 1200 × 1500 portrait`);
   }
-  assert.match(html, /Your words stay on this page/);
+  for (const [theme, url] of Object.entries(artwork)) {
+    assert(html.includes(`data-theme-choice="${theme}"`), `${theme}: missing accessible theme choice`);
+    assert(html.includes(`src="${url}"`), `${theme}: missing visible design thumbnail`);
+  }
+  assert.match(html, /Your words stay (?:on this page|in this browser tab)/);
   assert.match(html, /don.t upload or save/i);
   assert.match(html, /no name or message text is sent/i);
   assert.match(html, /completed human editorial review is not recorded/);
@@ -365,7 +512,9 @@ function validateGeneratedPage() {
   const ownScripts = [...html.matchAll(/<script[^>]*src="([^"]+)"/g)].map((match) => match[1]);
   assert(ownScripts.some((url) => url.startsWith("/assets/experiments/care-studio-v1.js")));
   for (const relative of ["index.html", "get-well-soon-messages-for-teacher/index.html", "get-well-soon-messages-for-client/index.html", "get-well-soon-messages-for-boss/index.html"]) {
-    assert(!fs.readFileSync(path.join(dist, relative), "utf8").includes("care-studio-v1.js"), `${relative}: established traffic pages must not load the new editor`);
+    const existingHtml = fs.readFileSync(path.join(dist, relative), "utf8");
+    assert(!existingHtml.includes("care-studio-v1.js"), `${relative}: established traffic pages must not load the new editor`);
+    assert(!existingHtml.includes("/care-art/"), `${relative}: existing traffic pages must not download the new illustration assets`);
   }
 }
 
@@ -374,8 +523,10 @@ async function main() {
   validateWrapping();
   validateEventContract();
   await validateBehavior();
+  await validateIllustrationReadiness();
+  validateArtworkAssets();
   validateGeneratedPage();
-  console.log("Validated care studio: private local models, Unicode wrapping, safe analytics, copy/image/print failure handling, feedback deduplication, accessible generated forms and indexability.");
+  console.log("Validated care studio: private local models, safe analytics, 1200 × 1500 illustrated rendering, asynchronous load/decode and stale-theme safeguards, image/print failure handling, static WebP size/build integrity, accessible forms and indexability.");
 }
 
 main().catch((error) => { console.error(error); process.exitCode = 1; });

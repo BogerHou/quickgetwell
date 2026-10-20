@@ -66,7 +66,7 @@ function documentFor({ route, title, description, content, lessonId = "", studio
   </header>
   <main id="main" class="resource-main">${content}</main>
   <footer class="resource-footer">
-    <p>Wording to adapt to your own relationships. These examples are AI-assisted; completed human editorial review is not recorded. Not medical advice.</p>
+    <p>${studio ? "Illustrations and starter wording are AI-assisted; completed human editorial review is not recorded. Adapt the words to your own relationships. Not medical advice." : "Wording to adapt to your own relationships. These examples are AI-assisted; completed human editorial review is not recorded. Not medical advice."}</p>
     ${studio
       ? '<p>Your words stay in this browser page and are not uploaded or saved by Quick Get Well. Downloads and copied text contain what you enter; share them only with people you choose. Reloading clears your draft. We may count tool use, export actions and optional feedback using fixed categories. We do not send your names, words, tasks or contact preferences with those events. Standard site analytics also applies; see our Privacy page.</p>'
       : '<p>We may count the option chosen and whether it fits the scenario, plus download and copy actions, using fixed categories and the page path. No names, message text, or health details are requested. There is no saved progress to resume on your next visit.</p>'}

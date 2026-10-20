@@ -41,7 +41,12 @@ function currentItems() {
     },
     {
       id: "tool:care-studio",
-      sha256: hashFiles(["content/care-studio.js", "assets/experiments/care-studio-v1.js"])
+      sha256: hashFiles([
+        "content/care-studio.js", "assets/experiments/care-studio-v1.js",
+        "assets/experiments/care-art/garden-v2.webp",
+        "assets/experiments/care-art/comfort-v2.webp",
+        "assets/experiments/care-art/window-v2.webp"
+      ])
     },
     ...["a4", "letter"].map((paper) => ({
       id: `printable:teacher-care-pack:${paper}`,

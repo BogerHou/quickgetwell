@@ -7,11 +7,16 @@
   "use strict";
   const route = "/resources/care-studio/";
   const toolNames = Object.freeze({ card: "card maker", help: "help offer", preferences: "contact preferences" });
+  const artwork = Object.freeze({
+    botanical: "/assets/experiments/care-art/garden-v2.webp",
+    ink: "/assets/experiments/care-art/comfort-v2.webp",
+    sunrise: "/assets/experiments/care-art/window-v2.webp"
+  });
   const clean = (value, limit) => Array.from(String(value || "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim()).slice(0, limit).join("");
   const choice = (value, options, fallback) => options.includes(value) ? value : fallback;
 
   function buildModel(tool, values = {}) {
-    const model = { valid: false, heading: "", to: "", lines: [], from: "", theme: "botanical", text: "" };
+    const model = { tool, valid: false, heading: "", to: "", lines: [], from: "", theme: "botanical", text: "" };
     if (tool === "card") {
       model.heading = { thinking: "Thinking of you", "get-well": "Get well soon", "thank-you": "Thank you" }[choice(values.heading, ["thinking", "get-well", "thank-you"], "thinking")];
       model.to = clean(values.to, 40);
@@ -87,60 +92,59 @@
     return { name, parameters: safe };
   }
 
-  function draw(context, model) {
-    const width = 1000, height = 1200;
-    const palettes = {
-      botanical: { paper: "#f6f3e9", ink: "#24463f", accent: "#9aaf95", soft: "#e4e9dc" },
-      ink: { paper: "#ffffff", ink: "#202d29", accent: "#727b74", soft: "#f2f3ef" },
-      sunrise: { paper: "#fff7eb", ink: "#553e2d", accent: "#c58b49", soft: "#f0dfbf" }
-    };
-    const color = palettes[model.theme] || palettes.botanical;
+  function draw(context, model, art) {
+    const width = 1200, height = 1500;
+    const ink = { botanical: "#253e55", ink: "#713e2e", sunrise: "#2c514f" }[model.theme] || "#253e55";
     context.clearRect(0, 0, width, height);
-    context.fillStyle = color.paper;
+    context.fillStyle = "#faf3e5";
     context.fillRect(0, 0, width, height);
-    context.strokeStyle = color.accent;
-    context.lineWidth = 2;
-    context.strokeRect(36, 36, width - 72, height - 72);
-    context.fillStyle = color.soft;
-    if (model.theme === "sunrise") {
-      context.beginPath(); context.arc(830, 175, 98, 0, Math.PI * 2); context.fill();
-      context.fillRect(732, 175, 196, 18);
-    } else if (model.theme === "botanical") {
-      context.save(); context.translate(835, 175); context.rotate(-0.35);
-      context.strokeStyle = color.accent; context.lineWidth = 4;
-      context.beginPath(); context.moveTo(0, 70); context.quadraticCurveTo(-20, 0, 8, -90); context.stroke();
-      for (let i = 0; i < 4; i++) {
-        context.beginPath(); context.ellipse(i % 2 ? 18 : -20, 35 - i * 32, 34, 13, i % 2 ? -0.6 : 0.6, 0, Math.PI * 2); context.fill();
-      }
-      context.restore();
-    } else {
-      context.beginPath(); context.moveTo(740, 150); context.lineTo(880, 150); context.stroke();
-      context.beginPath(); context.moveTo(740, 170); context.lineTo(835, 170); context.stroke();
-    }
-    context.fillStyle = color.ink;
-    context.textAlign = "left";
+    if (art) context.drawImage(art, 0, 0, width, height);
+    context.fillStyle = ink;
+    context.textAlign = "center";
     context.textBaseline = "top";
-    context.font = "24px Arial, sans-serif";
-    context.fillText(model.to || "", 86, 104, 630);
-    context.font = "60px Georgia, serif";
-    const headingLines = wrapText(context, model.heading, 720);
-    let y = 255;
-    for (const line of headingLines) { context.fillText(line, 86, y); y += 70; }
-    y += 32;
-    let size = 35, lines;
+    const personal = model.tool === "card";
+    let y;
+    if (personal) {
+      context.font = "28px Georgia, serif";
+      context.fillText(model.to || "", 600, 66, 940);
+      const title = {
+        "Thinking of you": ["Thinking", "of you"],
+        "Get well soon": ["Get well", "soon"],
+        "Thank you": ["Thank", "you"]
+      }[model.heading] || [model.heading];
+      context.font = "108px Georgia, serif";
+      context.fillText(title[0], 600, 128, 960);
+      context.font = "italic 112px Georgia, serif";
+      if (title[1]) context.fillText(title[1], 600, 242, 960);
+      y = 385;
+    } else {
+      context.font = "italic 82px Georgia, serif";
+      context.fillText(model.heading, 600, 125, 980);
+      context.strokeStyle = ink;
+      context.lineWidth = 1;
+      context.beginPath(); context.moveTo(540, 242); context.lineTo(660, 242); context.stroke();
+      y = 290;
+    }
+    // Leave the illustration intact: fit the entire note into its clear paper area.
+    let size = personal ? 36 : 32, lines;
     const content = model.lines.filter(Boolean).join("\n\n");
-    const room = 1040 - y;
+    const bottom = personal ? 622 : 682;
+    const room = bottom - y;
+    const family = personal ? "Georgia, serif" : "Arial, sans-serif";
     do {
-      context.font = `${size}px Arial, sans-serif`;
-      lines = wrapText(context, content, 828);
-      if (lines.length * size * 1.4 <= room || size <= 16) break;
-      size -= 1;
-    } while (size >= 16);
-    // Refuse an unreadable/clipped export instead of silently dropping text.
-    const fits = lines.length * size * 1.4 <= room;
-    for (const line of lines) { context.fillText(line, 86, y); y += size * 1.4; }
-    context.font = "27px Georgia, serif";
-    context.fillText(model.from || "", 86, 1093, 828);
+      context.font = `${size}px ${family}`;
+      lines = wrapText(context, content, 920);
+      if (lines.length * size * 1.35 <= room || size <= 26) break;
+      size--;
+    } while (size >= 26);
+    const fits = lines.length * size * 1.35 <= room;
+    for (const line of lines) {
+      if (y + size * 1.35 > bottom) break;
+      context.fillText(line, 600, y);
+      y += size * 1.35;
+    }
+    context.font = "italic 28px Georgia, serif";
+    if (fits) context.fillText(model.from || "", 600, y + 25, 880);
     return fits;
   }
 
@@ -150,7 +154,7 @@
     let current = "card";
     const seen = new Set(), started = new Set(), feedbackSent = new Set();
     const urls = new Set();
-    const models = new Map(), fits = new Map();
+    const models = new Map(), fits = new Map(), artCache = new Map();
     const feedback = doc.getElementById("care-feedback-form");
     const feedbackStatus = doc.getElementById("care-feedback-status");
     let printRoot, printUrl, exportBusy = false, feedbackBusy = false;
@@ -167,15 +171,44 @@
       return { contact: value("preferences-contact"), visits: value("preferences-visits"), updates: value("preferences-updates"), helper: value("preferences-helper"), note: value("preferences-note") };
     }
     function status(tool, text) { doc.getElementById(`care-${tool}-status`).textContent = text; }
+    function loadArt(theme) {
+      if (artCache.has(theme)) return artCache.get(theme);
+      const entry = { state: "loading", image: null };
+      artCache.set(theme, entry);
+      const finish = state => {
+        entry.state = state;
+        // Re-read the current model; a late image must never restore an older draft/theme.
+        for (const tool of Object.keys(toolNames)) {
+          if (models.get(tool)?.theme === theme) update(tool);
+        }
+      };
+      if (typeof win.Image !== "function") { entry.state = "error"; return entry; }
+      const image = new win.Image();
+      entry.image = image;
+      image.onload = async () => {
+        try {
+          if (typeof image.decode === "function") await image.decode();
+          if (!image.naturalWidth || !image.naturalHeight) throw new Error("Empty illustration");
+          finish("ready");
+        } catch { finish("error"); }
+      };
+      image.onerror = () => finish("error");
+      image.src = artwork[theme];
+      return entry;
+    }
     function update(tool, edited = false) {
       const values = read(tool), model = buildModel(tool, values);
       const canvas = doc.getElementById(`care-${tool}-canvas`);
       let context;
       try { context = canvas.getContext("2d"); } catch { /* Keep the text-only path usable. */ }
-      let fitsCanvas = false;
-      if (context) fitsCanvas = draw(context, model);
-      fits.set(tool, fitsCanvas);
       models.set(tool, model);
+      const art = loadArt(model.theme);
+      let fitsCanvas = false;
+      let drawFailed = false;
+      try { if (context) fitsCanvas = draw(context, model, art.state === "ready" ? art.image : null); }
+      catch { drawFailed = true; }
+      fitsCanvas = fitsCanvas && art.state === "ready" && !drawFailed;
+      fits.set(tool, fitsCanvas);
       doc.getElementById(`care-${tool}-text`).textContent = model.text;
       doc.querySelectorAll(`[data-export][data-for="${tool}"]`).forEach(button => {
         button.disabled = !model.valid || (button.dataset.export !== "copy" && !fitsCanvas);
@@ -183,10 +216,17 @@
       if (tool === "preferences") {
         doc.querySelectorAll("[data-helper-field]").forEach(field => { field.hidden = !(values.contact === "via-person" || values.updates === "person"); });
       }
+      if (tool === "card") {
+        doc.querySelectorAll("[data-theme-choice]").forEach(button => {
+          button.setAttribute("aria-pressed", String(button.dataset.themeChoice === model.theme));
+        });
+      }
       let notice = "";
-      if (!model.valid) notice = tool === "card" ? "Add your own note to make this card." : tool === "help" ? "Add at least one thing you can offer." : "Add the name or role of the person who has agreed to help with contact.";
-      else if (!context) notice = "Image preview is unavailable. You can still copy your text.";
-      else if (!fitsCanvas) notice = "This has too many lines for one sheet. Use fewer line breaks, or copy the full text.";
+      if (!context || drawFailed) notice = "Image preview is unavailable. You can still copy your text.";
+      else if (art.state === "loading") notice = "Loading your illustration…";
+      else if (art.state === "error") notice = "The illustration could not load. Reload to try again, or use Copy text.";
+      else if (!model.valid) notice = tool === "card" ? "Add your own note to make this card." : tool === "help" ? "Add at least one thing you can offer." : "Add the name or role of the person who has agreed to help with contact.";
+      else if (!fitsCanvas) notice = "This note is too long for the illustrated space. Shorten it, use fewer line breaks, or copy the full text.";
       status(tool, notice);
       if (edited && !started.has(tool)) { started.add(tool); track("care_tool_start", tool); }
     }
@@ -280,6 +320,13 @@
       update(tool);
     }
     doc.querySelectorAll("[data-tool]").forEach(button => { button.addEventListener("click", () => select(button.dataset.tool)); });
+    doc.querySelectorAll("[data-theme-choice]").forEach(button => {
+      button.addEventListener("click", () => {
+        if (!Object.hasOwn(artwork, button.dataset.themeChoice)) return;
+        doc.getElementById("card-theme").value = button.dataset.themeChoice;
+        update("card", true);
+      });
+    });
     doc.querySelectorAll("[data-export]").forEach(button => { button.addEventListener("click", () => exportTool(button.dataset.for, button.dataset.export)); });
     doc.querySelectorAll("[data-reset]").forEach(button => {
       button.addEventListener("click", () => {
@@ -336,5 +383,5 @@
     });
     select("card");
   }
-  return { buildModel, wrapText, makeEvent, toolNames, draw, mount };
+  return { buildModel, wrapText, makeEvent, toolNames, artwork, draw, mount };
 });

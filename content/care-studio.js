@@ -5,23 +5,23 @@ function preview(tool, label, emptyText) {
   return `
     <aside class="care-preview" id="care-${tool}-preview" aria-labelledby="care-${tool}-preview-heading" tabindex="-1">
       <div class="care-preview-heading">
-        <h3 id="care-${tool}-preview-heading">Your preview</h3>
-        <a class="care-edit-link" href="#care-${tool}-form">Back to editing</a>
+        <h3 id="care-${tool}-preview-heading">Your ${tool === "card" ? "card" : "note"}</h3>
+        <a class="care-edit-link" href="#care-${tool}-form">Edit your words ↗</a>
       </div>
       <div class="care-paper">
-        <canvas id="care-${tool}-canvas" width="1000" height="1200" role="img" aria-label="${label}">${emptyText} A text version is available below.</canvas>
+        <canvas id="care-${tool}-canvas" width="1200" height="1500" role="img" aria-label="${label}">${emptyText} A text version is available below.</canvas>
       </div>
       <details class="care-text-preview">
         <summary>Read preview as text</summary>
         <p class="care-preview-text" id="care-${tool}-text">${emptyText}</p>
       </details>
       <div class="care-export-actions" aria-label="Save or use this ${tool === "card" ? "card" : "note"}">
-        <button type="button" class="button" data-export="png" data-for="${tool}" disabled>Save image</button>
+        <button type="button" class="button care-save-button" data-export="png" data-for="${tool}" disabled>Download image ↓</button>
         <button type="button" class="button secondary" data-export="print" data-for="${tool}" disabled>Print</button>
         <button type="button" class="care-copy-button" data-export="copy" data-for="${tool}" disabled>Copy text</button>
       </div>
       <p id="care-${tool}-status" class="care-status" role="status" aria-live="polite"></p>
-      <p class="care-export-note">Save an image to share yourself, or print a single page.</p>
+      <p class="care-export-note">A 1200 × 1500 image, ready to send or print.</p>
     </aside>`;
 }
 
@@ -52,10 +52,10 @@ function render() {
     </nav>
 
     <header class="care-intro">
-      <p class="eyebrow">Free tools · No account needed</p>
-      <h1>Make a get-well card<br>or care note.</h1>
-      <p class="lede">Add your own words to a card, offer a helping hand, or let people know how you’d like to stay in touch.</p>
-      <p class="care-privacy-note">Your words stay on this page. We don’t upload or save them; download a copy before leaving. No health details are needed.</p>
+      <p class="eyebrow">The care studio · Free, no account needed</p>
+      <h1>Get-well cards, made personal.</h1>
+      <p class="lede">Choose an illustrated design. Add words that are yours. Send a little something they can keep.</p>
+      <p class="care-privacy-note">Your words stay in this browser tab. We don’t upload or save them. Download your finished card before leaving.</p>
     </header>
 
     <noscript>
@@ -63,36 +63,41 @@ function render() {
     </noscript>
 
     <div class="care-tool-picker" role="group" aria-label="Choose what to make">
-      <button type="button" data-tool="card" aria-pressed="true" aria-controls="care-panel-card"><span class="care-picker-title">A personal card</span><span class="care-picker-description">Your words, ready to share</span></button>
-      <button type="button" data-tool="help" aria-pressed="false" aria-controls="care-panel-help"><span class="care-picker-title">An offer of help</span><span class="care-picker-description">A few things you can do</span></button>
-      <button type="button" data-tool="preferences" aria-pressed="false" aria-controls="care-panel-preferences"><span class="care-picker-title">My contact preferences</span><span class="care-picker-description">How I’d like to stay in touch</span></button>
+      <button type="button" data-tool="card" aria-pressed="true" aria-controls="care-panel-card"><span class="care-picker-title">A personal card</span><span class="care-picker-description">A note to keep</span></button>
+      <button type="button" data-tool="help" aria-pressed="false" aria-controls="care-panel-help"><span class="care-picker-title">An offer of help</span><span class="care-picker-description">Care you can give</span></button>
+      <button type="button" data-tool="preferences" aria-pressed="false" aria-controls="care-panel-preferences"><span class="care-picker-title">Contact preferences</span><span class="care-picker-description">On your terms</span></button>
     </div>
 
     <section id="care-panel-card" class="care-tool-panel" data-tool-panel="card" aria-labelledby="care-card-heading">
-      <div class="care-tool-heading"><h2 id="care-card-heading">Make it personal.</h2><p>A short note in your own words is enough. Names are optional.</p></div>
+      <div class="care-tool-heading"><h2 id="care-card-heading">Make a card.</h2><p>Choose the artwork, then make it yours.</p></div>
       <div class="care-tool-layout">
         <form id="care-card-form" class="care-form" autocomplete="off">
-          <a class="care-preview-link" href="#care-card-preview">View preview ↓</a>
+          <div class="care-design-picker">
+            <div class="care-design-heading"><label for="card-theme">Choose a design</label><select id="card-theme"><option value="botanical">Garden blooms</option><option value="ink">Little comforts</option><option value="sunrise">Window light</option></select></div>
+            <div class="care-theme-choices" role="group" aria-label="Illustrated card designs">
+              <button type="button" class="care-theme-choice" data-theme-choice="botanical" aria-pressed="true"><span class="care-theme-art"><img src="/assets/experiments/care-art/garden-v2.webp" width="240" height="300" alt="Painted coral and yellow flowers in a blue pitcher"><span aria-hidden="true">Thinking<br>of you</span></span><span class="care-theme-name">Garden blooms</span></button>
+              <button type="button" class="care-theme-choice" data-theme-choice="ink" aria-pressed="false"><span class="care-theme-art"><img src="/assets/experiments/care-art/comfort-v2.webp" width="240" height="300" alt="Cozy illustrated comforts framing a warm card"><span aria-hidden="true">Thinking<br>of you</span></span><span class="care-theme-name">Little comforts</span></button>
+              <button type="button" class="care-theme-choice" data-theme-choice="sunrise" aria-pressed="false"><span class="care-theme-art"><img src="/assets/experiments/care-art/window-v2.webp" width="240" height="300" alt="Sunlit window illustration with space for a note"><span aria-hidden="true">Thinking<br>of you</span></span><span class="care-theme-name">Window light</span></button>
+            </div>
+          </div>
           <div class="care-field">
-            <label for="card-heading">Card heading</label>
+            <label for="card-heading">The occasion</label>
             <select id="card-heading"><option value="thinking">Thinking of you</option><option value="get-well">Get well soon</option><option value="thank-you">Thank you</option></select>
           </div>
           <div class="care-field">
-            <label for="card-to">To <span class="care-optional">optional</span></label>
-            <input id="card-to" type="text" maxlength="40" placeholder="A first name, a nickname, or your teacher">
-          </div>
-          <div class="care-field">
             <label for="card-message">Your message</label>
-            <textarea id="card-message" rows="5" maxlength="320" aria-describedby="card-message-hint" placeholder="Write a wish, a thank-you, or a memory you share." required></textarea>
+            <textarea id="card-message" rows="4" maxlength="320" aria-describedby="card-message-hint" placeholder="Write a wish, a thank-you, or a memory you share." required></textarea>
             <p id="card-message-hint" class="care-field-hint">Up to 320 characters. Need a starting point? <a href="/#situations">Browse message examples.</a></p>
           </div>
-          <div class="care-field">
-            <label for="card-from">From <span class="care-optional">optional</span></label>
-            <input id="card-from" type="text" maxlength="50" placeholder="Your name, family, or class">
-          </div>
-          <div class="care-field">
-            <label for="card-theme">Design</label>
-            <select id="card-theme"><option value="botanical">Botanical · green and cream</option><option value="ink">Ink · simple black and white</option><option value="sunrise">Sunrise · warm peach</option></select>
+          <div class="care-name-fields">
+            <div class="care-field">
+              <label for="card-to">To <span class="care-optional">optional</span></label>
+              <input id="card-to" type="text" maxlength="40" placeholder="Their name">
+            </div>
+            <div class="care-field">
+              <label for="card-from">From <span class="care-optional">optional</span></label>
+              <input id="card-from" type="text" maxlength="50" placeholder="Your name or class">
+            </div>
           </div>
           <div class="care-form-end"><a class="care-preview-link" href="#care-card-preview">View your card ↓</a><button type="button" class="care-reset-button" data-reset="card">Clear card</button></div>
           ${clearConfirmation("card")}
@@ -105,9 +110,9 @@ function render() {
       <div class="care-tool-heading"><h2 id="care-help-heading">Offer something you can do.</h2><p>List up to three practical offers. The other person can choose, suggest a change, or decline.</p></div>
       <div class="care-tool-layout">
         <form id="care-help-form" class="care-form" autocomplete="off">
-          <a class="care-preview-link" href="#care-help-preview">View preview ↓</a>
           <p class="care-form-note">Only include help you’re able to provide. The examples in the fields are suggestions, not part of your note.</p>
-          ${[1, 2, 3].map(helpItem).join("")}
+          ${helpItem(1)}
+          <details class="care-extra-offers"><summary>Add another offer <span class="care-optional">optional</span></summary>${[2, 3].map(helpItem).join("")}</details>
           <div class="care-field">
             <label for="help-from">From <span class="care-optional">optional</span></label>
             <input id="help-from" type="text" maxlength="50" placeholder="Your name">
@@ -123,7 +128,6 @@ function render() {
       <div class="care-tool-heading"><h2 id="care-preferences-heading">Stay in touch on your terms.</h2><p>Make a note you can share with friends or family. Choose what fits you right now, without explaining your health.</p></div>
       <div class="care-tool-layout">
         <form id="care-preferences-form" class="care-form" autocomplete="off">
-          <a class="care-preview-link" href="#care-preferences-preview">View preview ↓</a>
           <div class="care-field">
             <label for="preferences-contact">Getting in touch</label>
             <select id="preferences-contact"><option value="text">A text works best</option><option value="call-first">Ask before calling</option><option value="via-person">Contact someone I’ve chosen</option><option value="quiet">I’d like some quiet for now</option></select>

@@ -5,7 +5,7 @@ const { lessons } = require("./content/workplace-practice");
 const { guide } = require("./content/workplace-guide");
 const { indexedResources } = require("./content/resource-indexing");
 const { pages } = require("./content/pages");
-const { siteUrl } = require("./site.config");
+const { siteUrl, siteName } = require("./site.config");
 const dist = path.join(__dirname, "dist");
 const read = file => fs.readFileSync(path.join(dist, file), "utf8");
 const escape = value => String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
@@ -27,6 +27,30 @@ for (const route of routes) {
   assert.deepEqual(robots, [`${indexable ? "index" : "noindex"},follow`], `${route}: incorrect indexing decision`);
   const canonicals = [...html.matchAll(/<link rel="canonical" href="([^"]+)">/g)].map(match => match[1]);
   assert.deepEqual(canonicals, [`${base}/${route}`], `${route}: canonical mismatch`);
+
+  // OpenGraph tags
+  const ogType = html.match(/<meta property="og:type" content="([^"]+)">/)?.[1];
+  assert.equal(ogType, "website", `${route}: missing or invalid og:type`);
+  const ogSiteName = html.match(/<meta property="og:site_name" content="([^"]+)">/)?.[1];
+  assert.equal(ogSiteName, escape(siteName), `${route}: missing or invalid og:site_name`);
+  const ogTitle = html.match(/<meta property="og:title" content="([^"]+)">/)?.[1];
+  assert(ogTitle && ogTitle.trim().length > 0, `${route}: missing og:title`);
+  const ogDescription = html.match(/<meta property="og:description" content="([^"]+)">/)?.[1];
+  assert(ogDescription && ogDescription.trim().length > 0, `${route}: missing og:description`);
+  const ogUrl = html.match(/<meta property="og:url" content="([^"]+)">/)?.[1];
+  assert.equal(ogUrl, `${base}/${route}`, `${route}: missing or mismatched og:url`);
+  const ogImage = html.match(/<meta property="og:image" content="([^"]+)">/)?.[1];
+  assert(ogImage && ogImage.startsWith("https://"), `${route}: missing or non-https og:image`);
+
+  // Twitter Cards
+  const twitterCard = html.match(/<meta name="twitter:card" content="([^"]+)">/)?.[1];
+  assert.equal(twitterCard, "summary_large_image", `${route}: missing or invalid twitter:card`);
+  const twitterTitle = html.match(/<meta name="twitter:title" content="([^"]+)">/)?.[1];
+  assert.equal(twitterTitle, ogTitle, `${route}: twitter:title must match og:title`);
+  const twitterDescription = html.match(/<meta name="twitter:description" content="([^"]+)">/)?.[1];
+  assert.equal(twitterDescription, ogDescription, `${route}: twitter:description must match og:description`);
+  const twitterImage = html.match(/<meta name="twitter:image" content="([^"]+)">/)?.[1];
+  assert.equal(twitterImage, ogImage, `${route}: twitter:image must match og:image`);
   assert.equal([...html.matchAll(/<h1[ >]/g)].length, 1, `${route}: one primary heading`);
   assert(html.includes('href="#main"') && html.includes('id="main"'), `${route}: working skip link`);
   assert(html.includes("completed human editorial review is not recorded"), `${route}: honest review status`);

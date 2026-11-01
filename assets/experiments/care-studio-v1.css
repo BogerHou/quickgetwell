@@ -6,6 +6,7 @@
 }
 
 .care-studio :is(select, textarea, input, button) { font: inherit; }
+.care-studio :is(select, textarea, input) { font-size: 1rem; }
 .care-studio :is(select, textarea, input, button, a, summary):focus-visible {
   outline: 3px solid var(--care-focus);
   outline-offset: 4px;
@@ -164,8 +165,8 @@
 .care-design-heading label { font-size: .8rem; font-weight: 650; }
 .care-design-heading select {
   color: var(--muted);
-  font-size: .73rem;
-  min-height: 38px;
+  font-size: 1rem;
+  min-height: 44px;
   max-width: 150px;
   border: 0;
   border-bottom: 1px solid var(--care-border);
@@ -270,6 +271,7 @@
 .care-export-actions .button.secondary:disabled:hover { background: transparent; color: var(--forest); }
 .care-copy-button:disabled { text-decoration: none; }
 .care-status { min-height: 1.6em; margin-top: 11px; color: var(--forest); font-size: .76rem; font-weight: 600; line-height: 1.65; overflow-wrap: anywhere; }
+.care-status[data-warning="true"] { color: #984126; font-weight: 650; }
 .care-status:empty { min-height: 0; margin-top: 0; }
 .care-export-note { margin-top: 10px; color: var(--muted); font-size: .69rem; }
 
@@ -329,7 +331,7 @@
   .care-theme-art > span { font-size: clamp(.85rem, 3.4vw, 1.2rem); }
   .care-theme-name { font-size: .72rem; }
   .care-design-heading label { font-size: .82rem; }
-  .care-design-heading select { max-width: 150px; font-size: .75rem; }
+  .care-design-heading select { max-width: 150px; font-size: 1rem; }
   .care-design-picker { margin-bottom: 25px; }
   .care-field label { font-size: .83rem; }
   .care-field-hint { font-size: .74rem; }

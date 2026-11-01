@@ -470,6 +470,10 @@ function renderHomePage() {
     <meta property="og:type" content="website">
     <meta property="og:url" content="${baseUrl}/">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Get Well Soon Messages for Every Situation">
+    <meta name="twitter:description" content="Find thoughtful get well soon messages for friends, family, coworkers, surgery recovery, serious illness, funny notes, cards, and texts.">
+    <meta name="twitter:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
 ${renderIconLinks()}
     <link rel="stylesheet" href="${assetHref("styles.css")}">${renderCardEntryStyles()}
     <!-- Home resource styles: start -->
@@ -877,13 +881,53 @@ function buildPersonalizationSteps(page) {
       "Keep it light and brief because flu messages are usually quick check-ins.",
       "Offer simple help like soup, medicine pickup, or leaving supplies at the door.",
       "Skip symptom guesses or timelines unless they brought them up first."
+    ],
+    "get-well-soon-messages-for-boss": [
+      "Keep the tone respectful and professional, matching your usual workplace relationship.",
+      "Reassure them that projects and daily coverage are in good hands, without discussing pending tasks.",
+      "Close with a warm wish for comfort and rest, emphasizing that work should stay off their mind."
+    ],
+    "get-well-soon-messages-for-child": [
+      "Keep words simple, cheerful, and comforting, avoiding anything that sounds clinical or scary.",
+      "Mention a favorite activity, story, or small comfort they can look forward to.",
+      "Reassure them that they are loved and cared for, without pressuring them to act brave."
+    ],
+    "get-well-soon-prayers": [
+      "Share a sincere, comforting prayer or blessing that reflects their personal faith.",
+      "Ask for peaceful rest, gentle comfort, and healing strength during this season.",
+      "Keep the note heartfelt and low-pressure, making it clear no reply is needed."
+    ],
+    "religious-get-well-soon-messages": [
+      "Choose faith-filled words of peace and encouragement that match the recipient's beliefs.",
+      "Express that they are held in prayer, without making rigid promises about recovery timelines.",
+      "Let them know they are surrounded by support and God's comfort as they heal."
+    ],
+    "get-well-soon-messages-for-client": [
+      "Express warm, professional regard while respecting their privacy and personal space.",
+      "Confirm seamless business continuity and team coverage so they feel zero pressure to check in.",
+      "Wish them restful healing and unhurried time away, and state that you look forward to connecting when they are ready."
+    ],
+    "get-well-soon-messages-for-flowers": [
+      "Keep enclosure cards concise (1-2 sentences) so the message fits comfortably.",
+      "Check recipient ward policies if sending to a hospital, as some units restrict fresh blooms.",
+      "Sign with your full or recognizable name so they know who sent the arrangement."
+    ],
+    "get-well-soon-text-messages": [
+      "Keep texts brief and gentle, acknowledging how they are feeling without asking for updates.",
+      "Add a clear no need to reply note so reading your text does not feel like a chore.",
+      "Send love and quiet support, letting them take the lead on when to reach out."
+    ],
+    "funny-get-well-soon-messages": [
+      "Only use humor for minor ailments or with people who actively joke about their recovery.",
+      "Poke fun at the inconvenience of resting or being missed, never at the illness or pain itself.",
+      "Pair the light joke with genuine care and permission to rest."
     ]
   };
 
   return custom[page.slug] || [
-    "Add their name or relationship so the note does not feel copied.",
-    "Name the situation lightly, such as surgery, the hospital, or a rough week.",
-    "Offer one specific help option, like dinner, groceries, a ride, or quiet company."
+    "Address them warmly with the name or relationship they know you by.",
+    "Acknowledge their healing process with gentle, low-pressure support.",
+    "Close with an unhurried wish for comfort, letting them know no reply is needed."
   ];
 }
 
@@ -997,7 +1041,11 @@ function renderSchema(page) {
       publisher: {
         "@type": "Organization",
         name: siteName,
-        url: `${baseUrl}/`
+        url: `${baseUrl}/`,
+        logo: {
+          "@type": "ImageObject",
+          url: `${baseUrl}/assets/logo-icon-512.png`
+        }
       }
     }
   ];
@@ -1059,6 +1107,10 @@ function renderPage(page) {
     <meta property="og:type" content="article">
     <meta property="og:url" content="${pageUrl(page.slug)}">
     <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${escapeHtml(`${page.seoTitle || page.title} | ${siteName}`)}">
+    <meta name="twitter:description" content="${escapeHtml(page.description)}">
+    <meta name="twitter:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
 ${renderIconLinks("../")}
     <link rel="stylesheet" href="../${assetHref("styles.css")}">${renderCardEntryStyles()}
 ${renderAnalytics()}
@@ -1198,6 +1250,15 @@ function renderInfoPage(page) {
     <meta name="description" content="${escapeHtml(page.description)}">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="${infoPageUrl(page.slug)}">
+    <meta property="og:title" content="${escapeHtml(page.title)}">
+    <meta property="og:description" content="${escapeHtml(page.description)}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${infoPageUrl(page.slug)}">
+    <meta property="og:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${escapeHtml(page.title)} | ${escapeHtml(siteName)}">
+    <meta name="twitter:description" content="${escapeHtml(page.description)}">
+    <meta name="twitter:image" content="${baseUrl}/assets/hero-flowers-card.jpg">
 ${renderIconLinks("../")}
     <link rel="stylesheet" href="../${assetHref("styles.css")}">${renderCardEntryStyles()}
 ${renderAnalytics()}

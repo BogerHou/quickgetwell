@@ -145,9 +145,9 @@
     }
     // Leave the illustration intact: fit the entire note into its clear paper area.
     let size = personal ? 36 : 32, lines;
-    // Keep overlong words in the editor/text preview without laying them out or
-    // presenting a clipped image as an exportable card.
-    const content = model.tooLong ? "" : model.lines.filter(Boolean).join("\n\n");
+    // Keep overlong words in the editor/text preview and render them up to the
+    // paper boundary, while refusing export until the author shortens the note.
+    const content = model.lines.filter(Boolean).join("\n\n");
     const bottom = personal ? 622 : 682;
     const room = bottom - y;
     const family = personal ? "Georgia, serif" : "Arial, sans-serif";
@@ -250,7 +250,13 @@
       if (tool === "help") return { task1: value("help-task-1"), time1: value("help-time-1"), task2: value("help-task-2"), time2: value("help-time-2"), task3: value("help-task-3"), time3: value("help-time-3"), from: value("help-from") };
       return { contact: value("preferences-contact"), visits: value("preferences-visits"), updates: value("preferences-updates"), helper: value("preferences-helper"), note: value("preferences-note") };
     }
-    function status(tool, text) { doc.getElementById(`care-${tool}-status`).textContent = text; }
+    function status(tool, text, isWarning = false) {
+      const el = doc.getElementById(`care-${tool}-status`);
+      if (el) {
+        el.textContent = text;
+        el.setAttribute("data-warning", String(isWarning));
+      }
+    }
     function loadArt(theme) {
       if (artCache.has(theme)) return artCache.get(theme);
       const entry = { state: "loading", image: null };
@@ -308,14 +314,25 @@
         messageField.setAttribute("aria-invalid", String(model.tooLong));
         refreshMessageChoices();
       }
-      let notice = "";
-      if (model.tooLong) notice = "Your full message is kept in the editor. Shorten it to 320 characters before using this card.";
-      else if (!context || drawFailed) notice = "Image preview is unavailable. You can still copy your text.";
-      else if (art.state === "loading") notice = "Loading your illustration…";
-      else if (art.state === "error") notice = "The illustration could not load. Reload to try again, or use Copy text.";
-      else if (!model.valid) notice = tool === "card" ? "Add your own note to make this card." : tool === "help" ? "Add at least one thing you can offer." : "Add the name or role of the person who has agreed to help with contact.";
-      else if (!fitsCanvas) notice = "This note is too long for the illustrated space. Shorten it, use fewer line breaks, or copy the full text.";
-      status(tool, notice);
+      let notice = "", isWarning = false;
+      if (model.tooLong) {
+        notice = "Your full message is kept in the editor. Shorten it to 320 characters before using this card.";
+        isWarning = true;
+      } else if (!context || drawFailed) {
+        notice = "Image preview is unavailable. You can still copy your text.";
+        isWarning = true;
+      } else if (art.state === "loading") {
+        notice = "Loading your illustration…";
+      } else if (art.state === "error") {
+        notice = "The illustration could not load. Reload to try again, or use Copy text.";
+        isWarning = true;
+      } else if (!model.valid) {
+        notice = tool === "card" ? "Add your own note to make this card." : tool === "help" ? "Add at least one thing you can offer." : "Add the name or role of the person who has agreed to help with contact.";
+      } else if (!fitsCanvas) {
+        notice = "This note is too long for the illustrated space. Shorten it, use fewer line breaks, or copy the full text.";
+        isWarning = true;
+      }
+      status(tool, notice, isWarning);
       if (edited && !started.has(tool)) { started.add(tool); track("care_tool_start", tool); }
     }
     function select(tool, focus = false) {
@@ -370,12 +387,30 @@
         const url = win.URL.createObjectURL(blob);
         urls.add(url);
         if (action === "png") {
-          const link = doc.createElement("a");
-          link.href = url; link.download = `quickgetwell-${tool}.png`;
-          doc.body.appendChild(link); link.click(); link.remove();
+          const fileName = `quickgetwell-${tool}.png`;
+          const FileConstructor = win.File || globalThis.File;
+          const file = typeof FileConstructor === "function" ? new FileConstructor([blob], fileName, { type: "image/png" }) : null;
+          let shared = false;
+          if (file && typeof win.navigator?.canShare === "function") {
+            try {
+              if (win.navigator.canShare({ files: [file] }) && typeof win.navigator?.share === "function") {
+                await win.navigator.share({ files: [file], title: model.heading || "Care Card" });
+                shared = true;
+                status(tool, "Your image is ready and shared.");
+                track("care_export", tool, { action: "png_created" });
+              }
+            } catch {
+              shared = false;
+            }
+          }
+          if (!shared) {
+            const link = doc.createElement("a");
+            link.href = url; link.download = fileName;
+            doc.body.appendChild(link); link.click(); link.remove();
+            status(tool, "Your PNG is ready. Check your browser's downloads, then share it yourself.");
+            track("care_export", tool, { action: "png_created" });
+          }
           win.setTimeout(() => revoke(url), 10000);
-          status(tool, "Your PNG is ready. Check your browser's downloads, then share it yourself.");
-          track("care_export", tool, { action: "png_created" });
           exportBusy = false;
         } else {
           cleanupPrint();
@@ -495,13 +530,9 @@
     });
     win.addEventListener("afterprint", cleanupPrint);
     win.addEventListener("pagehide", () => { cleanupPrint(); for (const url of urls) revoke(url); });
-    // Browsers may restore form fields on a back navigation; explicitly start a new visit.
-    win.addEventListener("pageshow", event => {
-      if (event.persisted) {
-        clearMessageHistory();
-        for (const tool of Object.keys(toolNames)) { doc.getElementById(`care-${tool}-form`).reset(); update(tool); }
-        messageOffset = 0; renderMessageChoices();
-      }
+    // Retain user drafts when returning from other apps or navigating back.
+    win.addEventListener("pageshow", () => {
+      update(current);
     });
     select("card");
   }

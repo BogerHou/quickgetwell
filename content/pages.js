@@ -1752,7 +1752,7 @@ const pages = [
       },
       {
         question: "What can I write on hospital flowers?",
-        answer: "Keep a flower card simple: \"A little brightness for your room and a lot of love from me.\" Short messages work well in a hospital setting."
+        answer: "Keep a flower card simple: \"A little brightness for your room and a lot of love from me.\" Check hospital policy first, as many ICU, oncology, and surgical units prohibit fresh flowers due to infection risk."
       },
       {
         question: "Should I visit someone in the hospital?",
@@ -1834,7 +1834,7 @@ const pages = [
     intro: "Find a short text, heartfelt card, or gentle check-in for Grandma. Use the name you call her and share something from your day, a familiar interest, or a memory that fits the conversation. There are examples for after surgery, being far apart, and a longer recovery.",
     nav: "For grandma",
     personalizationSteps: [
-      "Use your usual name for her, such as Grandma, Nana, or Gran, and sign with the family name she knows you by.",
+      "Use your usual name for her, such as Grandma, Nana, or Gran, and sign with the familiar nickname or first name she knows you by.",
       "Share one true detail from today, such as something you made, noticed, or watched. A memory can connect to that detail; you do not have to sum up your whole relationship.",
       "If you offer a visit, call, or errand, make it something you can do and let her choose whether it would help."
     ],
@@ -2320,8 +2320,8 @@ const pages = [
         messages: [
           "Sending you a big gentle hug and lots of get-better wishes.",
           "Rest up, little star. We hope you feel better soon.",
-          "You are brave, loved, and surrounded by people who care.",
-          "Hope today brings more smiles and less yucky feeling."
+          "You are so loved, and surrounded by people who care.",
+          "Hope today brings lots of smiles and feeling so much better."
         ]
       },
       {

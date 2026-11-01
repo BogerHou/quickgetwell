@@ -323,12 +323,20 @@ function renderMessages() {
   title.textContent = `${capitalize(labels[displayTone])} messages for ${labels[filters.recipient]}`;
   note.textContent = getResultNote(filters);
 
+  const dimensionBadges = [
+    "Core Message",
+    "Low Pressure · No Reply Needed",
+    "Practical Support"
+  ];
+
   resultRoot.innerHTML = finderMessages
     .map((message, index) => {
       const finalText = personalize(message.text, filters);
       const copyLabel = `Copy message ${index + 1}: ${getCopySnippet(finalText)}`;
+      const badge = dimensionBadges[index] || "Message Option";
       return `
-        <article class="message-card">
+        <article class="message-card" data-dimension="${index}">
+          <span class="message-dimension-badge">${badge}</span>
           <p>${escapeHtml(finalText)}</p>
           <div class="message-meta">
             <span>${escapeHtml(labels[message.situation])}</span>
@@ -454,15 +462,19 @@ function showCopySuccess(trigger) {
   }, 1400);
 }
 
+let toastTimeoutId = null;
+
 function showToast(message = "Copied") {
   if (!toast) return;
 
+  if (toastTimeoutId) window.clearTimeout(toastTimeoutId);
   toast.textContent = message;
   toast.setAttribute("aria-hidden", "false");
   toast.classList.add("show");
-  window.setTimeout(() => {
+  toastTimeoutId = window.setTimeout(() => {
     toast.classList.remove("show");
     toast.setAttribute("aria-hidden", "true");
+    toastTimeoutId = null;
   }, 1400);
 }
 
@@ -486,17 +498,24 @@ function handleFinderChange(event) {
   }
 }
 
-if (form) {
-  form.addEventListener("input", () => {
+let inputDebounceTimer = null;
+function debouncedRenderMessages() {
+  if (inputDebounceTimer) window.clearTimeout(inputDebounceTimer);
+  inputDebounceTimer = window.setTimeout(() => {
     activeTuneAction = null;
     renderMessages();
-  });
+    inputDebounceTimer = null;
+  }, 120);
+}
+
+if (form) {
+  form.addEventListener("input", debouncedRenderMessages);
   form.addEventListener("change", handleFinderChange);
 }
 
 for (const field of [personName, helpOffer]) {
   if (!field) continue;
-  field.addEventListener("input", renderMessages);
+  field.addEventListener("input", debouncedRenderMessages);
   field.addEventListener("change", renderMessages);
 }
 

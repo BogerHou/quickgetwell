@@ -103,10 +103,9 @@ function validateWrapping() {
   const overLimitContext = context();
   const rendered = [];
   overLimitContext.fillText = text => rendered.push(text);
-  overLimitContext.measureText = () => { throw new Error("Over-limit body text must not be measured"); };
-  assert.equal(draw(overLimitContext, buildModel("card", { message: "🌷".repeat(321), from: "Private signature" }), image), false);
+  assert.equal(draw(overLimitContext, buildModel("card", { message: "🌷".repeat(321), from: "Private signature" }), image), false, "Over-limit card must refuse export");
   assert(!rendered.includes("Private signature"), "An over-limit image must not appear to be a completed signed card");
-  assert(!rendered.some(text => text.includes("🌷")), "Over-limit input must not be clipped into the preview image");
+  assert(rendered.some(text => text.includes("🌷")), "Over-limit input must still be rendered on the preview canvas without white-out");
 }
 
 function validateEventContract() {
@@ -147,6 +146,7 @@ function node(properties = {}) {
     value: "", textContent: "", dataset: {}, hidden: false, disabled: false, focused: 0, style: {}, children: [],
     classList: { add: (name) => classes.add(name), remove: (name) => classes.delete(name), contains: (name) => classes.has(name) },
     setAttribute(name, value) { attributes.set(name, value); }, getAttribute: (name) => attributes.get(name),
+    removeAttribute(name) { attributes.delete(name); },
     appendChild(child) { this.children.push(child); return child; },
     append(...children) { this.children.push(...children); },
     replaceChildren(...children) { this.children = [...children]; },
@@ -235,8 +235,14 @@ function fixture(options = {}) {
     },
     execCommand: () => options.fallbackResult ?? true
   };
+  const shares = [];
   const win = node({
     document: doc, isSecureContext: true,
+    File: class {
+      constructor(chunks, name, opts) {
+        this.chunks = chunks; this.name = name; this.opts = opts;
+      }
+    },
     location: { hostname: options.hostname || "quickgetwell.com", pathname: route, search: options.search ?? "?name=Private+Person", hash: options.hash ?? "#private@example.com" },
     sessionStorage: {
       getItem(key) { storageReads.push(key); if (options.storageFailure) throw new Error("Storage unavailable"); return stored.get(key) ?? null; },
@@ -245,7 +251,21 @@ function fixture(options = {}) {
     },
     URLSearchParams,
     qgwCareAnalyticsReady: options.analyticsReady ?? true,
-    navigator: { onLine: options.online ?? true, clipboard: { writeText: async (text) => { if (options.copyFails) throw new Error("Unavailable"); copied.push(text); } } },
+    navigator: {
+      onLine: options.online ?? true,
+      clipboard: { writeText: async (text) => { if (options.copyFails) throw new Error("Unavailable"); copied.push(text); } },
+      ...(options.canShare ? {
+        canShare: (data) => options.canShare(data),
+        share: async (data) => {
+          if (options.shareFails) {
+            const err = new Error("Abort");
+            err.name = "AbortError";
+            throw err;
+          }
+          shares.push(data);
+        }
+      } : {})
+    },
     gtag: (...args) => events.push(args),
     URL: { createObjectURL: () => { const url = `blob:local-${urls.size}`; urls.add(url); return url; }, revokeObjectURL: (url) => { revoked.push(url); urls.delete(url); } },
     setTimeout: (callback) => timers.push(callback),
@@ -277,7 +297,7 @@ function fixture(options = {}) {
   if (options.noImageApi) delete win.Image;
   mount(win);
   return {
-    nodes, events, copied, exports, urls, revoked, downloads, timers, feedback, feedbackSubmit, helperField, win, resetConfirmations, images, themeButtons, catalogEntries, stored, storageReads, storageDeletes, storageWrites,
+    nodes, events, copied, exports, urls, revoked, downloads, shares, timers, feedback, feedbackSubmit, helperField, win, resetConfirmations, images, themeButtons, catalogEntries, stored, storageReads, storageDeletes, storageWrites,
     flush: () => new Promise((resolve) => setImmediate(resolve)),
     async input(id, value, tool = "card") { get(id).value = value; await get(`care-${tool}-form`).dispatch("input"); },
     select: (tool) => toolButtons.find((button) => button.dataset.tool === tool).dispatch("click"),
@@ -303,6 +323,23 @@ async function validateBehavior() {
   assert.equal(app.events.at(-1)[2].action, "png_created");
   app.timers.forEach((callback) => callback());
   assert.equal(app.urls.size, 0, "Download object URLs must be released");
+
+  const shareCapable = fixture({ canShare: data => !!data?.files?.length });
+  await shareCapable.flush();
+  await shareCapable.input("card-message", privateText);
+  await shareCapable.export("card", "png");
+  assert.equal(shareCapable.shares.length, 1, "Web Share API must be invoked on supported platforms");
+  assert.equal(shareCapable.shares[0].files[0].name, "quickgetwell-card.png");
+  assert.equal(shareCapable.downloads.length, 0, "Native sharing must not trigger fallback download");
+  assert.equal(shareCapable.events.at(-1)[2].action, "png_created");
+  assert.match(shareCapable.nodes.get("care-card-status").textContent, /shared/i);
+
+  const shareCancelled = fixture({ canShare: data => !!data?.files?.length, shareFails: true });
+  await shareCancelled.flush();
+  await shareCancelled.input("card-message", privateText);
+  await shareCancelled.export("card", "png");
+  assert.deepEqual(shareCancelled.downloads, ["quickgetwell-card.png"], "Cancelled/failed share must fall back to <a> download");
+  assert.equal(shareCancelled.events.at(-1)[2].action, "png_created");
   await app.export("card", "print");
   assert.equal(app.win.prints, 1);
   assert.equal(app.events.at(-1)[2].action, "print_opened");
@@ -363,6 +400,7 @@ async function validateBehavior() {
   await overflow.input("card-message", "x\n".repeat(150));
   assert(overflow.exports.filter((button) => button.dataset.for === "card" && button.dataset.export !== "copy").every((button) => button.disabled));
   assert.equal(overflow.exports.find((button) => button.dataset.for === "card" && button.dataset.export === "copy").disabled, false);
+  assert.equal(overflow.nodes.get("care-card-status").getAttribute("data-warning"), "true", "Overflowing canvas layout must highlight status with warning");
   await overflow.export("card", "copy");
   assert(overflow.copied[0].includes("x\n".repeat(149)));
   const noCanvas = fixture({ noCanvas: true });
@@ -399,8 +437,8 @@ async function validateBehavior() {
   assert.equal(noCanvas.resetConfirmations[0].hidden, true);
   assert(noCanvas.exports.filter((button) => button.dataset.for === "card").every((button) => button.disabled));
   await app.win.dispatch("pageshow", { persisted: true });
-  assert.equal(app.nodes.get("card-message").value, "", "Back navigation must not unexpectedly restore private draft fields");
-  assert(!app.nodes.get("care-preferences-text").textContent.includes(privateHelper));
+  assert.equal(app.nodes.get("card-message").value, privateText, "Switching apps/tabs or returning via pageshow must preserve the user draft");
+  assert(app.nodes.get("care-preferences-text").textContent.includes(privateHelper), "Draft preferences text must remain intact across pageshow");
 }
 
 function validateOneTimeTransfer() {
@@ -456,6 +494,7 @@ async function validateMessageSelection() {
   assert.equal(longImport.nodes.get("card-message").value, longText, "The entire incoming message must remain available for editing");
   assert(longImport.exports.filter(button => button.dataset.for === "card").every(button => button.disabled));
   assert.match(longImport.nodes.get("care-card-status").textContent, /full message|shorten/i);
+  assert.equal(longImport.nodes.get("care-card-status").getAttribute("data-warning"), "true", "Over-limit message status must show warning attribute");
   assert.match(longImport.nodes.get("card-message-count").textContent, /340 \/ 320/);
   await longImport.export("card", "png");
   assert.equal(longImport.downloads.length, 0);
@@ -511,10 +550,11 @@ async function validateMessageSelection() {
   assert.equal(selection.nodes.get("card-theme").value, "ink");
   await selection.nodes.get("card-message-more").dispatch("click");
   assert.notEqual(choices()[0].dataset.messageId, firstButton.dataset.messageId);
+  const secondPageText = entries.find(entry => entry.id === choices()[0].dataset.messageId).text;
   await choices()[0].dispatch("click");
   await selection.win.dispatch("pageshow", { persisted: true });
-  assert.equal(selection.nodes.get("card-message").value, "");
-  assert.equal(selection.nodes.get("card-message-undo").hidden, true, "A discarded draft must not remain recoverable through Undo");
+  assert.equal(selection.nodes.get("card-message").value, secondPageText, "Draft message must be preserved across pageshow");
+  assert.equal(selection.nodes.get("card-message-undo").hidden, false, "Undo remains available when returning from other apps");
   assert.equal(selection.storageWrites.length, 0);
 
   const resetPicker = fixture();
@@ -690,6 +730,10 @@ function validateGeneratedPage() {
     assert(!existingHtml.includes("care-studio-v1.js"), `${relative}: established traffic pages must not load the new editor`);
     assert(!existingHtml.includes("/care-art/"), `${relative}: existing traffic pages must not download the new illustration assets`);
   }
+  const css = fs.readFileSync(path.join(__dirname, "assets/experiments/care-studio-v1.css"), "utf8");
+  assert(css.includes(".care-studio :is(select, textarea, input) { font-size: 1rem; }"), "Base inputs and selects must be at least 16px/1rem to prevent iOS auto-zoom");
+  assert.doesNotMatch(css, /select\s*\{[^}]*font-size:\s*\.7[35]rem/, "Select elements must not use sub-16px font sizes that cause mobile Safari auto-zoom");
+  assert(css.includes('.care-status[data-warning="true"]'), "Warning status must have high-visibility styling");
 }
 
 async function main() {

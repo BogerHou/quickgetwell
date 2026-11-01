@@ -32,7 +32,7 @@ function analytics(studio = false) {
   </script>`;
 }
 
-function documentFor({ route, title, description, content, lessonId = "", studio = false }) {
+function documentFor({ route, title, description, content, lessonId = "", studio = false, image = `${base}/assets/hero-flowers-card.jpg` }) {
   const indexable = indexedResources.some(resource => resource.route === route);
   return `<!doctype html>
 <html lang="en">
@@ -45,12 +45,17 @@ function documentFor({ route, title, description, content, lessonId = "", studio
   <link rel="canonical" href="${base}${route}">
   <link rel="icon" href="/assets/favicon-32.png" type="image/png">
   <link rel="stylesheet" href="${asset("assets/experiments/pilot-v1.css")}">
-  ${studio ? `<link rel="stylesheet" href="${asset("assets/experiments/care-studio-v1.css")}">
+  ${studio ? `<link rel="stylesheet" href="${asset("assets/experiments/care-studio-v1.css")}">` : ""}
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="${escape(siteName)}">
   <meta property="og:title" content="${escape(title)}">
   <meta property="og:description" content="${escape(description)}">
   <meta property="og:url" content="${base}${route}">
-  <meta property="og:image" content="${base}/assets/hero-flowers-card.jpg">` : ""}
+  <meta property="og:image" content="${escape(image)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escape(title)}">
+  <meta name="twitter:description" content="${escape(description)}">
+  <meta name="twitter:image" content="${escape(image)}">
   ${analytics(studio)}
 </head>
 <body data-lesson-id="${escape(lessonId)}">

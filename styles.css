@@ -41,7 +41,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 3px solid rgba(77, 120, 148, 0.48);
+  outline: 3px solid #1e3a34;
   outline-offset: 3px;
 }
 
@@ -276,6 +276,9 @@ section:not(.hero) {
 .finder-controls {
   position: sticky;
   top: 92px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: grid;
   gap: 14px;
   padding: 18px;
@@ -368,7 +371,7 @@ section:not(.hero) {
 
 .message-card {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   min-height: 190px;
   padding: 20px;
   border: 1px solid var(--line);
@@ -376,6 +379,19 @@ section:not(.hero) {
   background: #fffdf8;
   box-shadow: 0 16px 42px rgba(19, 32, 29, 0.07);
   animation: softPop 260ms ease both;
+}
+
+.message-dimension-badge {
+  display: inline-block;
+  justify-self: start;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  background: rgba(36, 70, 63, 0.08);
+  color: var(--forest);
 }
 
 .message-card p {
